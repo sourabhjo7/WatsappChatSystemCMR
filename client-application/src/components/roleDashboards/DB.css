@@ -1,0 +1,123 @@
+.dashBoard {
+  margin-bottom: 20px;
+}
+
+.firstCon {
+  display: flex;
+  justify-content: space-between;
+}
+
+.upCon {
+  background: #fff;
+  border-radius: 5px;
+  flex: 1;
+  box-shadow: 0px 0px 6px 6px #EBECEE;
+  padding: 15px 30px;
+}
+.upConFirstCon{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+
+
+.adminUpCon {
+  width: 40vw;
+}
+
+.upCon a {
+  text-decoration: none;
+  width: 18vw;
+  font-size: 1.2rem;
+  margin: 20px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #CDF6E5;
+  color: #777;
+  padding: 20px 0;
+  border-radius: 5px;
+  font-weight: bolder;
+  cursor: pointer;
+  box-shadow: 0px 0px 3px 3px #EBECEE;
+  transition: 0.5s ease;
+  /* flex: 1; */
+}
+
+.upCon a:hover {
+  font-size: 1.5rem;
+  background: #fff;
+  color: #999;
+  /* box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.2); */
+}
+.divInA{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.upCon span {
+  font-size: 2rem;
+}
+
+.upCon p {
+  /* margin-bottom: 0; */
+}
+
+.upConHeading {
+  margin-bottom: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.filterSelect {
+  margin: 40px 0 15px;
+  text-align: right;
+  font-size: 1.1rem;
+}
+
+.filterSelect select {
+  padding: 5px 10px;
+  border-radius: 5px;
+  background: #CDF6E5;
+  color: #555;
+  cursor: pointer;
+}
+
+.agentSelect select {
+  margin: 20px 0 0;
+}
+
+.chartsCon {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-left: 30px;
+}
+
+.barChart {
+  margin-bottom: 30px;
+}
+
+.barChart, .doughnutChart, .managerLineChart {
+  display: flex;
+  align-items: center;
+  width: 30vw;
+  height: 46vh;
+  background: #fff;
+  padding: 20px 30px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 6px 6px #EFF0F2;
+}
+
+.doughnutChart {
+  width: 100%;
+  height: auto;
+  margin-bottom: 30px;
+  /* filter: drop-shadow(30px 10px 4px #4444dd); */
+}
+
+.managerLineChart {
+  width: 30vw;
+}

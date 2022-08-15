@@ -1,0 +1,574 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700&display=swap');
+
+body {
+  color: #333;
+  font-family: 'Source Sans Pro', sans-serif;
+  background: #F5F6F8;
+}
+
+.Chats {
+  margin: 10vh 0;
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.rootCon {
+  display: flex;
+}
+
+.dataCon {
+  padding: 3vh 25px;
+  width: 82vw;
+}
+
+.topCon {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 7vh;
+}
+
+.pageHead {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.activeChatsCon {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.activeChatsCon h3 {
+  text-align: center;
+  min-width: 30vw;
+  color: #555;
+  padding: 8px 0;
+  font-size: 1.6rem;
+  border-radius: 8px 8px 0 0;
+  background: #CDF6E5;
+  margin-bottom: 0;
+}
+
+.chatList {
+  /* border-bottom: 1px solid #777;
+  border-left: 1px solid #777;
+  border-right: 1px solid #777; */
+  margin-top: 5px;
+  border-radius: 0 0 8px 8px;
+  padding: 10px 20px;
+  background: #fff;
+  box-shadow: 0px 3px 8px 5px #EBECEE;
+}
+
+.chatList div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.joinbtn {
+  background: #CDF6E5;
+  color: #777;
+  border: 0;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: 0.5s ease;
+}
+
+.joinbtn:hover {
+  box-shadow: 1px 1px 3px 3px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  color: #777;
+  font-weight: bolder;
+}
+
+.userCon {
+  display: flex;
+  flex-direction: column;
+}
+
+.userCard {
+  min-width: 25vw;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 0 10px;
+  min-height: 9vh;
+  background: #fff;
+  /* border-radius: 10px; */
+  box-shadow: 3px 3px 8px 5px #EBECEE;
+}
+
+.userCard p {
+  margin-bottom: 0;
+}
+
+.userCard h3 {
+  width: 40vw;
+  font-weight: bold;
+}
+
+.rmBtn {
+  width: 10%;
+  background: #DB5251;
+  color: #fff;
+  font-weight: bolder;
+  border: 0;
+  border-radius: 5px;
+  padding: 3px;
+  cursor: pointer;
+  transition-duration: 0.8s;
+}
+
+.rmBtn:hover {
+  background: #fff;
+  border: 1px solid #DB5251;
+  color: #DB5251;
+}
+
+.disBtn {
+  width: auto;
+  padding: 3px 6px;
+}
+
+.assignBtn {
+  background: #CDF6E5;
+  color: #666;
+}
+
+.assignBtn:hover {
+  background: #fff;
+  border: 2px solid #CDF6E5;
+  color: #999;
+}
+
+.regForm {
+  width: 33vw;
+  margin: auto;
+  color: #444;
+  background: #fff;
+  padding: 20px 30px;
+  border-radius: 5px;
+  box-shadow: 3px 3px 8px 5px #EBECEE;
+}
+
+.roleSelect {
+  margin-left: 15px;
+  margin-top: 10px;
+  text-align: center;
+  padding: 3px 0;
+  width: 89%;
+}
+
+.subBtn {
+  margin-top: 30px;
+  min-width: 100%;
+  font-weight: bolder;
+}
+
+.assignCard {
+  height: 10vh;
+}
+
+.roomTitle {
+  font-size: 1.8rem;
+  font-weight: bolder;
+  color: #555;
+}
+.agentSelect{
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.Chats {
+  width: 100%;
+  height: 90vh;
+  display: flex;
+  justify-content: space-between;
+}
+
+.chatsListCon {
+  height: 100%;
+  width: 26%;
+  background: #fff;
+  box-shadow: 0px 2px 8px 5px #EFF0F2;
+  overflow-y: scroll;
+}
+
+.chatsList {
+  width: 100%;
+  height: 9vh;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  font-weight: bolder;
+  cursor: pointer;
+  border-bottom: 2px solid #F5F6F8;
+}
+
+.chatsCon {
+  height: 100%;
+  width: 71%;
+  background: #fff;
+  display: flex;
+  box-shadow: 0px 2px 8px 5px #F5F6F8;
+}
+
+.chatCon {
+  width: 100%;
+}
+
+.chatTopCon {
+  width: 100%;
+  height: 8%;
+  border-bottom: 3px solid #F5F6F8;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-shadow: 0 2px 6px 4px #EFF0F2;
+}
+
+.chatTopCon span {
+  font-size: 1.8rem;
+}
+
+.broadcastCon {
+  /* height: 85vh; */
+}
+
+.selTempCon {
+  display: flex;
+  align-items: center;
+}
+
+.selTempCon label {
+  margin: 0;
+  font-size: 1.7rem;
+}
+
+.selTempCon select {
+  margin-left: 15px;
+  padding: 3px 5px;
+  border-radius: 5px;
+}
+
+.selectedTempCon {
+  margin: 8vh 0 14vh;
+  display: flex;
+  /* align-items: center; */
+  min-height: 20vh;
+  padding: 20px 30px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 4px 4px 6px 6px #EBECEE;
+}
+
+.selectedTempCon .val {
+  margin-left: 10vw;
+  flex: 1;
+}
+
+.selectedTempCon .val textarea {
+  background: #CDF6E5;
+  width: 100%;
+  height: 100%;
+  padding: 10px 15px;
+  border-radius: 10px;
+  box-shadow: 3px 3px 6px 6px #EBECEE;
+}
+
+.selectedTempCon .det {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 25vw;
+}
+
+.tempName {
+  font-weight: bolder;
+  font-size: 1.3rem;
+}
+
+.InpNoCon {
+  display: flex;
+  justify-content: space-between;
+}
+
+.optinNoCon {
+  min-width: 30vw;
+  /* margin-right: 10vw; */
+}
+
+.searchCon {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0 10px;
+}
+
+.searchCon input {
+  width: 45%;
+}
+
+.numbersList {
+  height: 70vh;
+  overflow-y: scroll;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 3px 3px 8px 5px #EBECEE;
+}
+
+.numbersList div, .selectedNumbersList div {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 30px;
+}
+
+.checkboxCon {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.checkboxCon input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+}
+
+/* When the checkbox is checked, add a CDF6E5 background */
+.checkboxCon input:checked~.checkmark {
+  background-color: #CDF6E5;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.checkboxCon input:checked~.checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.checkboxCon .checkmark:after {
+  left: 10px;
+  top: 7px;
+  width: 5px;
+  height: 10px;
+  border: solid #999;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.newNoCon {
+  width: 20vw;
+}
+
+.newNoCon textarea {
+  width: 100%;
+  height: 50%;
+  padding: 10px 15px;
+  border-radius: 10px;
+  margin-top: 5px;
+  box-shadow: 3px 3px 8px 5px #EBECEE;
+}
+
+.newNoCon span {
+  color: #999;
+  opacity: 0.8;
+  margin-top: 20px;
+}
+
+.selectedNoCon {
+  width: 35vh;
+}
+
+.selectedNumbersList {
+  margin-top: 5vh;
+  width: 100%;
+  background: #fff;
+  padding: 5px 7px;
+  border-radius: 5px;
+}
+
+.rmSelectedNoBtn {
+  background: #fff;
+  border: 0;
+  cursor: pointer;
+  font-size: 0.8rem;
+  border-radius: 5px;
+  font-weight: bolder;
+  transition-duration: 0.1s;
+}
+
+.rmSelectedNoBtn:hover {
+  color: #DE605F;
+  border: 2px solid #DE605F;
+  /* padding: 5px 8px 7px; */
+}
+
+.brdBtnCon span {
+  margin-left: 15px;
+}
+
+.brdCsBtn {
+  /* width: 100%; */
+  text-align: center;
+  margin: 10vh auto 0;
+  font-weight: bolder;
+  font-size: 1.2rem;
+}
+
+.changeCon {
+  display: flex;
+  justify-content: space-between;
+}
+
+.changeNameCon {
+  border-right: 2px solid #555;
+  padding-right: 20px;
+}
+
+.changeNameCon, .changePasswordCon {
+  width: 40vw;
+}
+
+.tempCon {
+  width: 40vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 80vh;
+  background: #fff;
+  padding: 20px 30px;
+  border-radius: 5px;
+  box-shadow: 4px 4px 6px 4px rgba(0, 0, 0, 0.2);
+}
+
+.subLabel {
+  font-size: 0.8rem;
+  color: #999
+}
+
+.tempBtn {
+  width: 100%;
+}
+
+.allTempCon {
+  display: flex;
+  flex-direction: column;
+  margin: 5vh 0;
+}
+.allTempCon .headCon{
+  margin-bottom: 20px;
+}
+.populateTempCon {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px 15px;
+  background: #fff;
+  margin-bottom: 10px;
+  box-shadow: 3px 3px 6px 6px #EFF0F2;
+}
+
+.tempConDet {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tempConDet p {
+  width: 22vw;
+  margin-bottom: 0;
+}
+
+.tempHeadCon {
+  font-weight: bolder;
+  font-size: 1.3rem;
+}
+
+.tempConDet span {
+  width: 15px;
+}
+
+.tempText {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  color: #777;
+}
+
+.tempRightCon {
+  /* height: 100%; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.Pending {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #FF8400;
+  box-shadow: 0px 0px 5px 5px #EBECEE;
+}
+
+.Submitted {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #97A4FC;
+  box-shadow: 0px 0px 5px 5px #EBECEE;
+}
+
+.Approved {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #4EFFB5;
+  box-shadow: 0px 0px 5px 5px #EBECEE;
+}
+
+.staBtnCon {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 25px;
+}
+
+.statusBtn {
+  max-width: 6vw;
+  padding: 3px 5px;
+  border: 1px solid;
+}

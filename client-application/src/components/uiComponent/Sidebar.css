@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Averia+Sans+Libre&display=swap');
+
+.sidebar {
+  background: #CDF6E5;
+  height: 100vh;
+  width: 17vw;
+  padding: 4vh 0;
+  font-family: 'Averia Sans Libre', cursive;
+  position: sticky;
+  top: 0;
+  box-shadow: 3px 3px 8px 5px #EBECEE;
+}
+
+.sidebar h1 {
+  font-size: 1.7rem;
+  font-weight: 500;
+  padding-left: 20px;
+}
+
+.links {
+  margin: 4vh 0 2vh;
+  padding: 20px 0;
+  border-bottom: 1px solid #999;
+}
+
+.links a {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  padding: 5px 0;
+  padding-left: 20px;
+  text-decoration: none;
+}
+
+.links a:hover, .active {
+  background: #fff;
+}
+
+.floatNumber {
+  background: #97a4fc;
+  padding: 3px 8px;
+  border-radius: 50%;
+  color: #fff;
+  margin-left: 8px;
+}
+
+.links span {
+  margin-left: 10px;
+  color: #555;
+}
+
+.logoutCon {
+  display: flex;
+  align-items: center;
+  padding: 5px 0;
+  padding-left: 20px;
+  font-weight: bolder;
+  cursor: pointer;
+  width: 100%;
+}
+
+.logoutBtn {
+  text-align: left;
+  margin-left: 10px;
+}
+
+.logoutCon:hover {
+  background: #fff;
+}
+
+/* // <a href="/agents">Agnets</a><br/>
+// <a href="/asign_agent">Assign Agnets</a><br/>
+// <a href="/create_new_user">Create new User</a> */
