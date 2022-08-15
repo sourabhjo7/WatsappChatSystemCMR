@@ -8,7 +8,7 @@ import TopCon from "./uiComponent/TopCon";
 function Broadcasting({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, userName, userId, noOfRequestedChats}) {
 
     //defining state variables
-    const [templates, setTemplated] = useState([]);
+    const [templates, setTemplates] = useState([]);
     const [selectedTemplate, setSelectedTemplate] = useState({});
 
     const [optedinUsers, setOptedinUsers] = useState([]);
@@ -30,7 +30,7 @@ function Broadcasting({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, us
 
       await axios.post(`${baseBulkMessagingURL}/aprovedTemplates`, {userId}, { validateStatus: false, withCredentials: true }).then((response) => {
         //setting the templates with the response from the API
-        setTemplated(response.data.templates);
+        setTemplates(response.data.templates);
         if(response.data.templates.length > 0){
           setSelectedTemplate({...response.data.templates[0], example: JSON.parse(response.data.templates[0].meta).example});
           setMessage(response.data.templates[0].data);
