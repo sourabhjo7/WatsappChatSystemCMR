@@ -4,6 +4,7 @@ import "./Flow.css"
 import Sidebar from "./uiComponent/Sidebar";
 import TopCon from "./uiComponent/TopCon";
 import Card from './uiComponent/Card';
+import DragCards from './uiComponent/DragCards';
 
 function Flow({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, userName, userId, noOfRequestedChats}) {
 
@@ -158,7 +159,17 @@ function Flow({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, userName, 
       setSelectedNos([...selNosByCheck, ...selNosByText])
     }, [selNosByCheck, selNosByText])
 
+    const [selectedTemplates,setSelectedTemplates]=useState([]);
+    // to select a component
+    const selectTemplate = (e)=>{
+            setSelectedTemplates((curr)=>{
+                if(curr.indexOf(e.target.value)==-1){
+                    return [...curr,e.target.value];
+                }
+                return curr;
+            })
 
+    }
 
     return (
         <div className="rootCon">
@@ -174,12 +185,22 @@ function Flow({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, userName, 
                  {/* card component   */}
                 <div className='cards-container'>
                 {templates.map((temp, index) => {
-        return <Card template={temp} key={index} />
+        return <Card template={temp} key={index} select={selectTemplate} />
+                    })}
+                    {console.log(templates)}
+              </div>
+            </div>
+                      
+                    {/* container for selected templates */} 
+                <div className='Selected-container '>
+                {selectedTemplates.map((temp, index) => {
+              return < DragCards template={temp} key={index} />
                     })}
                     {/* {console.log(templates)} */}
-              </div>
+
                     </div>
-              <div className="InpNoCon">
+
+           <div className="InpNoCon">
 
                 <div className="optinNoCon">
                   <h3>Otp In Numbers: </h3>

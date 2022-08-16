@@ -1,7 +1,7 @@
 import React from 'react'
 import "./Card.css"
 
-function Card({template}) {
+function Card({template,select}) {
 
   return (
     <>
@@ -19,7 +19,7 @@ function Card({template}) {
                     ) : (
                       template.data
                     )}</p>
-                     <button>Select</button>
+                     <button onClick={select} value={template.elementName} >Select</button>
                      </div>
             </div>
         </div>
