@@ -171,7 +171,7 @@ function Flow({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, userName, 
 
               <div>
                 <h3>Templates:</h3>
-                 {/* all cards component   */}
+                 {/* card component   */}
                 <div className='cards-container'>
                 {templates.map((temp, index) => {
         return <Card template={temp} key={index} />

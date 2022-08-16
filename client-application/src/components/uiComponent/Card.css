@@ -1,12 +1,13 @@
-
+.button
 .Card-container{
-    width: 1000px;
+    width: 30%;
     position: relative;
     display: flex;
     justify-content: space-between;
 }
 
 .Card-container .card{
+    background: inherit;
     position: relative;
     cursor: pointer;
 }
@@ -19,7 +20,7 @@
 
 .Card-container .card .face.face1{
     position: relative;
-    background: #333;
+    background:  #CDF6E5;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -28,7 +29,7 @@
 }
 
 .Card-container .card:hover .face.face1{
-    background: #ff0057;
+    background: #97A4FC;
     transform: translateY(0);
 }
 
@@ -42,9 +43,10 @@
 }
 
 .Card-container .card .face.face1 .content h3{
- 
+    position: relative;
+    z-index: 10;
     padding: 0;
-    color: #fff;
+    color: black;
     text-align: center;
     font-size: 1.5em;
 }
@@ -57,7 +59,7 @@
     align-items: center;
     padding: 20px;
     box-sizing: border-box;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+    box-shadow: 2px 2px 2px 5px #EBECEE;
     transform: translateY(-100px);
 }
 
@@ -66,11 +68,12 @@
 }
 
 .Card-container .card .face.face2 .content p{
+    color:black;
     margin: 0;
     padding: 0;
 }
 
-.Card-container .card .face.face2 .content a{
+.Card-container .card .face.face2 .content button{
     margin: 15px 0 0;
     display:  inline-block;
     text-decoration: none;
@@ -79,8 +82,11 @@
     padding: 5px;
     border: 1px solid #333;
 }
+.card{
+    border: none;
+}
 
-.Card-container .card .face.face2 .content a:hover{
-    background: #333;
+.Card-container .card .face.face2 .content button:hover{
+    background: #97A4FC;
     color: #fff;
 }
