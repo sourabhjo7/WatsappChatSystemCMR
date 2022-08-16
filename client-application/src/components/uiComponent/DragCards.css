@@ -5,3 +5,13 @@
   color: #fff;
   font-size: 1.3rem;
 }
+.content2{
+display: flex;
+align-items: center ;
+justify-content: space-between;
+padding:5px 10px 10px
+}
+.content2 p{
+    margin:0;
+    
+}
