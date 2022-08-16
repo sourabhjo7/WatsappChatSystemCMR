@@ -162,13 +162,12 @@ function Flow({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, userName, 
     const [selectedTemplates,setSelectedTemplates]=useState([]);
     // to select a component
     const selectTemplate = (e)=>{
-            setSelectedTemplates((curr)=>{
-                if(curr.indexOf(e.target.value)==-1){
-                    return [...curr,e.target.value];
-                }
-                return curr;
-            })
-
+      setSelectedTemplates((curr)=>{
+        if(curr.indexOf(e.target.value)==-1){
+          return [...curr,e.target.value];
+        }
+        return curr;
+      })
     }
 
     return (

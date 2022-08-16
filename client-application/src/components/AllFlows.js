@@ -1,12 +1,15 @@
 import React, {useState, useEffect} from 'react'
 import axios from "axios";
 
+import "./AllFlows.css"
+
 import Sidebar from "./uiComponent/Sidebar";
 import TopCon from "./uiComponent/TopCon";
 
 function AllFlows({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, userName, userId, noOfRequestedChats}) {
 
     const [flows, setFlows] = useState([]);
+    const [selectedFlow, setSelectedFlow] = useState({});
 
     const getFlows = async () => {
 
@@ -29,12 +32,19 @@ function AllFlows({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, userNa
         <div className="dataCon">
           <TopCon userName={userName} page="All Flows"/>
 
-          {flows.map((flow, index) => {
-            return <div>
-              <p>{flow.title}</p>
-              <p>{flow.tMessages}</p>
+          <div className="main_container">
+
+            <div className="flow_populate_container">
+              {flows.map((flow, index) => {
+                return <p>{flow.title}</p>
+              })}
             </div>
-          })}
+
+            <div className="flow_main_conatiner">
+
+            </div>
+
+          </div>
 
         </div>
       </div>
