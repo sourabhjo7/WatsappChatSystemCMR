@@ -144,43 +144,21 @@ function Flow({
         break;
       }
     }
-    useEffect(() => {
-      getAcutalTime();
-    }, [format,inputTime]);
 
+    //Removing number for SelNosByCheck
+    setSelectedNos((curr) => {
+      curr = curr.filter((num) => {
+        return num !== number;
+      });
+      return curr;
+    });
+  };
 
-    let dummyData={
-      "msg_array" : ["hi","hello"],
-      "contact_list":[9549408165,7845321246],
-      "triggers":{
-        "hi":2
-      },
-      "time_delay":time_delay
-    };
-    const  handleSubmit =async (e)=>{
-      const {data}=await axios.post(`${baseBulkMessagingURL}/createnewflow`,dummyData,{ validateStatus: false, withCredentials: true });
-      console.log(data.data);
-    }
-
-    useEffect(() => {
-      getTemplates();
-      getOptedinUsers();
-    }, []);
-
-
-    useEffect(() => {
-      setSelectedNos([...selNosByCheck, ...selNosByText])
-    }, [selNosByCheck, selNosByText])
-
-    const [selectedTemplates,setSelectedTemplates]=useState([]);
-    // to select a component
-    const selectTemplate = (e)=>{
-      setSelectedTemplates((curr)=>{
-        if(curr.indexOf(e.target.value)==-1){
-          return [...curr,e.target.value];
-        }
-        return curr;
-      })
+  const getAcutalTime = () => {
+    if (format === "min") {
+      setTime_delay(inputTime * 60 * 1000);
+    } else if (format === "sec") {
+      setTime_delay(inputTime * 1000);
     }
   };
   useEffect(() => {
