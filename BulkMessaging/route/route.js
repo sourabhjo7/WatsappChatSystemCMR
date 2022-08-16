@@ -12,6 +12,7 @@ const Template = require("../model/template");
 const Flow =require("../model/flow");
 
 const baseUserSystemURL = "http://localhost:3002";
+const baseChatSystemURL = "http://localhost:3001";
 
 //getting the all opted user from the gupshup API
 router.post("/optedinUsers", async (req, res) => {
@@ -46,8 +47,11 @@ router.post("/aprovedTemplates", async (req, res) => {
 
 //broadcasting message to all the numbers specified by the manager
 router.post("/broadcastMessage", async (req, res) => {
-  console.log("Broadcasting");
   const {message, toBeBroadcastNo, userId} = req.body;
+
+  await axios.post(`${baseChatSystemURL}/updateBotChatByBroadcasting`, {numberList: toBeBroadcastNo}, {validateStatus: false, withCredentials: true}).then((response) => {
+    console.log(response.data);
+  });
 
   let managerDel;
   await axios.post(`${baseUserSystemURL}/indi_user`, {userId}, {validateStatus: false, withCredentials: true}).then((response) => {
