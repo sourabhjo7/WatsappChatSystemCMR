@@ -1,5 +1,7 @@
-
-.drag-card{
-    background-color:  #97A4FC;
-    margin-bottom: 5px;
+.drag-card {
+  background-color: #97A4FC;
+  margin-bottom: 5px;
+  padding: 5px 10px 0px;
+  color: #fff;
+  font-size: 1.3rem;
 }

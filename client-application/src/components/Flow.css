@@ -10,9 +10,10 @@
 .Selected-container{
     display: flex;
     flex-direction: column;
-
     flex-wrap: nowrap;
-    width: 400px;
-    height: 600px;
+    width: 20vw;
+    height: 60vh;
     border-style: solid;
+    margin-bottom: 10vh;
+    overflow-y: scroll;
 }

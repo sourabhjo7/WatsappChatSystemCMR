@@ -185,20 +185,21 @@ function Flow({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, userName, 
                  {/* card component   */}
                 <div className='cards-container'>
                 {templates.map((temp, index) => {
-        return <Card template={temp} key={index} select={selectTemplate} />
-                    })}
-                    {console.log(templates)}
+                    return <Card template={temp} key={index} select={selectTemplate} />
+                })}
               </div>
             </div>
-                      
-                    {/* container for selected templates */} 
-                <div className='Selected-container '>
-                {selectedTemplates.map((temp, index) => {
-              return < DragCards template={temp} key={index} />
-                    })}
-                    {/* {console.log(templates)} */}
+            <div>
+              <h3>Build Flow:</h3>
 
-                    </div>
+              {/* container for selected templates */}
+              <div className='Selected-container '>
+                {selectedTemplates.map((temp, index) => {
+                  return <DragCards template={temp} key={index} />
+                })}
+
+              </div>
+            </div>
 
            <div className="InpNoCon">
 
