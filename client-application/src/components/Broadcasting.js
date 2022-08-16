@@ -34,7 +34,7 @@ function Broadcasting({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, us
         console.log(response.data.templates);
         if(response.data.templates.length > 0){
           setSelectedTemplate({...response.data.templates[0], example: JSON.parse(response.data.templates[0].meta).example});
-          setMessage(response.data.templates[0].data);
+          setMessage(response.data.templates[0].data.split("|")[0]);
         }
       });
     }
@@ -179,7 +179,7 @@ function Broadcasting({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, us
                 <label>Select a Template: </label>
                 <select onChange={(e) => {
                   setSelectedTemplate({...templates[e.target.selectedIndex], example: JSON.parse(templates[e.target.selectedIndex].meta).example});
-                  setMessage(templates[e.target.selectedIndex].data);
+                  setMessage(templates[e.target.selectedIndex].data.split("|")[0]);
                 }}>
                   {templates.map((template, index) => {
                     return (
