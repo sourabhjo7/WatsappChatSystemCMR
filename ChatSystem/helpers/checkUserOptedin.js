@@ -18,14 +18,6 @@ exports.otpedinUser = async (dial_code, phone, managerDel) => {
     console.error(error);
   });
 
-  //checking is the dial_code is already in the array of optin users
-  for(let user of optedinUsers){
-    if(user.phoneCode === dial_code && user.optinStatus === "OPT_IN"){
-      console.log("User Alread Otpedin");
-      return;//returing if this condition is true
-    }
-  }
-
 
   //if user not alrady an optin users, then making him/her the optin user
   const encodedParams = new URLSearchParams();

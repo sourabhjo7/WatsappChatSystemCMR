@@ -104,6 +104,10 @@ function Sidebar({role, baseURL, setIsLogedin, page, noOfPendingTemplates=0, noO
             <NewUserIcon />
             <span>Flow</span>
           </a>
+          <a href="/allflows" className={page === "AllFlows" ? "active" : "nonActive"}>
+            <NewUserIcon />
+            <span>All Flows</span>
+          </a>
 
           <a href="/new_template_request" className={page === "newTemplateRequest" ? "active" : "nonActive"}>
             <NewUserIcon />

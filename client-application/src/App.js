@@ -23,7 +23,9 @@ import AgentDb from "./components/roleDashboards/AgentDb";
 
 // import ManagerAssignPage from "./components/ManagerAssignPage";
 import Broadcasting from "./components/Broadcasting";
-import Flow from "./components/Flow"
+import Flow from "./components/Flow";
+import AllFlows from "./components/AllFlows";
+
 import NewTemplateRequest from "./components/NewTemplateRequest";
 import TemplateRequests from "./components/TemplateRequests";
 import AlertBox from "./components/uiComponent/AlertBox";
@@ -240,8 +242,25 @@ function App() {
 
             {/* // flow route for manager to start flow  */}
               <Route path="/flow" element={
-              userData.role === "Manager" ? (//Only Managers have Access to Flow Page 
+              userData.role === "Manager" ? (//Only Managers have Access to Flow Page
                 <Flow
+                  baseBulkMessagingURL={baseBulkMessagingURL}
+                  baseUserSystemURL={baseUserSystemURL}
+                  getRole="managers"
+                  setIsLogedin={setIsLogedin}
+                  userId={userData.user_id}
+                  userName={userData.name}
+                  noOfRequestedChats={noOfRequestedChats}
+                />
+              ) : (
+                <h1>Access Denied!!</h1>
+              )
+            } />
+
+            {/* // flow route for manager to start flow  */}
+              <Route path="/allflows" element={
+              userData.role === "Manager" ? (//Only Managers have Access to Flow Page
+                <AllFlows
                   baseBulkMessagingURL={baseBulkMessagingURL}
                   baseUserSystemURL={baseUserSystemURL}
                   getRole="managers"
