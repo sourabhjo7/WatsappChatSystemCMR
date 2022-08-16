@@ -5,6 +5,7 @@ import Sidebar from "./uiComponent/Sidebar";
 import TopCon from "./uiComponent/TopCon";
 import Card from "./uiComponent/Card";
 import DragCards from "./uiComponent/DragCards";
+import { useDrop } from "react-dnd";
 
 function Flow({
   baseBulkMessagingURL,
@@ -71,23 +72,29 @@ function Flow({
         storedUsers = response.data.users;
       });
 
-      //gettig name of the customers from the stored users
-      for(let optUser of optedinUsers){
-        const optUserFullPhoneNo = optUser.countryCode + optUser.phoneCode;
+    //gettig name of the customers from the stored users
+    for (let optUser of optedinUsers) {
+      const optUserFullPhoneNo = optUser.countryCode + optUser.phoneCode;
 
-        for(let user of storedUsers){
-          // console.log(user.userName, optUserFullPhoneNo);
-          if(optUserFullPhoneNo === user.userPhoneNo){
-            console.log("Match:", user.userName, optUserFullPhoneNo);
-            toBePopulateUsers.push({phoneNo: optUserFullPhoneNo, userName: user.userName});
-          }else{
-            console.log("Didn't Match:", "{Name}", optUserFullPhoneNo);
-            toBePopulateUsers.push({phoneNo: optUserFullPhoneNo, userName: "{Name}"});
-          }
-          break;
+      for (let user of storedUsers) {
+        // console.log(user.userName, optUserFullPhoneNo);
+        if (optUserFullPhoneNo === user.userPhoneNo) {
+          console.log("Match:", user.userName, optUserFullPhoneNo);
+          toBePopulateUsers.push({
+            phoneNo: optUserFullPhoneNo,
+            userName: user.userName,
+          });
+        } else {
+          console.log("Didn't Match:", "{Name}", optUserFullPhoneNo);
+          toBePopulateUsers.push({
+            phoneNo: optUserFullPhoneNo,
+            userName: "{Name}",
+          });
         }
+        break;
       }
-      
+    }
+
     setOptedinUsers(toBePopulateUsers);
     setSearchedOptedinUsers(toBePopulateUsers);
   };
@@ -209,6 +216,21 @@ function Flow({
     });
   };
 
+  // dropping funnctionality
+  const [board, setBoard] = useState([]);
+
+  const [{ isOver }, drop] = useDrop(() => ({
+    accept: "template",
+    drop: (item) => addTemplateToBoard(item.templateName),
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver(),
+    }),
+  }));
+  const addTemplateToBoard = (templateName) => {
+    setBoard((board) => [...board, templateName]);
+
+  };
+
   return (
     <div className="rootCon">
       <Sidebar
@@ -238,16 +260,30 @@ function Flow({
             <h3>Build Flow:</h3>
 
             {/* container for selected templates */}
-            <div className="Selected-container ">
-              {selectedTemplates.map((temp, index) => {
-                return (
-                  <DragCards
-                    template={temp}
-                    key={index}
-                    deleteTemplate={deleteTemplate}
-                  />
-                );
-              })}
+            <div className="selected-flow-area">
+              <div className="Selected-container ">
+                {selectedTemplates.map((temp, index) => {
+                  return (
+                    <DragCards
+                      template={temp}
+                      key={index}
+                      deleteTemplate={deleteTemplate}
+                    />
+                  );
+                })}
+              </div>
+              {/* this is the board where selected templates are droped  */}
+              <div className="Selected-container "ref={drop}>
+                {board.map((temp, index) => {
+                  return (
+                    <DragCards
+                      template={temp}
+                      key={index}
+                      deleteTemplate={deleteTemplate}
+                    />
+                  );
+                })}
+              </div>
             </div>
           </div>
 

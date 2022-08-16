@@ -16,3 +16,7 @@
     margin-bottom: 10vh;
     overflow-y: scroll;
 }
+.selected-flow-area{
+    display: flex;
+   justify-content:space-between ;
+}
