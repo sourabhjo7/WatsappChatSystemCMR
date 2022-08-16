@@ -1,5 +1,5 @@
-.button .Card-container {
-  width: 30%;
+.Card-container {
+  width: 30%;;
   /* margin: 0 20px; */
   position: relative;
   display: flex;
@@ -13,12 +13,13 @@
 }
 
 .Card-container .card .face {
-  width: 300px;
-  height: 200px;
+
   transition: 0.5s;
 }
 
 .Card-container .card .face.face1 {
+    width: 300px;
+    height: 200px;
   position: relative;
   background: #CDF6E5;
   display: flex;
@@ -51,6 +52,8 @@
 }
 
 .Card-container .card .face.face2 {
+    width: 300px;
+    height: 200px;
   position: relative;
   background: #fff;
   display: flex;
