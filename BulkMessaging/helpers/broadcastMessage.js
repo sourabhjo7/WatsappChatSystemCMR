@@ -1,11 +1,11 @@
 const axios = require("axios").default;
 const { URLSearchParams } = require('url');
 
-exports.sendMessage = (message, destination, appNumber, appName, apiKey) => {
+exports.broadcastMessage = (message, destination, appNumber, appName, apiKey) => {
 
   //sending the message to the perticular destination for which it belong
   const encodedParams = new URLSearchParams();
-  encodedParams.set('message', `{"text": "${message}","type":"text"}`);
+  encodedParams.set('message', message);
   encodedParams.set('channel', 'whatsapp');
   encodedParams.set('source', appNumber);
   encodedParams.set('destination', destination);

@@ -5,7 +5,7 @@ const axios = require("axios").default;
 const { URLSearchParams } = require('url');
 
 const {allOtpedUsers, allAprovedTemplates} = require("../helpers/getUsersOrTemplate");
-const {sendMessage} = require("../helpers/sendMessage");
+const {broadcastMessage} = require("../helpers/broadcastMessage");
 
 const Customer = require("../model/customer");
 const Template = require("../model/template");
@@ -46,7 +46,7 @@ router.post("/aprovedTemplates", async (req, res) => {
 
 //broadcasting message to all the numbers specified by the manager
 router.post("/broadcastMessage", async (req, res) => {
-
+  console.log("Broadcasting");
   const {message, toBeBroadcastNo, userId} = req.body;
 
   let managerDel;
@@ -58,7 +58,7 @@ router.post("/broadcastMessage", async (req, res) => {
 
   for(let phoneNo of toBeBroadcastNo){
     if(phoneNo !== ""){
-      await sendMessage(message, phoneNo, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
+      await broadcastMessage(message, phoneNo, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
     }
   }
   res.send("Broadcasting Done");
@@ -116,22 +116,22 @@ router.post("/updateTempStatus", async (req, res) => {
     })
   }
 });
- 
+
 // @description   route  for creating new flow
-// Method  Post 
+// Method  Post
 
 router.post("/createnewflow",async(req,res)=>{
-  let {msg_array,contact_list,triggers,time_delay}=req.body; // recieving details of messages contact list and triggers also time delay 
+  let {msg_array,contact_list,triggers,time_delay}=req.body; // recieving details of messages contact list and triggers also time delay
 
   // time_delay is comming in miliseconds
-  
+
       const flowData=new Flow({
         messages:msg_array,
         contactList:contact_list,
         triggers:triggers,
         timeDelay:time_delay
       });
-      
+
 
       await flowData.save();
       console.log(flowData);

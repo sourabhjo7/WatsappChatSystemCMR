@@ -268,16 +268,16 @@ body {
   border-radius: 10px;
   background: #fff;
   box-shadow: 4px 4px 6px 6px #EBECEE;
+  justify-content: space-between;
 }
 
 .selectedTempCon .val {
   margin-left: 10vw;
-  flex: 1;
 }
 
 .selectedTempCon .val textarea {
   background: #CDF6E5;
-  width: 100%;
+  width: 30vw;
   height: 100%;
   padding: 10px 15px;
   border-radius: 10px;

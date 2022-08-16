@@ -31,6 +31,7 @@ function Broadcasting({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, us
       await axios.post(`${baseBulkMessagingURL}/aprovedTemplates`, {userId}, { validateStatus: false, withCredentials: true }).then((response) => {
         //setting the templates with the response from the API
         setTemplates(response.data.templates);
+        console.log(response.data.templates);
         if(response.data.templates.length > 0){
           setSelectedTemplate({...response.data.templates[0], example: JSON.parse(response.data.templates[0].meta).example});
           setMessage(response.data.templates[0].data);
@@ -74,6 +75,8 @@ function Broadcasting({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, us
       newNumbersArr = await newNumbersArr.map((i) => i.replace(" ", ""))
 
       const toBeBroadcastNo = [...selectedNos, ...newNumbersArr];
+
+      console.log(message);
 
       if(toBeBroadcastNo.length > 1){
         axios.post(`${baseBulkMessagingURL}/broadcastMessage`, {message, toBeBroadcastNo, userId}, {validateStatus: false, withCredentials: true}).then((response) => {
