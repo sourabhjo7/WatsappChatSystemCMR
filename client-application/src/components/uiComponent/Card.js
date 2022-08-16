@@ -18,7 +18,7 @@ function Card({template}) {
             <div className="face face2">
                 <div className="content">
                     <p>{template.data}</p>
-                    <input type="submit" ><a href="#">try it out </a></input>
+                     <a href="#">try it out </a>
                      </div>
             </div>
         </div>
