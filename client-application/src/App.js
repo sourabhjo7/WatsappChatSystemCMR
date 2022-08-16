@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import "./App.css";
+// importing drag and drop dependency 
 
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 //importing axios for https requests
 import axios from "axios";
 
@@ -38,6 +41,8 @@ import ManagerProfile from "./components/ManagerProfile";
 const ChatPage = React.lazy(() => import('./components/chatComponents/ChatPage'));
 const ManagerAssign = React.lazy(() => import('./components/ManagerAssignPage'));
 
+
+
 //all the URLs of the backend systems
 let baseUserSystemURL = "http://localhost:3002";
 let baseChatSystemURL = "http://localhost:3001";
@@ -70,9 +75,11 @@ function App() {
   const ChatPageRender = () => {
     return (
       <>
+          <DndProvider backend={HTML5Backend}>
         <React.Suspense fallback={<></>}>
           {(userData.role === "Agent") && <ChatPage socket={socket} baseUserSystemURL={baseUserSystemURL} baseChatSystemURL={baseChatSystemURL} userData={userData} setIsLogedin={setIsLogedin} />}
         </React.Suspense>
+        </ DndProvider >
       </>
     )
   }
