@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react'
 import axios from "axios";
-
+import "./Flow.css"
 import Sidebar from "./uiComponent/Sidebar";
 import TopCon from "./uiComponent/TopCon";
+import Card from './uiComponent/Card';
 
 function Flow({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, userName, userId, noOfRequestedChats}) {
 
@@ -170,11 +171,14 @@ function Flow({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, userName, 
 
               <div>
                 <h3>Templates:</h3>
+                 {/* all cards component   */}
+                <div className='cards-container'>
                 {templates.map((temp, index) => {
-                  return <p key={index}>{temp.data}</p>
-                })}
+        return <Card template={temp} key={index} />
+                    })}
+                    {/* {console.log(templates)} */}
               </div>
-
+                    </div>
               <div className="InpNoCon">
 
                 <div className="optinNoCon">
