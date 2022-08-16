@@ -71,24 +71,23 @@ function Flow({
         storedUsers = response.data.users;
       });
 
-    //gettig name of the customers from the stored users
-    for (let i = 0; i < optedinUsers.length; i++) {
-      const optUserFullPhoneNo =
-        optedinUsers[i].countryCode + optedinUsers[i].phoneCode;
-      for (let j = 0; j < storedUsers.length; j++) {
-        if (storedUsers[j].userPhoneNo === optUserFullPhoneNo) {
-          toBePopulateUsers.push({
-            phoneNo: optUserFullPhoneNo,
-            userName: storedUsers[j].userName,
-          });
-        } else {
-          toBePopulateUsers.push({
-            phoneNo: optUserFullPhoneNo,
-            userName: "{Name}",
-          });
+      //gettig name of the customers from the stored users
+      for(let optUser of optedinUsers){
+        const optUserFullPhoneNo = optUser.countryCode + optUser.phoneCode;
+
+        for(let user of storedUsers){
+          // console.log(user.userName, optUserFullPhoneNo);
+          if(optUserFullPhoneNo === user.userPhoneNo){
+            console.log("Match:", user.userName, optUserFullPhoneNo);
+            toBePopulateUsers.push({phoneNo: optUserFullPhoneNo, userName: user.userName});
+          }else{
+            console.log("Didn't Match:", "{Name}", optUserFullPhoneNo);
+            toBePopulateUsers.push({phoneNo: optUserFullPhoneNo, userName: "{Name}"});
+          }
+          break;
         }
       }
-    }
+      
     setOptedinUsers(toBePopulateUsers);
     setSearchedOptedinUsers(toBePopulateUsers);
   };
