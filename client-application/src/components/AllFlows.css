@@ -40,3 +40,22 @@
   position: sticky;
   top: 0;
 }
+
+.flow_main_conatiner_mid_con{
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 30px;
+}
+
+.flow_mid_child_container{
+  padding: 10px 20px;
+  /* border: 1px solid; */
+  height: 60vh;
+  /* width: 10vw; */
+  overflow-y: scroll;
+  box-shadow: 2px 2px 4px 4px #EBECEE;
+}
+.message{
+  flex: 1;
+  margin-left: 20px;
+}

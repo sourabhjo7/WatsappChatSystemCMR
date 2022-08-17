@@ -15,6 +15,7 @@ function AllFlows({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, userNa
 
       await axios.post(`${baseBulkMessagingURL}/getflows`, {managerId: userId}, { validateStatus: false, withCredentials: true }).then((response) => {
         //setting the templates with the response from the API
+        console.log(response.data.flows);
         if(response.data.flows.length > 0){
           setFlows(response.data.flows);
           setSelectedFlow(response.data.flows[0]);
@@ -29,6 +30,23 @@ function AllFlows({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, userNa
           setSelectedFlow(flow);
         }
       }
+    }
+
+    const SelectedFlowCon = () => {
+      return (
+        <div className="flow_main_conatiner_mid_con">
+          <div className="flow_mid_child_container contact">
+            {selectedFlow.contactList.map((contact, index) => {
+              return <p key={"contact" + index}>{contact}</p>
+            })}
+          </div>
+          <div className="flow_mid_child_container message">
+            {selectedFlow.tMessages.map((message, index) => {
+              return <p key={"message" + index}>{message}</p>
+            })}
+          </div>
+        </div>
+      )
     }
 
     useEffect(() => {
@@ -46,13 +64,20 @@ function AllFlows({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, userNa
 
             <div className="flow_populate_container">
               {flows.map((flow, index) => {
-                return <p onClick={chnageSelectedFlow} style={flow.title === selectedFlow.title ? {background: '#97A4FC', color: '#fff'} : {background: '#CDF6E5'}}>{flow.title}</p>
+                return <p key={"flow" + index} onClick={chnageSelectedFlow} style={flow.title === selectedFlow.title ? {background: '#97A4FC', color: '#fff'} : {background: '#CDF6E5'}}>{flow.title}</p>
               })}
             </div>
 
             <div className="flow_main_conatiner">
               <h4 className="flow_main_conatiner_top_con">{selectedFlow.title}</h4>
-              
+
+              {JSON.stringify(selectedFlow) !== '{}' ? (
+                <SelectedFlowCon/>
+              ) : (
+                <></>
+              )}
+
+
             </div>
 
           </div>
