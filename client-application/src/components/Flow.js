@@ -230,6 +230,7 @@ function Flow({
     }),
   }));
 
+
   // adding templates to board section
   const addTemplateToBoard = (templateName) => {
     setBoard((board) => {
@@ -241,7 +242,10 @@ function Flow({
 // when adding we want templateName to be removed from selected area
 setSelectedTemplates((curr) => {
     const ind = curr.indexOf(templateName);
-    curr.splice(ind, 1);
+    if(ind!=-1){
+        curr.splice(ind, 1);
+    }
+    
     console.log(curr);
     return [...curr];
   });
@@ -266,6 +270,7 @@ setSelectedTemplates((curr) => {
       });
 
   }; 
+  const [Events,setEvents] =useState(["Read","Sent","Delivered","Delete"]);
 
 
   return (
@@ -300,6 +305,18 @@ setSelectedTemplates((curr) => {
             <div className="selected-flow-area">
               <div className="Selected-container ">
                 {selectedTemplates.map((temp, index) => {
+                  return (
+                    <DragCards
+                      template={temp}
+                      key={index}
+                      deleteTemplate={deleteTemplate}
+                    />
+                  );
+                })}
+              </div>
+             {/* Events section  */}
+              <div className="Selected-container ">
+                {Events.map((temp, index) => {
                   return (
                     <DragCards
                       template={temp}
