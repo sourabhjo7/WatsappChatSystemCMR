@@ -234,11 +234,12 @@ function Flow({
 
   // adding templates to board section
   const addTemplateToBoard = (templateName) => {
+    
     setBoard((board) => {
-        if(board.indexOf(templateName)==-1){
+        if(board.indexOf(templateName)==-1 || events.includes(templateName)){
             return [...board, templateName]
         }
-        return board;
+       return [...board];
     });
 // when adding we want templateName to be removed from selected area
 setSelectedTemplates((curr) => {
@@ -252,6 +253,7 @@ setSelectedTemplates((curr) => {
   });
 
   };
+
   const deleteBoardTemplate = (e) => {
     setBoard((curr) => {
       const ind = curr.indexOf(e.target.value);
@@ -262,15 +264,19 @@ setSelectedTemplates((curr) => {
       console.log(curr);
       return [...curr];
     });
+  if(!events.includes(e.target.value)){
     // when deleting it should go to  selected template
+  
     setSelectedTemplates((curr) => {
         if (curr.indexOf(e.target.value) == -1) {
           return [...curr, e.target.value];
         }
         return curr;
       });
+    }
 
   };
+
   const [events,setEvents] =useState(["Enqueued", "Failed", "Read","Sent","Delivered","Delete"]);
 
 
