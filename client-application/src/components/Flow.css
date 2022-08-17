@@ -1,22 +1,26 @@
-.cards-container{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    margin-top: 30px;
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  margin-top: 30px;
 }
 
-.Selected-container{
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    width: 20vw;
-    height: 60vh;
-    border-style: solid;
-    margin-bottom: 10vh;
-    overflow-y: scroll;
+.selected-flow-area {
+  display: flex;
+  justify-content: space-between;
 }
-.selected-flow-area{
-    display: flex;
-   justify-content:space-between ;
+
+.Selected-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  width: 20vw;
+  height: 60vh;
+  /* border-style: solid; */
+  background: #fff;
+  box-shadow: 2px 2px 4px 4px #EBECEE;
+  padding: 5px;
+  margin-bottom: 10vh;
+  overflow-y: scroll;
 }

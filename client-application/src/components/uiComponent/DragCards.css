@@ -3,15 +3,17 @@
   margin-bottom: 5px;
   padding: 5px 10px 0px;
   color: #fff;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
+  font-weight: 600;
 }
-.content2{
-display: flex;
-align-items: center ;
-justify-content: space-between;
-padding:5px 10px 10px
+
+.content2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 10px 10px
 }
-.content2 p{
-    margin:0;
-    
+
+.content2 p {
+  margin: 0;
 }

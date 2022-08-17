@@ -196,6 +196,7 @@ function Flow({
   useEffect(() => {
     setSelectedNos([...selNosByCheck, ...selNosByText]);
   }, [selNosByCheck, selNosByText]);
+
   const [board, setBoard] = useState([]);
   const [selectedTemplates, setSelectedTemplates] = useState([]);
   // to select a component
@@ -208,7 +209,7 @@ function Flow({
             return curr;
           });
     }
-    
+
   };
   const deleteTemplate = (e) => {
     setSelectedTemplates((curr) => {
@@ -220,7 +221,7 @@ function Flow({
   };
 
   // dropping funnctionality
-  
+
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "template",
@@ -245,7 +246,7 @@ setSelectedTemplates((curr) => {
     if(ind!=-1){
         curr.splice(ind, 1);
     }
-    
+
     console.log(curr);
     return [...curr];
   });
@@ -255,9 +256,9 @@ setSelectedTemplates((curr) => {
     setBoard((curr) => {
       const ind = curr.indexOf(e.target.value);
       if(ind!=-1){
-        curr.splice(ind, 1);  
+        curr.splice(ind, 1);
       }
-      
+
       console.log(curr);
       return [...curr];
     });
@@ -269,8 +270,8 @@ setSelectedTemplates((curr) => {
         return curr;
       });
 
-  }; 
-  const [Events,setEvents] =useState(["Read","Sent","Delivered","Delete"]);
+  };
+  const [events,setEvents] =useState(["Enqueued", "Failed", "Read","Sent","Delivered","Delete"]);
 
 
   return (
@@ -310,18 +311,20 @@ setSelectedTemplates((curr) => {
                       template={temp}
                       key={index}
                       deleteTemplate={deleteTemplate}
+                      showDel={true}
                     />
                   );
                 })}
               </div>
              {/* Events section  */}
               <div className="Selected-container ">
-                {Events.map((temp, index) => {
+                {events.map((temp, index) => {
                   return (
                     <DragCards
                       template={temp}
                       key={index}
                       deleteTemplate={deleteTemplate}
+                      showDel={false}
                     />
                   );
                 })}
@@ -334,6 +337,7 @@ setSelectedTemplates((curr) => {
                       template={temp}
                       key={index}
                       deleteTemplate={deleteBoardTemplate}
+                      showDel={true}
                     />
                   );
                 })}
