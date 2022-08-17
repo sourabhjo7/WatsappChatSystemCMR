@@ -10,9 +10,15 @@ const {
   allOtpedUsers,
   allAprovedTemplates
 } = require("../helpers/getUsersOrTemplate");
+
 const {
   broadcastMessage
 } = require("../helpers/broadcastMessage");
+
+const {
+  makeUserOptedin
+} = require("../helpers/optinUser");
+
 
 const Customer = require("../model/customer");
 const Template = require("../model/template");
@@ -101,6 +107,7 @@ router.post("/broadcastMessage", async (req, res) => {
 
   for (let phoneNo of toBeBroadcastNo) {
     if (phoneNo !== "") {
+      await makeUserOptedin(phoneNo, managerDel.appName, managerDel.apiKey);
       await broadcastMessage(message, phoneNo, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
     }
   }

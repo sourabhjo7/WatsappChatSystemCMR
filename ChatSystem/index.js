@@ -269,7 +269,7 @@ app.post("/hook", async (req, res) => {
     }
 
     //method for checking if the user is a optin user and if not making it the optin user
-    await otpedinUser(payload.sender.dial_code, payload.sender.phone, managerDel);
+    await otpedinUser(payload.sender.phone, managerDel.appName, managerDel.apiKey);
 
     //Bot Starting
     if (payload.payload.text === "Talk to Agent" || payload.payload.text === "!Agent") {

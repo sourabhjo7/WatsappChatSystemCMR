@@ -2,7 +2,7 @@ const axios = require("axios").default;
 const { URLSearchParams } = require('url');
 
 //checking if the user is already optin with the perticular app
-exports.otpedinUser = async (phone, appName, apiKey) => {
+exports.makeUserOptedin = async (phone, appName, apiKey) => {
 
   const encodedParams = new URLSearchParams();
   encodedParams.set('user', phone);
