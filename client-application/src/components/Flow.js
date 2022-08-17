@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import update from 'immutability-helper'
+import React, { useState, useEffect,useCallback } from "react";
 import axios from "axios";
 import "./Flow.css";
 import Sidebar from "./uiComponent/Sidebar";
@@ -6,6 +7,7 @@ import TopCon from "./uiComponent/TopCon";
 import Card from "./uiComponent/Card";
 import DragCards from "./uiComponent/DragCards";
 import { useDrop } from "react-dnd";
+
 
 function Flow({
   baseBulkMessagingURL,
@@ -197,7 +199,7 @@ function Flow({
     setSelectedNos([...selNosByCheck, ...selNosByText]);
   }, [selNosByCheck, selNosByText]);
 
-  const [board, setBoard] = useState([]);
+  const [board, setBoard] = useState(["Drag and Drop flow elements here"]);
   const [selectedTemplates, setSelectedTemplates] = useState([]);
   // to select a component
   const selectTemplate = (e) => {
@@ -241,6 +243,10 @@ function Flow({
         }
        return [...board];
     });
+    const emptyDiv=" ";
+    if(board.includes(emptyDiv)){
+        board.splice(board.indexOf(emptyDiv,1));
+    }
 // when adding we want templateName to be removed from selected area
 setSelectedTemplates((curr) => {
     const ind = curr.indexOf(templateName);
@@ -278,7 +284,17 @@ setSelectedTemplates((curr) => {
   };
 
   const [events,setEvents] =useState(["Enqueued", "Failed", "Read","Sent","Delivered","Delete"]);
-
+  const moveCard = useCallback((dragIndex, hoverIndex) => {
+    console.log("move Card");
+    setBoard((prevCards) =>
+      update(prevCards, {
+        $splice: [
+          [dragIndex, 1],
+          [hoverIndex, 0, prevCards[dragIndex]]
+        ]
+      })
+    );
+  }, []);
 
   return (
     <div className="rootCon">
@@ -314,10 +330,13 @@ setSelectedTemplates((curr) => {
                 {selectedTemplates.map((temp, index) => {
                   return (
                     <DragCards
-                      template={temp}
                       key={index}
+                      index={index}
+                      id={index}
+                      template={temp}
                       deleteTemplate={deleteTemplate}
                       showDel={true}
+                      moveCard={moveCard}
                     />
                   );
                 })}
@@ -327,10 +346,13 @@ setSelectedTemplates((curr) => {
                 {events.map((temp, index) => {
                   return (
                     <DragCards
-                      template={temp}
-                      key={index}
-                      deleteTemplate={deleteTemplate}
-                      showDel={false}
+                    key={index}
+                    index={index}
+                    id={index}
+                    template={temp}
+                    deleteTemplate={deleteTemplate}
+                    showDel={false}
+                    moveCard={moveCard}
                     />
                   );
                 })}
@@ -340,10 +362,13 @@ setSelectedTemplates((curr) => {
                 {board.map((temp, index) => {
                   return (
                     <DragCards
-                      template={temp}
-                      key={index}
-                      deleteTemplate={deleteBoardTemplate}
-                      showDel={true}
+                    key={index}
+                    index={index}
+                    id={index}
+                    template={temp}
+                    deleteTemplate={deleteBoardTemplate}
+                    showDel={true}
+                    moveCard={moveCard}
                     />
                   );
                 })}
