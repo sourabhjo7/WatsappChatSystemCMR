@@ -196,16 +196,19 @@ function Flow({
   useEffect(() => {
     setSelectedNos([...selNosByCheck, ...selNosByText]);
   }, [selNosByCheck, selNosByText]);
-
+  const [board, setBoard] = useState([]);
   const [selectedTemplates, setSelectedTemplates] = useState([]);
   // to select a component
   const selectTemplate = (e) => {
-    setSelectedTemplates((curr) => {
-      if (curr.indexOf(e.target.value) == -1) {
-        return [...curr, e.target.value];
-      }
-      return curr;
-    });
+    if(board.indexOf(e.target.value)==-1){
+        setSelectedTemplates((curr) => {
+            if (curr.indexOf(e.target.value) == -1) {
+              return [...curr, e.target.value];
+            }
+            return curr;
+          });
+    }
+    
   };
   const deleteTemplate = (e) => {
     setSelectedTemplates((curr) => {
@@ -217,7 +220,7 @@ function Flow({
   };
 
   // dropping funnctionality
-  const [board, setBoard] = useState([]);
+  
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "template",
@@ -226,10 +229,44 @@ function Flow({
       isOver: !!monitor.isOver(),
     }),
   }));
+
+  // adding templates to board section
   const addTemplateToBoard = (templateName) => {
-    setBoard((board) => [...board, templateName]);
+    setBoard((board) => {
+        if(board.indexOf(templateName)==-1){
+            return [...board, templateName]
+        }
+        return board;
+    });
+// when adding we want templateName to be removed from selected area
+setSelectedTemplates((curr) => {
+    const ind = curr.indexOf(templateName);
+    curr.splice(ind, 1);
+    console.log(curr);
+    return [...curr];
+  });
 
   };
+  const deleteBoardTemplate = (e) => {
+    setBoard((curr) => {
+      const ind = curr.indexOf(e.target.value);
+      if(ind!=-1){
+        curr.splice(ind, 1);  
+      }
+      
+      console.log(curr);
+      return [...curr];
+    });
+    // when deleting it should go to  selected template
+    setSelectedTemplates((curr) => {
+        if (curr.indexOf(e.target.value) == -1) {
+          return [...curr, e.target.value];
+        }
+        return curr;
+      });
+
+  }; 
+
 
   return (
     <div className="rootCon">
@@ -279,7 +316,7 @@ function Flow({
                     <DragCards
                       template={temp}
                       key={index}
-                      deleteTemplate={deleteTemplate}
+                      deleteTemplate={deleteBoardTemplate}
                     />
                   );
                 })}
