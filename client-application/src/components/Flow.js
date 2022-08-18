@@ -23,7 +23,6 @@ function Flow({
   const [optedinUsers, setOptedinUsers] = useState([]);
   const [searchedOptedinUsers, setSearchedOptedinUsers] = useState([]);
 
-  const [message, setMessage] = useState("");
   const [newNumbers, setNewNumbers] = useState("");
 
   const [selectedNos, setSelectedNos] = useState([]);
@@ -81,13 +80,11 @@ function Flow({
       for (let user of storedUsers) {
         // console.log(user.userName, optUserFullPhoneNo);
         if (optUserFullPhoneNo === user.userPhoneNo) {
-          console.log("Match:", user.userName, optUserFullPhoneNo);
           toBePopulateUsers.push({
             phoneNo: optUserFullPhoneNo,
             userName: user.userName,
           });
         } else {
-          console.log("Didn't Match:", "{Name}", optUserFullPhoneNo);
           toBePopulateUsers.push({
             phoneNo: optUserFullPhoneNo,
             userName: "{Name}",
@@ -199,17 +196,17 @@ function Flow({
     setSelectedNos([...selNosByCheck, ...selNosByText]);
   }, [selNosByCheck, selNosByText]);
 
-  const [board, setBoard] = useState(["Drag and Drop flow elements here"]);
+  const [board, setBoard] = useState([]);
   const [selectedTemplates, setSelectedTemplates] = useState([]);
   // to select a component
   const selectTemplate = (e) => {
-    if(board.indexOf(e.target.value)==-1){
-        setSelectedTemplates((curr) => {
-            if (curr.indexOf(e.target.value) == -1) {
-              return [...curr, e.target.value];
-            }
-            return curr;
-          });
+    if(board.indexOf(e.target.value) === -1){
+      setSelectedTemplates((curr) => {
+        if (curr.indexOf(e.target.value) === -1) {
+            return [...curr, e.target.value];
+        }
+        return curr;
+      });
     }
 
   };
@@ -223,8 +220,6 @@ function Flow({
   };
 
   // dropping funnctionality
-
-
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "template",
     drop: (item) => addTemplateToBoard(item.templateName),
@@ -236,27 +231,29 @@ function Flow({
 
   // adding templates to board section
   const addTemplateToBoard = (templateName) => {
-    
+
     setBoard((board) => {
-        if(board.indexOf(templateName)==-1 || events.includes(templateName)){
-            return [...board, templateName]
-        }
-       return [...board];
+      if(board.indexOf(templateName) === -1 || events.includes(templateName)){
+          return [...board, templateName]
+      }
+     return [...board];
     });
+
     const emptyDiv=" ";
     if(board.includes(emptyDiv)){
         board.splice(board.indexOf(emptyDiv,1));
     }
-// when adding we want templateName to be removed from selected area
-setSelectedTemplates((curr) => {
-    const ind = curr.indexOf(templateName);
-    if(ind!=-1){
-        curr.splice(ind, 1);
-    }
 
-    console.log(curr);
-    return [...curr];
-  });
+    // when adding we want templateName to be removed from selected area
+    setSelectedTemplates((curr) => {
+      const ind = curr.indexOf(templateName);
+      if(ind!=-1){
+          curr.splice(ind, 1);
+      }
+
+      console.log(curr);
+      return [...curr];
+    });
 
   };
 
@@ -270,10 +267,11 @@ setSelectedTemplates((curr) => {
       console.log(curr);
       return [...curr];
     });
-  if(!events.includes(e.target.value)){
-    // when deleting it should go to  selected template
-  
-    setSelectedTemplates((curr) => {
+
+    if(!events.includes(e.target.value)){
+      // when deleting it should go to  selected template
+
+      setSelectedTemplates((curr) => {
         if (curr.indexOf(e.target.value) == -1) {
           return [...curr, e.target.value];
         }
@@ -284,6 +282,7 @@ setSelectedTemplates((curr) => {
   };
 
   const [events,setEvents] =useState(["Enqueued", "Failed", "Read","Sent","Delivered","Delete"]);
+
   const moveCard = useCallback((dragIndex, hoverIndex) => {
     console.log("move Card");
     setBoard((prevCards) =>

@@ -33,7 +33,7 @@ function Broadcasting({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, us
         setTemplates(response.data.templates);
         if(response.data.templates.length > 0){
           setSelectedTemplate({...response.data.templates[0], example: JSON.parse(response.data.templates[0].meta).example});
-          setMessage(response.data.templates[0].data.split("|")[0]);
+          setMessage(response.data.templates[0].data);
         }
       });
     }
@@ -80,8 +80,6 @@ function Broadcasting({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, us
       newNumbersArr = await newNumbersArr.map((i) => i.replace(" ", ""))
 
       const toBeBroadcastNo = [...selectedNos, ...newNumbersArr];
-
-      console.log(message);
 
       if(toBeBroadcastNo.length > 1){
         axios.post(`${baseBulkMessagingURL}/broadcastMessage`, {message, toBeBroadcastNo, userId}, {validateStatus: false, withCredentials: true}).then((response) => {
@@ -184,7 +182,7 @@ function Broadcasting({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, us
                 <label>Select a Template: </label>
                 <select onChange={(e) => {
                   setSelectedTemplate({...templates[e.target.selectedIndex], example: JSON.parse(templates[e.target.selectedIndex].meta).example});
-                  setMessage(templates[e.target.selectedIndex].data.split("|")[0]);
+                  setMessage(templates[e.target.selectedIndex].data);
                 }}>
                   {templates.map((template, index) => {
                     return (
