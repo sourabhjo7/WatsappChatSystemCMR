@@ -6,9 +6,8 @@ import Sidebar from "./uiComponent/Sidebar";
 import TopCon from "./uiComponent/TopCon";
 import Card from "./uiComponent/Card";
 import DragCards from "./uiComponent/DragCards";
-import { useDrop } from "react-dnd";
-
-
+import DndFlowMap from './uiComponent/DndFlowMap';
+import { ReactFlowProvider } from 'react-flow-renderer';
 function Flow({
   baseBulkMessagingURL,
   baseUserSystemURL,
@@ -219,81 +218,81 @@ function Flow({
     });
   };
 
-  // dropping funnctionality
-  const [{ isOver }, drop] = useDrop(() => ({
-    accept: "template",
-    drop: (item) => addTemplateToBoard(item.templateName),
-    collect: (monitor) => ({
-      isOver: !!monitor.isOver(),
-    }),
-  }));
+//   // dropping funnctionality
+//   const [{ isOver }, drop] = useDrop(() => ({
+//     accept: "template",
+//     drop: (item) => addTemplateToBoard(item.templateName),
+//     collect: (monitor) => ({
+//       isOver: !!monitor.isOver(),
+//     }),
+//   }));
 
 
-  // adding templates to board section
-  const addTemplateToBoard = (templateName) => {
+  // // adding templates to board section
+  // const addTemplateToBoard = (templateName) => {
 
-    setBoard((board) => {
-      if(board.indexOf(templateName) === -1 || events.includes(templateName)){
-          return [...board, templateName]
-      }
-     return [...board];
-    });
+  //   setBoard((board) => {
+  //     if(board.indexOf(templateName) === -1 || events.includes(templateName)){
+  //         return [...board, templateName]
+  //     }
+  //    return [...board];
+  //   });
 
-    const emptyDiv=" ";
-    if(board.includes(emptyDiv)){
-        board.splice(board.indexOf(emptyDiv,1));
-    }
+  //   const emptyDiv=" ";
+  //   if(board.includes(emptyDiv)){
+  //       board.splice(board.indexOf(emptyDiv,1));
+  //   }
 
-    // when adding we want templateName to be removed from selected area
-    setSelectedTemplates((curr) => {
-      const ind = curr.indexOf(templateName);
-      if(ind!=-1){
-          curr.splice(ind, 1);
-      }
+  //   // when adding we want templateName to be removed from selected area
+  //   setSelectedTemplates((curr) => {
+  //     const ind = curr.indexOf(templateName);
+  //     if(ind!=-1){
+  //         curr.splice(ind, 1);
+  //     }
 
-      console.log(curr);
-      return [...curr];
-    });
+  //     console.log(curr);
+  //     return [...curr];
+  //   });
 
-  };
+  // };
 
-  const deleteBoardTemplate = (e) => {
-    setBoard((curr) => {
-      const ind = curr.indexOf(e.target.value);
-      if(ind!=-1){
-        curr.splice(ind, 1);
-      }
+  // const deleteBoardTemplate = (e) => {
+  //   setBoard((curr) => {
+  //     const ind = curr.indexOf(e.target.value);
+  //     if(ind!=-1){
+  //       curr.splice(ind, 1);
+  //     }
 
-      console.log(curr);
-      return [...curr];
-    });
+  //     console.log(curr);
+  //     return [...curr];
+  //   });
 
-    if(!events.includes(e.target.value)){
-      // when deleting it should go to  selected template
+  //   if(!events.includes(e.target.value)){
+  //     // when deleting it should go to  selected template
 
-      setSelectedTemplates((curr) => {
-        if (curr.indexOf(e.target.value) == -1) {
-          return [...curr, e.target.value];
-        }
-        return curr;
-      });
-    }
+  //     setSelectedTemplates((curr) => {
+  //       if (curr.indexOf(e.target.value) == -1) {
+  //         return [...curr, e.target.value];
+  //       }
+  //       return curr;
+  //     });
+  //   }
 
-  };
+  // };
 
   const [events,setEvents] =useState(["Enqueued", "Failed", "Read","Sent","Delivered","Delete"]);
 
-  const moveCard = useCallback((dragIndex, hoverIndex) => {
-    console.log("move Card");
-    setBoard((prevCards) =>
-      update(prevCards, {
-        $splice: [
-          [dragIndex, 1],
-          [hoverIndex, 0, prevCards[dragIndex]]
-        ]
-      })
-    );
-  }, []);
+  // const moveCard = useCallback((dragIndex, hoverIndex) => {
+  //   console.log("move Card");
+  //   setBoard((prevCards) =>
+  //     update(prevCards, {
+  //       $splice: [
+  //         [dragIndex, 1],
+  //         [hoverIndex, 0, prevCards[dragIndex]]
+  //       ]
+  //     })
+  //   );
+  // }, []);
 
   return (
     <div className="rootCon">
@@ -324,40 +323,39 @@ function Flow({
             <h3>Build Flow:</h3>
 
             {/* container for selected templates */}
+            <ReactFlowProvider>
             <div className="selected-flow-area">
               <div className="Selected-container ">
                 {selectedTemplates.map((temp, index) => {
                   return (
                     <DragCards
-                      key={index}
-                      index={index}
-                      id={index}
                       template={temp}
                       deleteTemplate={deleteTemplate}
                       showDel={true}
-                      moveCard={moveCard}
+                      // moveCard={moveCard}
                     />
                   );
                 })}
               </div>
              {/* Events section  */}
-              <div className="Selected-container ">
+              <div className="Selected-container " style={{width:"10vw"}}>
                 {events.map((temp, index) => {
                   return (
                     <DragCards
-                    key={index}
-                    index={index}
-                    id={index}
                     template={temp}
                     deleteTemplate={deleteTemplate}
                     showDel={false}
-                    moveCard={moveCard}
+                    // moveCard={moveCard}
                     />
                   );
                 })}
               </div>
               {/* this is the board where selected templates are droped  */}
-              <div className="Selected-container "ref={drop}>
+             <div className='Dnd-flow-canva'>
+                <DndFlowMap />
+             </div>
+
+              {/* <div className="Selected-container " >
                 {board.map((temp, index) => {
                   return (
                     <DragCards
@@ -371,8 +369,10 @@ function Flow({
                     />
                   );
                 })}
-              </div>
+              </div> */}
             </div>
+            </ReactFlowProvider>
+
           </div>
 
           <div className="InpNoCon">
