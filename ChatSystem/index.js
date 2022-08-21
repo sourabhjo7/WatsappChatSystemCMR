@@ -19,6 +19,7 @@ const PORT = process.env.PORT;
 
 //URL of the chat system
 const baseUserSystemURL = "http://localhost:3002";
+let baseBulkMessagingURL = "http://localhost:3003";
 
 //requiring the database collections
 const Customer = require("./model/customer");
@@ -241,27 +242,42 @@ app.post("/hook", async (req, res) => {
     app: appName
   } = req.body
 
+  let managerDel;
+  await axios.post(`${baseUserSystemURL}/indi_user`, {
+    appName
+  }, {
+    validateStatus: false,
+    withCredentials: true
+  }).then((response) => {
+    if (response.status === 200) {
+      managerDel = response.data.foundUser;
+    }
+  });
+
+  let flow, flowPos;
+  //getting the flow from customer collection
+  const customer = await Customer.findOne({
+    userPhoneNo: payload.destination || payload.source
+  });
+  // console.log(customer.currFlow);
+
+  if(customer){
+    // console.log(customer, customer[`currFlow`]);
+    flowPos = "app_details";
+    await axios.post(`${baseBulkMessagingURL}/getFlow`, {flowID: "630240153bf5ff0b14ec5cfe"}, { validateStatus: false, withCredentials: true }).then((response) => {
+      flow = response.data.foundFlow;
+    });
+  }
+
+  if(flow && flow.tMessageList[flowPos].first){
+    await sendMessage(flow.tMessageList[flowPos].tMessage, payload.destination || payload.source, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
+    flowPos = flow.tMessageList[flowPos]
+  }
+
   //Checking the request is an incoming message form whatsapp
   if (type === 'message') {
 
-    let managerDel;
-    await axios.post(`${baseUserSystemURL}/indi_user`, {
-      appName
-    }, {
-      validateStatus: false,
-      withCredentials: true
-    }).then((response) => {
-      if (response.status === 200) {
-        managerDel = response.data.foundUser;
-      }
-    });
-
-    //storing a new user in the database if already not exist
-    const user = await Customer.findOne({
-      userPhoneNo: payload.source
-    });
-
-    if (!user) {
+    if (!customer) {
       const newCustomer = Customer.create({
         userName: payload.sender.name,
         userPhoneNo: payload.source
@@ -361,12 +377,27 @@ app.post("/hook", async (req, res) => {
         }
 
         //if number already exist
-        await sendMessage(`Template Message placeholder`, payload.source, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
-
+        // if(flow){
+        //   let currMessage = flow.tMessageList[flowPos];
+        //   await sendMessage(currMessage, payload.source, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
+        // }
       }
 
     }
 
+  }else{
+    if(flow){
+      for(let eventObj of flow.tMessageList[flowPos].events){
+        if(eventObj.event === `!${payload.type}`){
+          let currMessage = flow.tMessageList[eventObj.action].tMessage;
+          await sendMessage(currMessage, payload.destination, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
+          flowPos = flow.tMessageList[eventObj.action];
+          break;
+        }else if(eventObj.event === "!end"){
+          
+        }
+      }
+    }
   }
 
   return res.status(200).end();

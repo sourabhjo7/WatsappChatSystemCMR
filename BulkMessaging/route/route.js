@@ -181,40 +181,95 @@ router.post("/updateTempStatus", async (req, res) => {
 // Method  Post
 
 router.post("/createnewflow", async (req, res) => {
-  let {
-    title,
-    tMessages,
-    contactList,
-    triggers,
-    timeDelay,
-    cid,
-  } = req.body; // recieving details of messages contact list and triggers also time delay
+  // let {
+  //   title,
+  //   tMessages,
+  //   contactList,
+  //   triggers,
+  //   timeDelay,
+  //   cid,
+  // } = req.body; // recieving details of messages contact list and triggers also time delay
 
   // time_delay is comming in miliseconds
 
-  const flowData = new Flow({
-    title,
-    tMessages,
-    contactList,
-    triggers,
-    timeDelay,
-    cid
-  });
+  const title = "New Flow",
+    tMessageList = {
+      "app_details": {
+        tMessage: "Choose One: | [Option 1] | [Option 2] | [Option 3]",
+        first: true,
+        events: [{
+          event: "!read",
+          action: "app_order_confirmation"
+        },{
+          event: "Hello",
+          action: "app_otp_code"
+        }]
+      },
+      "app_order_confirmation": {
+        tMessage: "Your Order with id {{1}} is {{2}}.",
+        events: [{
+          event: "!end",
+          action: ""
+        }]
+      },
+      "app_otp_code": {
+        tMessage: "Your OTP for {{1}} is {{2}}.",
+        events: [{
+          event: "!end",
+          action: ""
+        }]
+      }
+    },
+    customerList = ["918949190774"],
+    cid = "62c95ec3ad093aad23fe14f9";
+
+    const flowData = new Flow({
+      title,
+      tMessageList,
+      customerList,
+      cid
+    });
 
 
-  await flowData.save();
+    await flowData.save();
+
+    for(let phNum of customerList){
+      const customer = await Customer.findOne({userPhoneNo: phNum});
+
+      console.log(customer);
+      console.log(customer.currFlow);
+      if(typeof(customer.currFlow) === "undefined"){
+        customer.currFlow = {
+          flowID: flowData._id,
+          currPos: "app_details"
+        }
+        customer.save();
+      }
+
+    }
 
   res.status(200).json({
     data: flowData
   });
 });
 
+router.post("/getFlow", async (req, res) => {
+  try {
+    const {flowID} = req.body;
+    const foundFlow = await Flow.findOne({_id: flowID});
+
+    res.status(200).json({foundFlow});
+  } catch (e) {
+    console.log(e);
+    res.end();
+  }
+})
+
 router.post("/getflows", async (req, res) => {
   try{
     const {managerId} = req.body;
 
     const foundFlows = await Flow.find({cid: managerId});
-
     res.status(200).json({flows: foundFlows});
   }catch(e){
     console.log(e);

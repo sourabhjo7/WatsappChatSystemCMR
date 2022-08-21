@@ -8,6 +8,9 @@ const customerSchema = new mongoose.Schema({
   userPhoneNo: {
     type: String,
     default: null,
+  },
+  currFlow:{
+    type: Object
   }
 });
 
