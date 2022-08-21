@@ -24,7 +24,7 @@ exports.sendMessage = (message, destination, appNumber, appName, apiKey) => {
   };
 
   axios.request(options).then(function (response) {
-    console.log("Message Sent");
+    // console.log("Message Sent");
   }).catch(function (error) {
     console.error(error);
   });
