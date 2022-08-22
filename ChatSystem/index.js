@@ -235,6 +235,7 @@ io.on("connection", (socket) => {
   });
 });
 
+
 app.post("/hook", async (req, res) => {
   const {
     type,
@@ -256,22 +257,22 @@ app.post("/hook", async (req, res) => {
 
   let flow, flowPos;
   //getting the flow from customer collection
-  const customer = await Customer.findOne({
+  let customer = await Customer.findOne({
     userPhoneNo: payload.destination || payload.source
   });
-  // console.log(customer.currFlow);
+  const currFlow = JSON.stringify(customer).split(",")[4];
+  console.log(currFlow);
 
   if(customer){
-    // console.log(customer, customer[`currFlow`]);
-    flowPos = "app_details";
-    await axios.post(`${baseBulkMessagingURL}/getFlow`, {flowID: "630240153bf5ff0b14ec5cfe"}, { validateStatus: false, withCredentials: true }).then((response) => {
+    console.log(customer, customer[`currFlow`]);
+    await axios.post(`${baseBulkMessagingURL}/getFlow`, {flowID: "630295f9346744a455ec99c0"}, { validateStatus: false, withCredentials: true }).then((response) => {
       flow = response.data.foundFlow;
     });
   }
 
-  if(flow && flow.tMessageList[flowPos].first){
+  if(flow && flowPos !== "!end" && talkToAgentList.indexOf(payload.source) === -1){
+    // console.log("flowPos messageList: ", flow.tMessageList[flowPos]);
     await sendMessage(flow.tMessageList[flowPos].tMessage, payload.destination || payload.source, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
-    flowPos = flow.tMessageList[flowPos]
   }
 
   //Checking the request is an incoming message form whatsapp
@@ -369,33 +370,65 @@ app.post("/hook", async (req, res) => {
           });
         }
       }else{
-        //storing number in bot chat if alread didn't exist
-        if(botChats.indexOf(payload.source) === -1){
-          botChats.push(payload.source);
-          await sendMessage(`Hello ${payload.sender.name},\nWelcome to the ChatBot\n\nNOTE:- If you need to talk to an agent anytime in the middle of the chat, just type \"!Agent\",  and we will arrange an agent for you. | [Talk to Agent]`, payload.source, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
-          return res.status(200).end();
+        if(!flow){
+          //storing number in bot chat if alread didn't exist
+          if(botChats.indexOf(payload.source) === -1){
+            botChats.push(payload.source);
+            await sendMessage(`Hello ${payload.sender.name},\nWelcome to the ChatBot\n\nNOTE:- If you need to talk to an agent anytime in the middle of the chat, just type \"!Agent\",  and we will arrange an agent for you. | [Talk to Agent]`, payload.source, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
+            return res.status(200).end();
+          }
+
+          //if number already exist
+          // if(flow){
+          //   let currMessage = flow.tMessageList[flowPos];
+          //   await sendMessage(currMessage, payload.source, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
+          // }
+        }else{
+          if(flowPos !== "!end"){
+            let found = false;
+            for(let eventObj of flow.tMessageList[flowPos].events){
+              if(eventObj.event === `${payload.payload.text}`){
+
+                flowPos = eventObj.action;
+                found = true;
+                break;
+              }else if(eventObj.event === "!end"){
+                flowPos = eventObj.action;
+                found = true;
+                break;
+              }
+            }
+
+            // if(!found){
+            //   await sendMessage(`Bot Ended`, payload.source, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
+            //   flowPos = "!end";
+            // }
+          }
         }
 
-        //if number already exist
-        // if(flow){
-        //   let currMessage = flow.tMessageList[flowPos];
-        //   await sendMessage(currMessage, payload.source, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
-        // }
       }
 
     }
 
   }else{
-    if(flow){
+    if(flow && flowPos !== "!end"){
+      let found = false;
       for(let eventObj of flow.tMessageList[flowPos].events){
         if(eventObj.event === `!${payload.type}`){
-          let currMessage = flow.tMessageList[eventObj.action].tMessage;
-          await sendMessage(currMessage, payload.destination, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
-          flowPos = flow.tMessageList[eventObj.action];
+
+          flowPos = eventObj.action;
+          found = true;
           break;
         }else if(eventObj.event === "!end"){
-          
+          flowPos = eventObj.action;
+          found = true;
+          break;
         }
+      }
+
+      if(!found){
+        await sendMessage(`Bot Ended`, payload.source, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
+        flowPos = "!end";
       }
     }
   }

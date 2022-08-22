@@ -196,27 +196,33 @@ router.post("/createnewflow", async (req, res) => {
     tMessageList = {
       "app_details": {
         tMessage: "Choose One: | [Option 1] | [Option 2] | [Option 3]",
-        first: true,
         events: [{
-          event: "!read",
-          action: "app_order_confirmation"
-        },{
           event: "Hello",
           action: "app_otp_code"
+        },{
+          event: "Hii",
+          action: "app_order_confirmation"
         }]
       },
       "app_order_confirmation": {
         tMessage: "Your Order with id {{1}} is {{2}}.",
         events: [{
-          event: "!end",
-          action: ""
+          event: "test",
+          action: "app_test_code"
         }]
       },
       "app_otp_code": {
         tMessage: "Your OTP for {{1}} is {{2}}.",
         events: [{
           event: "!end",
-          action: ""
+          action: "!end"
+        }]
+      },
+      "app_test_code": {
+        tMessage: "Testing the bot",
+        events: [{
+          event: "!end",
+          action: "!end"
         }]
       }
     },
@@ -237,10 +243,9 @@ router.post("/createnewflow", async (req, res) => {
       const customer = await Customer.findOne({userPhoneNo: phNum});
 
       console.log(customer);
-      console.log(customer.currFlow);
       if(typeof(customer.currFlow) === "undefined"){
         customer.currFlow = {
-          flowID: flowData._id,
+          flowID: flowData._id.toString(),
           currPos: "app_details"
         }
         customer.save();
