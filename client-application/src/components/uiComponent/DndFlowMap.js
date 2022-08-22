@@ -19,7 +19,7 @@ const initialNodes = [];
 let id = 0;
 const getId = () => `dndnode_${id++}`;
 
-function DndFlowMap() {
+function DndFlowMap({SelectedTemplates,setSelectedTemplates,events,setEvents}) {
   const reactFlowWrapper = useRef(null);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
@@ -71,6 +71,16 @@ function DndFlowMap() {
       };
 
       setNodes((nds) => nds.concat(newNode));
+      // if dropped on canva then remove from template
+      setSelectedTemplates((curr)=>{
+        const ind = curr.indexOf(type);
+            if(ind!=-1){
+                curr.splice(ind, 1);
+            }
+      
+            console.log(curr);
+            return [...curr];
+      })
     },
     [reactFlowInstance]
   );

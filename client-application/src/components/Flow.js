@@ -185,7 +185,13 @@ function Flow({
     );
     console.log(data.data);
     setEvents((curr)=>{
-      return [...curr,time_delay]
+      if(format==="min"){
+        return [...curr,` ${time_delay/1000}s`];
+      }
+      else{
+        return [...curr,` ${time_delay/1000}s`]
+      }
+      
     });
   };
 
@@ -382,7 +388,7 @@ function Flow({
               </div>
               {/* this is the board where selected templates are droped  */}
              <div className='Dnd-flow-canva'>
-                <DndFlowMap />
+                <DndFlowMap selectedTemplates={selectedTemplates} setSelectedTemplates={setSelectedTemplates} events={events} setEvents={setEvents}/>
              </div>
 
               {/* <div className="Selected-container " >
