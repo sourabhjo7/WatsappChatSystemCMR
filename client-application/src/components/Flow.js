@@ -184,6 +184,9 @@ function Flow({
       { validateStatus: false, withCredentials: true }
     );
     console.log(data.data);
+    setEvents((curr)=>{
+      return [...curr,time_delay]
+    });
   };
 
   useEffect(() => {
@@ -320,7 +323,34 @@ function Flow({
             </div>
           </div>
           <div>
-            <h3>Build Flow:</h3>
+           <div style={{display:"flex"}}>
+             <h3>Build Flow:</h3>
+             
+             <div>
+            <h3>Time Delay</h3>
+            <input
+              type="number"
+              value={inputTime}
+              onChange={(ele) => {
+                setinputTime(ele.target.value);
+              }}
+            />
+
+            <label for="format">Format</label>
+            <select
+              value={format}
+              onChange={(e) => {
+                setformat(e.target.value);
+              }}
+              name="format"
+              id="format"
+            >
+              <option value="min">minutes</option>
+              <option value="sec"> seconds</option>
+            </select>
+            <input type="submit" onClick={handleSubmit} />
+          </div>
+              </div>
 
             {/* container for selected templates */}
             <ReactFlowProvider>
@@ -460,31 +490,7 @@ function Flow({
             </div>
           </div>
 
-          <div>
-            <h3>Time Delay</h3>
-            <input
-              type="number"
-              value={inputTime}
-              onChange={(ele) => {
-                setinputTime(ele.target.value);
-              }}
-            />
-
-            <label for="format">Format</label>
-            <select
-              value={format}
-              onChange={(e) => {
-                setformat(e.target.value);
-              }}
-              name="format"
-              id="format"
-            >
-              <option value="min">minutes</option>
-              <option value="sec"> seconds</option>
-            </select>
-            <h1>{time_delay}</h1>
-            <input type="submit" onClick={handleSubmit} />
-          </div>
+          
         </div>
       </div>
     </div>
