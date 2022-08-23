@@ -303,6 +303,7 @@ function Flow({
   //   );
   // }, []);
 
+  
   return (
     <div className="rootCon">
       <Sidebar
@@ -388,7 +389,7 @@ function Flow({
               </div>
               {/* this is the board where selected templates are droped  */}
              <div className='Dnd-flow-canva'>
-                <DndFlowMap selectedTemplates={selectedTemplates} setSelectedTemplates={setSelectedTemplates} events={events} setEvents={setEvents}/>
+                <DndFlowMap  templates={templates} setTemplates={setTemplates} selectedTemplates={selectedTemplates} setSelectedTemplates={setSelectedTemplates} events={events} setEvents={setEvents}/>
              </div>
 
               {/* <div className="Selected-container " >
