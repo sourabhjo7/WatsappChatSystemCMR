@@ -257,14 +257,17 @@ app.post("/hook", async (req, res) => {
 
   let flow, flowPos;
   //getting the flow from customer collection
-  let customer = await Customer.findOne({
+  const customer = await Customer.findOne({
     userPhoneNo: payload.destination || payload.source
   });
-  const currFlow = JSON.stringify(customer).split(",")[4];
-  console.log(currFlow);
+  // const currFlow = JSON.stringify(customer).split(",")[4];
+  // console.log(currFlow);
 
   if(customer){
-    console.log(customer, customer[`currFlow`]);
+    // for(const key in customer){
+    //   console.log(key);
+    // }
+    console.log("Customer Error: ", customer, customer.currFlow);
     await axios.post(`${baseBulkMessagingURL}/getFlow`, {flowID: "630295f9346744a455ec99c0"}, { validateStatus: false, withCredentials: true }).then((response) => {
       flow = response.data.foundFlow;
     });

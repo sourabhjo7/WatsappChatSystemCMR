@@ -77,7 +77,7 @@ function DndFlowMap({templates,setTemplates,SelectedTemplates,setSelectedTemplat
             if(ind!=-1){
                 curr.splice(ind, 1);
             }
-      
+
             console.log(curr);
             return [...curr];
       })
@@ -102,12 +102,12 @@ function DndFlowMap({templates,setTemplates,SelectedTemplates,setSelectedTemplat
   }, []);
 
 const FlowDataSubmit=()=>{
-      // lets find the start and end 
+      // lets find the start and end
       const FlowData =[];
   const startNode={},endNodes=[];
-  // for every node check every edge if it is the starting node by checking target of edge 
+  // for every node check every edge if it is the starting node by checking target of edge
  for(let i =0;i<nodes.length;i++){
-    let flag=1;  
+    let flag=1;
   for(let j=0;j<edges.length;j++){
       if(nodes[i].id==edges[j].target ){
         flag=0;
@@ -118,12 +118,12 @@ const FlowDataSubmit=()=>{
       startNode=nodes[i];
       break;
     }
-    
+
  }
 
- // for final destination targets array as multiple targets can be there 
+ // for final destination targets array as multiple targets can be there
  for(let i =0;i<nodes.length;i++){
-  let flag=1;  
+  let flag=1;
 for(let j=0;j<edges.length;j++){
     if(nodes[i].id==edges[j].source){
       flag=0;
@@ -133,11 +133,11 @@ for(let j=0;j<edges.length;j++){
   if(flag){
     endNodes.push(nodes[i]);
   }
-  
+
 }
 const tMessageListobj ={};
 // console.log(startNode,endNodes);
-  const helperObject={};  
+  const helperObject={};
 for(let i=0;i<nodes.length;i++){
       helperObject[nodes.id]=nodes.type;
   }
@@ -149,11 +149,11 @@ for(let i=0;i<nodes.length;i++){
     if( template.elementName == nodes[i].type){
         tMessage=template.data;
         flag=1;
-   }
+    }
    });
     // if node is an template
     if(flag){
-      // check all edges where source is this node 
+      // check all edges where source is this node
       for(let j =0;j<edges.length;j++){
         if(edges[j].source==nodes[i].id){
           let event,action;
@@ -174,17 +174,17 @@ for(let i=0;i<nodes.length;i++){
         }
         const tname=nodes.type;
         FlowData.push({tname:tMessageListobj});
-      } 
-      // if not template then dont do anything 
+      }
+      // if not template then dont do anything
 
     }
-  
+
 
 }
-//---end of function 
-  
-  
-  /* now we have to use nodes and edges to make a different data structure 
+//---end of function
+
+
+  /* now we have to use nodes and edges to make a different data structure
     tMessageList = {
       "app_details": {
         tMessage: "Choose One: | [Option 1] | [Option 2] | [Option 3]",
@@ -207,10 +207,10 @@ for(let i=0;i<nodes.length;i++){
           action: "!end"
         }]
       },
-    
+
     },
 
-  
+
   */
   return (
     <>
