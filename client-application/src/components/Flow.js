@@ -290,7 +290,7 @@ function Flow({
   // };
 
   const [events,setEvents] =useState(["Enqueued", "Failed", "Read","Sent","Delivered","Delete"]);
-
+  const [keyword,setKeyword]=useState("");
   // const moveCard = useCallback((dragIndex, hoverIndex) => {
   //   console.log("move Card");
   //   setBoard((prevCards) =>
@@ -302,7 +302,11 @@ function Flow({
   //     })
   //   );
   // }, []);
-
+  const handleKeyword=(e)=>{
+    setEvents((curr)=>{
+      return [...curr,keyword];
+    })
+  }
   
   return (
     <div className="rootCon">
@@ -334,7 +338,7 @@ function Flow({
              <h3>Build Flow:</h3>
              
              <div>
-            <h3>Time Delay</h3>
+            <span style={{fontSize:"20px",marginLeft:"30px"}}>Time Delay</span>
             <input
               type="number"
               value={inputTime}
@@ -343,7 +347,7 @@ function Flow({
               }}
             />
 
-            <label for="format">Format</label>
+            <label style={{fontSize:"20px"}}for="format">Format</label>
             <select
               value={format}
               onChange={(e) => {
@@ -355,7 +359,12 @@ function Flow({
               <option value="min">minutes</option>
               <option value="sec"> seconds</option>
             </select>
-            <input type="submit" onClick={handleSubmit} />
+            <input type="submit"  onClick={handleSubmit} />
+          </div>
+          <div>
+            <span style={{fontSize:"20px",marginLeft:"30px"}}>Enter Keyword</span>
+            <input type="text" value={keyword} onChange={(e)=> setKeyword(e.target.value)}/>
+            <input type="submit" onClick={handleKeyword} />
           </div>
               </div>
 
@@ -375,7 +384,7 @@ function Flow({
                 })}
               </div>
              {/* Events section  */}
-              <div className="Selected-container " style={{width:"10vw"}}>
+              <div className="Selected-container " style={{width:"20vw"}}>
                 {events.map((temp, index) => {
                   return (
                     <DragCards

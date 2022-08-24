@@ -7,6 +7,9 @@ import ReactFlow, {
   Controls,
   MarkerType,
   updateEdge,
+  MiniMap,
+  applyNodeChanges,
+  onNodesChange
 } from "react-flow-renderer";
 import CustomEdge from "./CustomEdge";
 // const edgeTypes = {
@@ -20,7 +23,7 @@ const getId = () => `dndnode_${id++}`;
 
 function DndFlowMap({templates,setTemplates, SelectedTemplates,setSelectedTemplates,events,setEvents}) {
   const reactFlowWrapper = useRef(null);
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [nodes, setNodes] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
@@ -253,6 +256,10 @@ for(let i=0;i<nodes.length;i++){
 
 
   */
+   const onNodesChange = useCallback(
+      (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
+      [setNodes]
+    );
   return (
     <>
       <div style={{ height: "100%" }} className="dndflow">
@@ -275,7 +282,7 @@ for(let i=0;i<nodes.length;i++){
             onDragOver={onDragOver}
             fitView
           >
-            
+            <MiniMap />
            <Controls />
           </ReactFlow>
           <div className="rmbtn">
