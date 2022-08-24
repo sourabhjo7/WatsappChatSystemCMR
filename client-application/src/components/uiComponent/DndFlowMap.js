@@ -171,7 +171,7 @@ for(let i=0;i<nodes.length;i++){
       for(let j =0;j<edges.length;j++){
         if(edges[j].source==nodes[i].id){
           let event,action;
-            event= helperObject[edges[j].target].toLowerCase();
+            event= `!${helperObject[edges[j].target].toLowerCase()}`;
             for(let k=0;k<edges.length;k++){
               if(edges[k].source==edges[j].target){
                 action= helperObject[edges[k].target];
