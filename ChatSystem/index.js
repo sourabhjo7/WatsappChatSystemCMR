@@ -266,16 +266,11 @@ app.post("/hook", async (req, res) => {
   // console.log(currFlow);
 
   if(customer){
-    // for(const key in customer){
-    //   console.log(key);
-    // }
-    console.log("Customer Error: ", customer, customer.currFlow);
-    await axios.post(`${baseBulkMessagingURL}/getFlow`, {flowID: "63068dd726038886714113d5"}, { validateStatus: false, withCredentials: true }).then((response) => {
+    // console.log("Customer Error: ", customer, customer.currFlow);
+    await axios.post(`${baseBulkMessagingURL}/getFlow`, {flowID: "63067fffde9b767badd7478d"}, { validateStatus: false, withCredentials: true }).then((response) => {
       flow = response.data.foundFlow;
     });
   }
-
-  console.log(flowPos);
 
   if(flow && flowPos.temp !== "!end" && flowPos.show && talkToAgentList.indexOf(payload.source) === -1){
     // console.log("flowPos messageList: ", flow.tMessageList[flowPos]);
@@ -403,6 +398,7 @@ app.post("/hook", async (req, res) => {
                   console.log("Sent");
                   // found = true;
                   // flowPos.show = false;
+                  console.log(flowPos);
                   sendMessage(flow.tMessageList[eventObj.action].tMessage, payload.destination || payload.source, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
                 })
               }
@@ -436,6 +432,19 @@ app.post("/hook", async (req, res) => {
     if(flow && flowPos.temp !== "!end"){
       let found = false;
       for(let eventObj of flow.tMessageList[flowPos.temp].events){
+
+        if(typeof(eventObj.event) === "number"){
+          const favTime = new Date().getTime() + (eventObj.event*1000);
+          const favDate = new Date(favTime);
+
+          schedule.scheduleJob(favDate, () => {
+            console.log("Sent");
+            // found = true;
+            // flowPos.show = false;
+            sendMessage(flow.tMessageList[eventObj.action].tMessage, payload.destination || payload.source, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
+          })
+        }
+
         if(eventObj.event === `!${payload.type}`){
 
           flowPos.temp = eventObj.action;
