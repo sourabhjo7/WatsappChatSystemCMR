@@ -197,8 +197,8 @@ router.post("/createnewflow", async (req, res) => {
       "app_details": {
         tMessage: "Choose One: | [Option 1] | [Option 2] | [Option 3]",
         events: [{
-          event: "Hello",
-          action: "app_otp_code"
+          event: 30,
+          action: "app_schedule_test"
         },{
           event: "Hii",
           action: "app_order_confirmation"
@@ -220,6 +220,30 @@ router.post("/createnewflow", async (req, res) => {
       },
       "app_test_code": {
         tMessage: "Testing the bot",
+        events: [{
+          event: "test2",
+          action: "app_test2_code"
+        },{
+          event: "test3",
+          action: "app_test3_code"
+        }
+      ]
+      },
+      "app_test2_code": {
+        tMessage: "Testing the bot 2",
+        events: [{
+          event: "!end",
+          action: "!end"
+        }]
+      },
+      "app_test3_code": {
+        tMessage: "Testing the bot 3",
+        events: [{
+          event: "!end",
+          action: "!end"
+        }]
+      },"app_schedule_test": {
+        tMessage: "Testing the schedule message of bot",
         events: [{
           event: "!end",
           action: "!end"
@@ -243,7 +267,10 @@ router.post("/createnewflow", async (req, res) => {
       const customer = await Customer.findOneAndUpdate({userPhoneNo: phNum}, {
         currFlow: {
           flowID: flowData._id.toString(),
-          currPos: "app_details"
+          currPos: {
+            temp: "app_details",
+            show: true
+          }
         },
       }, {new: true});
 

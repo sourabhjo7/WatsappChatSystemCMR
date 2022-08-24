@@ -6,6 +6,7 @@ const app = express();
 var bodyParser = require('body-parser') //for reading json from form data
 const http = require("http");
 const cors = require("cors"); //for enabling api requuest from external source
+const schedule = require('node-schedule');
 const {
   Server
 } = require("socket.io"); //framework to use web sockets
@@ -235,6 +236,7 @@ io.on("connection", (socket) => {
   });
 });
 
+let flowPos = {temp: "app_details", show: true};
 
 app.post("/hook", async (req, res) => {
   const {
@@ -255,7 +257,7 @@ app.post("/hook", async (req, res) => {
     }
   });
 
-  let flow, flowPos;
+  let flow;
   //getting the flow from customer collection
   const customer = await Customer.findOne({
     userPhoneNo: payload.destination || payload.source
@@ -268,14 +270,16 @@ app.post("/hook", async (req, res) => {
     //   console.log(key);
     // }
     console.log("Customer Error: ", customer, customer.currFlow);
-    await axios.post(`${baseBulkMessagingURL}/getFlow`, {flowID: "630295f9346744a455ec99c0"}, { validateStatus: false, withCredentials: true }).then((response) => {
+    await axios.post(`${baseBulkMessagingURL}/getFlow`, {flowID: "63068dd726038886714113d5"}, { validateStatus: false, withCredentials: true }).then((response) => {
       flow = response.data.foundFlow;
     });
   }
 
-  if(flow && flowPos !== "!end" && talkToAgentList.indexOf(payload.source) === -1){
+  console.log(flowPos);
+
+  if(flow && flowPos.temp !== "!end" && flowPos.show && talkToAgentList.indexOf(payload.source) === -1){
     // console.log("flowPos messageList: ", flow.tMessageList[flowPos]);
-    await sendMessage(flow.tMessageList[flowPos].tMessage, payload.destination || payload.source, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
+    await sendMessage(flow.tMessageList[flowPos.temp].tMessage, payload.destination || payload.source, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
   }
 
   //Checking the request is an incoming message form whatsapp
@@ -387,25 +391,40 @@ app.post("/hook", async (req, res) => {
           //   await sendMessage(currMessage, payload.source, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
           // }
         }else{
-          if(flowPos !== "!end"){
+          if(flowPos.temp !== "!end"){
             let found = false;
-            for(let eventObj of flow.tMessageList[flowPos].events){
+            for(let eventObj of flow.tMessageList[flowPos.temp].events){
+
+              if(typeof(eventObj.event) === "number"){
+                const favTime = new Date().getTime() + (eventObj.event*1000);
+                const favDate = new Date(favTime);
+
+                schedule.scheduleJob(favDate, () => {
+                  console.log("Sent");
+                  // found = true;
+                  // flowPos.show = false;
+                  sendMessage(flow.tMessageList[eventObj.action].tMessage, payload.destination || payload.source, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
+                })
+              }
+
               if(eventObj.event === `${payload.payload.text}`){
 
-                flowPos = eventObj.action;
+                flowPos.temp = eventObj.action;
                 found = true;
+                flowPos.show = false;
+                await sendMessage(flow.tMessageList[flowPos.temp].tMessage, payload.destination || payload.source, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
                 break;
               }else if(eventObj.event === "!end"){
-                flowPos = eventObj.action;
+                flowPos.temp = eventObj.action;
                 found = true;
+                flowPos.show = false;
                 break;
               }
             }
 
-            // if(!found){
-            //   await sendMessage(`Bot Ended`, payload.source, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
-            //   flowPos = "!end";
-            // }
+            if(!found){
+              flowPos.show = false;
+            }
           }
         }
 
@@ -414,24 +433,26 @@ app.post("/hook", async (req, res) => {
     }
 
   }else{
-    if(flow && flowPos !== "!end"){
+    if(flow && flowPos.temp !== "!end"){
       let found = false;
-      for(let eventObj of flow.tMessageList[flowPos].events){
+      for(let eventObj of flow.tMessageList[flowPos.temp].events){
         if(eventObj.event === `!${payload.type}`){
 
-          flowPos = eventObj.action;
+          flowPos.temp = eventObj.action;
+          flowPos.show = false;
           found = true;
+          await sendMessage(flow.tMessageList[flowPos.temp].tMessage, payload.destination || payload.source, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
           break;
         }else if(eventObj.event === "!end"){
-          flowPos = eventObj.action;
+          flowPos.temp = eventObj.action;
+          flowPos.show = true;
           found = true;
           break;
         }
       }
 
       if(!found){
-        await sendMessage(`Bot Ended`, payload.source, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
-        flowPos = "!end";
+        flowPos.show = false;
       }
     }
   }
