@@ -171,7 +171,14 @@ for(let i=0;i<nodes.length;i++){
       for(let j =0;j<edges.length;j++){
         if(edges[j].source==nodes[i].id){
           let event,action;
-            event= `!${helperObject[edges[j].target].toLowerCase()}`;
+              let e=helperObject[edges[j].target];
+              let str=e.split("");
+              if(Number(str[0])>=0 &&Number(str[0])<=9&& Number(str[str.length-1]) ==NaN ){
+               event= `${helperObject[edges[j].target]}`;  
+              }else{
+              event= `!${helperObject[edges[j].target].toLowerCase()}`;
+              }
+            
             for(let k=0;k<edges.length;k++){
               if(edges[k].source==edges[j].target){
                 action= helperObject[edges[k].target];
