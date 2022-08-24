@@ -1,7 +1,6 @@
 import React, { useCallback, useRef, useState } from "react";
 import "./DndFlowMap";
 import ReactFlow, {
-  ReactFlowProvider,
   addEdge,
   useNodesState,
   useEdgesState,
@@ -103,8 +102,8 @@ function DndFlowMap({templates,setTemplates,SelectedTemplates,setSelectedTemplat
 
 const FlowDataSubmit=()=>{
       // lets find the start and end 
-      const FlowData =[];
-  const startNode={},endNodes=[];
+      let FlowData ={};
+  let  startNode={},endNodes=[];
   // for every node check every edge if it is the starting node by checking target of edge 
  for(let i =0;i<nodes.length;i++){
     let flag=1;  
@@ -135,13 +134,14 @@ for(let j=0;j<edges.length;j++){
   }
   
 }
-const tMessageListobj ={};
-// console.log(startNode,endNodes);
-  const helperObject={};  
+let tMessageListobj ={};
+console.log(startNode);
+  let  helperObject={};  
 for(let i=0;i<nodes.length;i++){
-      helperObject[nodes.id]=nodes.type;
+  // console.log(nodes[i].id);
+      helperObject[nodes[i].id]=nodes[i].type;
   }
-
+// console.log(helperObject);
 for(let i=0;i<nodes.length;i++){
     let tMessage, events=[];
     let flag=0;
@@ -151,13 +151,22 @@ for(let i=0;i<nodes.length;i++){
         flag=1;
    }
    });
-    // if node is an template
-    if(flag){
+   let flagend=0;
+   endNodes.forEach(endNode => {
+    if( endNode.type == nodes[i].type){
+        flagend=1;
+   }
+   });
+   
+   
+
+    // if node is an template and not in last array 
+    if(flag&& !flagend){
       // check all edges where source is this node 
       for(let j =0;j<edges.length;j++){
         if(edges[j].source==nodes[i].id){
           let event,action;
-            event=helperObject[edges[j].target];
+            event= helperObject[edges[j].target].toLowerCase();
             for(let k=0;k<edges.length;k++){
               if(edges[k].source==edges[j].target){
                 action= helperObject[edges[k].target];
@@ -172,13 +181,27 @@ for(let i=0;i<nodes.length;i++){
           tMessage:tMessage,
           events:events
         }
-        const tname=nodes.type;
-        FlowData.push({tname:tMessageListobj});
+        const tname=nodes[i].type;
+        FlowData[`${tname}`]=tMessageListobj;
       } 
+      // IF node is template and also in last array that is ending node 
+      else if(flag&& flagend){
+        let event,action;
+        event="!end";
+        action="!end";
+        events.push({event,action});
+        tMessageListobj={
+          tMessage:tMessage,
+          events:events
+        }
+        const tname=nodes[i].type;
+        FlowData[`${tname}`]=tMessageListobj;
+
+      }
       // if not template then dont do anything 
 
     }
-  
+    console.log(FlowData);
 
 }
 //---end of function 
@@ -234,8 +257,12 @@ for(let i=0;i<nodes.length;i++){
             onDragOver={onDragOver}
             fitView
           >
+            
            <Controls />
           </ReactFlow>
+          <div className="rmbtn">
+              <button  onClick={FlowDataSubmit}> Save</button>
+            </div>
         </div>
       </div>
     </>

@@ -324,7 +324,7 @@ function Flow({
             <div className="cards-container">
               {templates.map((temp, index) => {
                 return (
-                  <Card template={temp} key={index} select={selectTemplate} />
+                  <Card template={temp} select={selectTemplate} />
                 );
               })}
             </div>
