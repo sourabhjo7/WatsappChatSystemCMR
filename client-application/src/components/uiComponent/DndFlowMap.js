@@ -19,7 +19,7 @@ const initialNodes = [];
 let id = 0;
 const getId = () => `dndnode_${id++}`;
 
-function DndFlowMap({templates,setTemplates,SelectedTemplates,setSelectedTemplates,events,setEvents}) {
+function DndFlowMap({templates,setTemplates, SelectedTemplates,setSelectedTemplates,events,setEvents}) {
   const reactFlowWrapper = useRef(null);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
