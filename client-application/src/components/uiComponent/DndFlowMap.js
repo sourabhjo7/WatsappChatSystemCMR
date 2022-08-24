@@ -101,84 +101,88 @@ function DndFlowMap({templates,setTemplates,SelectedTemplates,setSelectedTemplat
     edgeUpdateSuccessful.current = true;
   }, []);
 
-// const FlowDataSubmit=()=>{
-//       // lets find the start and end 
-//   const startNode={},endNodes=[];
-//   // for every node check every edge if it is the starting node by checking target of edge 
-//  for(let i =0;i<nodes.length;i++){
-//     let flag=1;  
-//   for(let j=0;j<edges.length;j++){
-//       if(nodes[i].id==edges[j].target ){
-//         flag=0;
-//         break;
-//       }
-//     }
-//     if(flag){
-//       startNode=nodes[i];
-//       break;
-//     }
+const FlowDataSubmit=()=>{
+      // lets find the start and end 
+      const FlowData =[];
+  const startNode={},endNodes=[];
+  // for every node check every edge if it is the starting node by checking target of edge 
+ for(let i =0;i<nodes.length;i++){
+    let flag=1;  
+  for(let j=0;j<edges.length;j++){
+      if(nodes[i].id==edges[j].target ){
+        flag=0;
+        break;
+      }
+    }
+    if(flag){
+      startNode=nodes[i];
+      break;
+    }
     
-//  }
+ }
 
-//  // for final destination targets array as multiple targets can be there 
-//  for(let i =0;i<nodes.length;i++){
-//   let flag=1;  
-// for(let j=0;j<edges.length;j++){
-//     if(nodes[i].id==edges[j].source){
-//       flag=0;
-//       break;
-//     }
-//   }
-//   if(flag){
-//     endNodes.push(nodes[i]);
-//   }
+ // for final destination targets array as multiple targets can be there 
+ for(let i =0;i<nodes.length;i++){
+  let flag=1;  
+for(let j=0;j<edges.length;j++){
+    if(nodes[i].id==edges[j].source){
+      flag=0;
+      break;
+    }
+  }
+  if(flag){
+    endNodes.push(nodes[i]);
+  }
   
-// }
-// const tMessageList ={};
-// // console.log(startNode,endNodes);
+}
+const tMessageListobj ={};
+// console.log(startNode,endNodes);
+  const helperObject={};  
+for(let i=0;i<nodes.length;i++){
+      helperObject[nodes.id]=nodes.type;
+  }
 
-// let node=startNode;
-// for(let i=0;i<nodes.length;i++){
-//     let tMessage, events=[];
-//     let flag=0;
-//    templates.forEach(template => {
-//     if( template.elementName == nodes[i].type){
-//         tMessage=template.data;
-//         flag=1;
-//    }
-//    });
-//     // if node is an template
-//     if(flag){
-//       // check all edges where source is this node 
-//       for(let j =0;j<edges.length;j++){
-//         if(edges[j].source==nodes[i].id){
-//           let event,action;
-//           for(let x=0;x<nodes.length;x++){
-//             if(nodes[x].id==edges[j].target){
-//               event=nodes[x].type;
-//               break;
-//             }
-//           }
+for(let i=0;i<nodes.length;i++){
+    let tMessage, events=[];
+    let flag=0;
+   templates.forEach(template => {
+    if( template.elementName == nodes[i].type){
+        tMessage=template.data;
+        flag=1;
+   }
+   });
+    // if node is an template
+    if(flag){
+      // check all edges where source is this node 
+      for(let j =0;j<edges.length;j++){
+        if(edges[j].source==nodes[i].id){
+          let event,action;
+            event=helperObject[edges[j].target];
+            for(let k=0;k<edges.length;k++){
+              if(edges[k].source==edges[j].target){
+                action= helperObject[edges[k].target];
+                break;
+              }
+            }
+            events.push({event,action});
 
-//           for(let k=0;k<nodes.length;k++){
-//             if(nodes[k].type==event){
-//               for(let x=0;x<edges.length;x++){
-//                 if(nodes[k].id==edges[x].source){
+          }
+        }
+        tMessageListobj={
+          tMessage:tMessage,
+          events:events
+        }
+        const tname=nodes.type;
+        FlowData.push({tname:tMessageListobj});
+      } 
+      // if not template then dont do anything 
 
-//                 }
-//             }
-//           }
-//           events.push();
-//         }
-//       }
-//     }
+    }
+  
 
-
-// }
-
-// //---end of function 
-//   }
-//-------x---------
+}
+//---end of function 
+  
   
   /* now we have to use nodes and edges to make a different data structure 
     tMessageList = {
