@@ -173,7 +173,7 @@ for(let i=0;i<nodes.length;i++){
           let event,action;
               let e=helperObject[edges[j].target];
               let str=e.split("");
-              if(Number(str[0])>=0 &&Number(str[0])<=9&& Number(str[str.length-1]) ==NaN ){
+              if(Number(str[0])>=0 &&Number(str[0])<=9&& str[str.length-1]=="s" ){
                event= `${helperObject[edges[j].target]}`;  
               }else{
               event= `!${helperObject[edges[j].target].toLowerCase()}`;
