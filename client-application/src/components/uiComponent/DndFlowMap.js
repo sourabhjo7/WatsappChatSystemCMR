@@ -173,8 +173,12 @@ for(let i=0;i<nodes.length;i++){
           let event,action;
               let e=helperObject[edges[j].target];
               let str=e.split("");
-              if(Number(str[0])>=0 &&Number(str[0])<=9&& str[str.length-1]=="s" ){
-               event= `${helperObject[edges[j].target]}`;  
+              let time="";
+              for(let ind=0;ind<str.length-1;ind++){
+                time=time+str[ind];
+              }
+              if(Number(str[0])>=0 &&Number(str[0])<=9){
+               event= Number(time);  
               }else{
               event= `!${helperObject[edges[j].target].toLowerCase()}`;
               }
