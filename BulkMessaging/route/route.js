@@ -240,16 +240,12 @@ router.post("/createnewflow", async (req, res) => {
     await flowData.save();
 
     for(let phNum of customerList){
-      const customer = await Customer.findOne({userPhoneNo: phNum});
-
-      console.log(customer);
-      if(typeof(customer.currFlow) === "undefined"){
-        customer.currFlow = {
+      const customer = await Customer.findOneAndUpdate({userPhoneNo: phNum}, {
+        currFlow: {
           flowID: flowData._id.toString(),
           currPos: "app_details"
-        }
-        customer.save();
-      }
+        },
+      }, {new: true});
 
     }
 
