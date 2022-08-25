@@ -16,15 +16,14 @@ import CustomEdge from "./CustomEdge";
 //   custom: CustomEdge,
 // };
 
-const initialNodes = [];
+
 
 let id = 0;
 const getId = () => `dndnode_${id++}`;
 
-function DndFlowMap({templates,setTemplates, SelectedTemplates,setSelectedTemplates,events,setEvents}) {
+function DndFlowMap({nodes,setNodes,edges,setEdges,onEdgesChange,settemplates,setTemplates, SelectedTemplates,setSelectedTemplates,events,setEvents}) {
   const reactFlowWrapper = useRef(null);
-  const [nodes, setNodes] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+ 
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
   const onConnect = useCallback(
@@ -103,151 +102,7 @@ function DndFlowMap({templates,setTemplates, SelectedTemplates,setSelectedTempla
     edgeUpdateSuccessful.current = true;
   }, []);
 
-const FlowDataSubmit=()=>{
 
-      // lets find the start and end 
-      let FlowData ={};
-  let  startNode={},endNodes=[];
-  // for every node check every edge if it is the starting node by checking target of edge 
-
- for(let i =0;i<nodes.length;i++){
-    let flag=1;
-  for(let j=0;j<edges.length;j++){
-      if(nodes[i].id==edges[j].target ){
-        flag=0;
-        break;
-      }
-    }
-    if(flag){
-      startNode=nodes[i];
-      break;
-    }
-
- }
-
- // for final destination targets array as multiple targets can be there
- for(let i =0;i<nodes.length;i++){
-  let flag=1;
-for(let j=0;j<edges.length;j++){
-    if(nodes[i].id==edges[j].source){
-      flag=0;
-      break;
-    }
-  }
-  if(flag){
-    endNodes.push(nodes[i]);
-  }
-
-}
-
-let tMessageListobj ={};
-console.log(startNode);
-  let  helperObject={};  
-
-for(let i=0;i<nodes.length;i++){
-  // console.log(nodes[i].id);
-      helperObject[nodes[i].id]=nodes[i].type;
-  }
-// console.log(helperObject);
-for(let i=0;i<nodes.length;i++){
-    let tMessage, events=[];
-    let flag=0;
-   templates.forEach(template => {
-    if( template.elementName == nodes[i].type){
-        tMessage=template.data;
-        flag=1;
-    }
-   });
-
-   let flagend=0;
-   endNodes.forEach(endNode => {
-    if( endNode.type == nodes[i].type){
-        flagend=1;
-   }
-   });
-   
-   
-
-    // if node is an template and not in last array 
-    if(flag&& !flagend){
-      // check all edges where source is this node 
-      for(let j =0;j<edges.length;j++){
-        if(edges[j].source==nodes[i].id){
-          let event,action;
-          let flage=0;
-          templates.forEach(template => {
-           if( template.elementName == helperObject[edges[j].target]){
-               flage=1;
-           }
-          });
-          if(!flage){
-           
-            let e=helperObject[edges[j].target];
-            let str=e.split("");
-            let time="";
-            for(let ind=0;ind<str.length-1;ind++){
-              time=time+str[ind];
-            }
-
-            if(Number(str[0])>=0 &&Number(str[0])<=9){
-             event= Number(time);  
-            }else{
-            event= `!${helperObject[edges[j].target].toLowerCase()}`;
-            }
-          }else{
-            event=undefined;
-          }
-            for(let k=0;k<edges.length;k++){
-              if(edges[k].source==edges[j].target){
-                let flagt=0;
-                templates.forEach(template => {
-                 if( template.elementName == helperObject[edges[k].target]){
-                     flagt=1;
-                 }
-                });
-                if(flagt){
-                  action= helperObject[edges[k].target];
-                }else{
-                  action=undefined;
-                }
-                
-                break;
-              }
-            }
-            events.push({event,action});
-
-          }
-        }
-        tMessageListobj={
-          tMessage:tMessage,
-          events:events
-        }
-        const tname=nodes[i].type;
-        FlowData[`${tname}`]=tMessageListobj;
-      } 
-      // IF node is template and also in last array that is ending node 
-      else if(flag&& flagend){
-        let event,action;
-        event="!end";
-        action="!end";
-        events.push({event,action});
-        tMessageListobj={
-          tMessage:tMessage,
-          events:events
-        }
-        const tname=nodes[i].type;
-        FlowData[`${tname}`]=tMessageListobj;
-
-      }
-      // if not template then dont do anything 
-
-    }
-    console.log(FlowData);
-    
-      // if not template then dont do anything
-
-    }
-//---end of function
 
 
   /* now we have to use nodes and edges to make a different data structure
@@ -307,9 +162,6 @@ for(let i=0;i<nodes.length;i++){
             <MiniMap />
            <Controls />
           </ReactFlow>
-          <div className="rmbtn">
-              <button  onClick={FlowDataSubmit}> Save</button>
-            </div>
         </div>
       </div>
     </>

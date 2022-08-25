@@ -1,13 +1,25 @@
-import update from 'immutability-helper'
-import React, { useState, useEffect,useCallback } from "react";
+import update from "immutability-helper";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import "./Flow.css";
 import Sidebar from "./uiComponent/Sidebar";
 import TopCon from "./uiComponent/TopCon";
 import Card from "./uiComponent/Card";
 import DragCards from "./uiComponent/DragCards";
-import DndFlowMap from './uiComponent/DndFlowMap';
-import { ReactFlowProvider } from 'react-flow-renderer';
+import DndFlowMap from "./uiComponent/DndFlowMap";
+import { ReactFlowProvider } from "react-flow-renderer";
+import ReactFlow, {
+  addEdge,
+  useNodesState,
+  useEdgesState,
+  Controls,
+  MarkerType,
+  updateEdge,
+  MiniMap,
+  applyNodeChanges,
+  onNodesChange,
+} from "react-flow-renderer";
+
 function Flow({
   baseBulkMessagingURL,
   baseUserSystemURL,
@@ -32,6 +44,10 @@ function Flow({
   const [inputTime, setinputTime] = useState(0);
   const [time_delay, setTime_delay] = useState(0);
   const [format, setformat] = useState("min");
+  const initialNodes = [];
+  const [nodes, setNodes] = useNodesState(initialNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const [flowtitle,setFlowTitle]=useState("");
 
   //getting all the approved templates
   const getTemplates = async () => {
@@ -184,14 +200,12 @@ function Flow({
       { validateStatus: false, withCredentials: true }
     );
     console.log(data.data);
-    setEvents((curr)=>{
-      if(format==="min"){
-        return [...curr,` ${time_delay/1000}s`];
+    setEvents((curr) => {
+      if (format === "min") {
+        return [...curr, ` ${time_delay / 1000}s`];
+      } else {
+        return [...curr, ` ${time_delay / 1000}s`];
       }
-      else{
-        return [...curr,` ${time_delay/1000}s`]
-      }
-      
     });
   };
 
@@ -208,15 +222,14 @@ function Flow({
   const [selectedTemplates, setSelectedTemplates] = useState([]);
   // to select a component
   const selectTemplate = (e) => {
-    if(board.indexOf(e.target.value) === -1){
+    if (board.indexOf(e.target.value) === -1) {
       setSelectedTemplates((curr) => {
         if (curr.indexOf(e.target.value) === -1) {
-            return [...curr, e.target.value];
+          return [...curr, e.target.value];
         }
         return curr;
       });
     }
-
   };
   const deleteTemplate = (e) => {
     setSelectedTemplates((curr) => {
@@ -227,15 +240,14 @@ function Flow({
     });
   };
 
-//   // dropping funnctionality
-//   const [{ isOver }, drop] = useDrop(() => ({
-//     accept: "template",
-//     drop: (item) => addTemplateToBoard(item.templateName),
-//     collect: (monitor) => ({
-//       isOver: !!monitor.isOver(),
-//     }),
-//   }));
-
+  //   // dropping funnctionality
+  //   const [{ isOver }, drop] = useDrop(() => ({
+  //     accept: "template",
+  //     drop: (item) => addTemplateToBoard(item.templateName),
+  //     collect: (monitor) => ({
+  //       isOver: !!monitor.isOver(),
+  //     }),
+  //   }));
 
   // // adding templates to board section
   // const addTemplateToBoard = (templateName) => {
@@ -289,8 +301,15 @@ function Flow({
 
   // };
 
-  const [events,setEvents] =useState(["Enqueued", "Failed", "Read","Sent","Delivered","Delete"]);
-  const [keyword,setKeyword]=useState("");
+  const [events, setEvents] = useState([
+    "Enqueued",
+    "Failed",
+    "Read",
+    "Sent",
+    "Delivered",
+    "Delete",
+  ]);
+  const [keyword, setKeyword] = useState("");
   // const moveCard = useCallback((dragIndex, hoverIndex) => {
   //   console.log("move Card");
   //   setBoard((prevCards) =>
@@ -302,12 +321,169 @@ function Flow({
   //     })
   //   );
   // }, []);
-  const handleKeyword=(e)=>{
-    setEvents((curr)=>{
-      return [...curr,keyword];
-    })
+  const handleKeyword = (e) => {
+    setEvents((curr) => {
+      return [...curr, keyword];
+    });
+  };
+
+  // dnd components
+let startNode = {}
+  const FlowDataSubmit = () => {
+    // lets find the start and end
+    let FlowData = {};
+    let endNodes = [];
+    // for every node check every edge if it is the starting node by checking target of edge
+
+    for (let i = 0; i < nodes.length; i++) {
+      let flag = 1;
+      for (let j = 0; j < edges.length; j++) {
+        if (nodes[i].id == edges[j].target) {
+          flag = 0;
+          break;
+        }
+      }
+      if (flag) {
+        startNode = nodes[i];
+        break;
+      }
+    }
+
+    // for final destination targets array as multiple targets can be there
+    for (let i = 0; i < nodes.length; i++) {
+      let flag = 1;
+      for (let j = 0; j < edges.length; j++) {
+        if (nodes[i].id == edges[j].source) {
+          flag = 0;
+          break;
+        }
+      }
+      if (flag) {
+        endNodes.push(nodes[i]);
+      }
+    }
+
+    let tMessageListobj = {};
+    console.log(startNode);
+    let helperObject = {};
+
+    for (let i = 0; i < nodes.length; i++) {
+      // console.log(nodes[i].id);
+      helperObject[nodes[i].id] = nodes[i].type;
+    }
+    // console.log(helperObject);
+    for (let i = 0; i < nodes.length; i++) {
+      let tMessage,
+        events = [];
+      let flag = 0;
+      templates.forEach((template) => {
+        if (template.elementName == nodes[i].type) {
+          tMessage = template.data;
+          flag = 1;
+        }
+      });
+
+      let flagend = 0;
+      endNodes.forEach((endNode) => {
+        if (endNode.type == nodes[i].type) {
+          flagend = 1;
+        }
+      });
+
+      // if node is an template and not in last array
+      if (flag && !flagend) {
+        // check all edges where source is this node
+        for (let j = 0; j < edges.length; j++) {
+          if (edges[j].source == nodes[i].id) {
+            let event, action;
+            let flage = 0;
+            templates.forEach((template) => {
+              if (template.elementName == helperObject[edges[j].target]) {
+                flage = 1;
+              }
+            });
+            if (!flage) {
+              let e = helperObject[edges[j].target];
+              let str = e.split("");
+              let time = "";
+              for (let ind = 0; ind < str.length - 1; ind++) {
+                time = time + str[ind];
+              }
+
+              if (Number(str[0]) >= 0 && Number(str[0]) <= 9) {
+                event = Number(time);
+              } else {
+                event = `!${helperObject[edges[j].target].toLowerCase()}`;
+              }
+            } else {
+              event = undefined;
+            }
+            for (let k = 0; k < edges.length; k++) {
+              if (edges[k].source == edges[j].target) {
+                let flagt = 0;
+                templates.forEach((template) => {
+                  if (template.elementName == helperObject[edges[k].target]) {
+                    flagt = 1;
+                  }
+                });
+                if (flagt) {
+                  action = helperObject[edges[k].target];
+                } else {
+                  action = undefined;
+                }
+
+                break;
+              }
+            }
+            events.push({ event, action });
+          }
+        }
+        tMessageListobj = {
+          tMessage: tMessage,
+          events: events,
+        };
+        const tname = nodes[i].type;
+        FlowData[`${tname}`] = tMessageListobj;
+      }
+      // IF node is template and also in last array that is ending node
+      else if (flag && flagend) {
+        let event, action;
+        event = "!end";
+        action = "!end";
+        events.push({ event, action });
+        tMessageListobj = {
+          tMessage: tMessage,
+          events: events,
+        };
+        const tname = nodes[i].type;
+        FlowData[`${tname}`] = tMessageListobj;
+      }
+      // if not template then dont do anything
+    }
+    return FlowData;
+
+    // if not template then dont do anything
+  };
+  //---end of function
+// Final Submit Function for data of Flow 
+const FinalSubmit=async()=>{
+  const data={
+    title:flowtitle,
+    tMessageList:FlowDataSubmit(),
+    contactList:selectedNos,
+    cid:userId,
+    startNode:startNode.data.label
   }
-  
+  console.log(data);
+  try{
+    var response = axios.post(`${baseBulkMessagingURL}/createnewflow`,data,{validateStatus:true,withCredentials:true});
+  }
+  catch(e){
+    console.log(e);
+  }
+  console.log(response);
+}
+
   return (
     <div className="rootCon">
       <Sidebar
@@ -327,81 +503,109 @@ function Flow({
             {/* card component   */}
             <div className="cards-container">
               {templates.map((temp, index) => {
-                return (
-                  <Card template={temp} select={selectTemplate} />
-                );
+                return <Card template={temp} select={selectTemplate} />;
               })}
             </div>
           </div>
           <div>
-           <div style={{display:"flex"}}>
-             <h3>Build Flow:</h3>
-             
-             <div>
-            <span style={{fontSize:"20px",marginLeft:"30px"}}>Time Delay</span>
-            <input
-              type="number"
-              value={inputTime}
-              onChange={(ele) => {
-                setinputTime(ele.target.value);
-              }}
-            />
-
-            <label style={{fontSize:"20px"}}for="format">Format</label>
-            <select
-              value={format}
-              onChange={(e) => {
-                setformat(e.target.value);
-              }}
-              name="format"
-              id="format"
-            >
-              <option value="min">minutes</option>
-              <option value="sec"> seconds</option>
-            </select>
-            <input type="submit"  onClick={handleSubmit} />
-          </div>
-          <div>
-            <span style={{fontSize:"20px",marginLeft:"30px"}}>Enter Keyword</span>
-            <input type="text" value={keyword} onChange={(e)=> setKeyword(e.target.value)}/>
-            <input type="submit" onClick={handleKeyword} />
-          </div>
+            <div style={{ display: "flex" }}>
+              <h3>Build Flow:</h3>
+              <div>
+                <span style={{ fontSize: "20px", marginLeft: "30px" }}>
+                  Enter Flow Title:
+                </span>
+                <input
+                  type="text"
+                  value={flowtitle}
+                  onChange={(e) => setFlowTitle(e.target.value)}
+                />
               </div>
+              <div>
+                <span style={{ fontSize: "20px", marginLeft: "30px" }}>
+                  Time Delay:
+                </span>
+                <input
+                  type="number"
+                  value={inputTime}
+                  onChange={(ele) => {
+                    setinputTime(ele.target.value);
+                  }}
+                />
+
+                <label style={{ fontSize: "20px" }} for="format">
+                  Format
+                </label>
+                <select
+                  value={format}
+                  onChange={(e) => {
+                    setformat(e.target.value);
+                  }}
+                  name="format"
+                  id="format"
+                >
+                  <option value="min">minutes</option>
+                  <option value="sec"> seconds</option>
+                </select>
+                <input type="submit" onClick={handleSubmit} />
+              </div>
+              <div>
+                <span style={{ fontSize: "20px", marginLeft: "30px" }}>
+                  Enter Keyword:
+                </span>
+                <input
+                  type="text"
+                  value={keyword}
+                  onChange={(e) => setKeyword(e.target.value)}
+                />
+                <input type="submit" onClick={handleKeyword} />
+              </div>
+            </div>
 
             {/* container for selected templates */}
-            <ReactFlowProvider>
-            <div className="selected-flow-area">
-              <div className="Selected-container ">
-                {selectedTemplates.map((temp, index) => {
-                  return (
-                    <DragCards
-                      template={temp}
-                      deleteTemplate={deleteTemplate}
-                      showDel={true}
-                      // moveCard={moveCard}
-                    />
-                  );
-                })}
-              </div>
-             {/* Events section  */}
-              <div className="Selected-container " style={{width:"20vw"}}>
-                {events.map((temp, index) => {
-                  return (
-                    <DragCards
-                    template={temp}
-                    deleteTemplate={deleteTemplate}
-                    showDel={false}
-                    // moveCard={moveCard}
-                    />
-                  );
-                })}
-              </div>
-              {/* this is the board where selected templates are droped  */}
-             <div className='Dnd-flow-canva'>
-                <DndFlowMap  templates={templates} setTemplates={setTemplates} selectedTemplates={selectedTemplates} setSelectedTemplates={setSelectedTemplates} events={events} setEvents={setEvents}/>
-             </div>
+                <div className="selected-flow-area">
+                <div className="Selected-container ">
+                  {selectedTemplates.map((temp, index) => {
+                    return (
+                      <DragCards
+                        template={temp}
+                        deleteTemplate={deleteTemplate}
+                        showDel={true}
+                        // moveCard={moveCard}
+                      />
+                    );
+                  })}
+                </div>
+                {/* Events section  */}
+                <div className="Selected-container " style={{ width: "20vw" }}>
+                  {events.map((temp, index) => {
+                    return (
+                      <DragCards
+                        template={temp}
+                        deleteTemplate={deleteTemplate}
+                        showDel={false}
+                        // moveCard={moveCard}
+                      />
+                    );
+                  })}
+                </div>
+                {/* this is the board where selected templates are droped  */}
+                <div className="Dnd-flow-canva">
+                  <DndFlowMap
+                    nodes={nodes}
+                    setNodes={setNodes}
+                    edges={edges}
+                    setEdges={setEdges}
+                    onEdgesChange={onEdgesChange}
+                    templates={templates}
+                    setTemplates={setTemplates}
+                    selectedTemplates={selectedTemplates}
+                    setSelectedTemplates={setSelectedTemplates}
+                    events={events}
+                    setEvents={setEvents}
+                  />
+                </div>
 
-              {/* <div className="Selected-container " >
+                {/* <div className="Selected-container " >
                 {board.map((temp, index) => {
                   return (
                     <DragCards
@@ -416,9 +620,7 @@ function Flow({
                   );
                 })}
               </div> */}
-            </div>
-            </ReactFlowProvider>
-
+              </div>
           </div>
 
           <div className="InpNoCon">
@@ -505,8 +707,9 @@ function Flow({
               </div>
             </div>
           </div>
-
-          
+          <div className="brdBtnCon">
+                <button className="joinbtn brdCsBtn" onClick={FinalSubmit}>Submit</button>
+              </div>
         </div>
       </div>
     </div>

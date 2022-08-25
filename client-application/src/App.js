@@ -35,6 +35,7 @@ import AlertBox from "./components/uiComponent/AlertBox";
 import ManagerChat from "./components/chatComponents/ManagerChat";
 
 import ManagerProfile from "./components/ManagerProfile";
+import { ReactFlowProvider } from 'react-flow-renderer';
 
 //Importing as lazy so that socket only runs when user is agent or manager
 const ChatPage = React.lazy(() => import('./components/chatComponents/ChatPage'));
@@ -249,7 +250,8 @@ function App() {
             {/* // flow route for manager to start flow  */}
               <Route path="/flow" element={
               userData.role === "Manager" ? (//Only Managers have Access to Flow Page
-                <Flow
+                <ReactFlowProvider>
+                  <Flow
                   baseBulkMessagingURL={baseBulkMessagingURL}
                   baseUserSystemURL={baseUserSystemURL}
                   getRole="managers"
@@ -258,6 +260,7 @@ function App() {
                   userName={userData.name}
                   noOfRequestedChats={noOfRequestedChats}
                 />
+                </ReactFlowProvider>
               ) : (
                 <h1>Access Denied!!</h1>
               )
