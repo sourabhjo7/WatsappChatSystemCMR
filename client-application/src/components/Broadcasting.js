@@ -41,7 +41,6 @@ function Broadcasting({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, us
     const getOptedinUsers = async () => {
 
       let optedinUsers, storedUsers, toBePopulateUsers = [];
-      console.log(toBePopulateUsers);
       await axios.post(`${baseBulkMessagingURL}/optedinUsers`, {userId}, { validateStatus: false, withCredentials: true }).then((response) => {
         //setting the optedinUsers with the response from the API
         optedinUsers = response.data.users;
@@ -56,14 +55,17 @@ function Broadcasting({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, us
       for(let optUser of optedinUsers){
         const optUserFullPhoneNo = optUser.countryCode + optUser.phoneCode;
 
+        let found = false;
         for(let user of storedUsers){
           // console.log(user.userName, optUserFullPhoneNo);
           if(optUserFullPhoneNo === user.userPhoneNo){
             toBePopulateUsers.push({phoneNo: optUserFullPhoneNo, userName: user.userName});
-          }else{
-            toBePopulateUsers.push({phoneNo: optUserFullPhoneNo, userName: "{Name}"});
+            found = true;
+            break;
           }
-          break;
+        }
+        if(!found){
+          toBePopulateUsers.push({phoneNo: optUserFullPhoneNo, userName: "{Name}"});
         }
       }
 

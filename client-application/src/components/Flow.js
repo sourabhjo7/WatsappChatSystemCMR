@@ -64,53 +64,39 @@ function Flow({
   };
 
   const getOptedinUsers = async () => {
-    let optedinUsers,
-      storedUsers,
-      toBePopulateUsers = [];
-    await axios
-      .post(
-        `${baseBulkMessagingURL}/optedinUsers`,
-        { userId },
-        { validateStatus: false, withCredentials: true }
-      )
-      .then((response) => {
-        //setting the optedinUsers with the response from the API
-        optedinUsers = response.data.users;
-      });
 
-    await axios
-      .get(`${baseBulkMessagingURL}/storedCustomers`, {
-        validateStatus: false,
-        withCredentials: true,
-      })
-      .then((response) => {
-        //getting the stored users from the response from the API
-        storedUsers = response.data.users;
-      });
-
-    //gettig name of the customers from the stored users
-    for (let optUser of optedinUsers) {
-      const optUserFullPhoneNo = optUser.countryCode + optUser.phoneCode;
-
-      for (let user of storedUsers) {
-        // console.log(user.userName, optUserFullPhoneNo);
-        if (optUserFullPhoneNo === user.userPhoneNo) {
-          toBePopulateUsers.push({
-            phoneNo: optUserFullPhoneNo,
-            userName: user.userName,
+    let optedinUsers, storedUsers, toBePopulateUsers = [];
+    await axios.post(`${baseBulkMessagingURL}/optedinUsers`, {userId}, { validateStatus: false, withCredentials: true }).then((response) => {
+            //setting the optedinUsers with the response from the API
+            optedinUsers = response.data.users;
           });
-        } else {
-          toBePopulateUsers.push({
-            phoneNo: optUserFullPhoneNo,
-            userName: "{Name}",
-          });
-        }
-        break;
-      }
-    }
 
-    setOptedinUsers(toBePopulateUsers);
-    setSearchedOptedinUsers(toBePopulateUsers);
+          await axios.get(`${baseBulkMessagingURL}/storedCustomers`, { validateStatus: false, withCredentials: true }).then((response) => {
+            //getting the stored users from the response from the API
+            storedUsers = response.data.users;
+          });
+
+          //gettig name of the customers from the stored users
+          for(let optUser of optedinUsers){
+            const optUserFullPhoneNo = optUser.countryCode + optUser.phoneCode;
+
+            let found = false;
+            for(let user of storedUsers){
+              // console.log(user.userName, optUserFullPhoneNo);
+              if(optUserFullPhoneNo === user.userPhoneNo){
+                toBePopulateUsers.push({phoneNo: optUserFullPhoneNo, userName: user.userName});
+                found = true;
+                break;
+              }
+            }
+            if(!found){
+              toBePopulateUsers.push({phoneNo: optUserFullPhoneNo, userName: "{Name}"});
+            }
+          }
+
+
+          setOptedinUsers(toBePopulateUsers);
+          setSearchedOptedinUsers(toBePopulateUsers);
   };
 
   //searching functionality
@@ -419,7 +405,7 @@ let startNode = {}
                     flagk = 1;
                   }
                 });
-                
+
                 if(flagk){
                   event = `!${helperObject[edges[j].target].toLowerCase()}`;
                 }
