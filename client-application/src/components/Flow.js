@@ -199,7 +199,7 @@ function Flow({
     //   dummyData,
     //   { validateStatus: false, withCredentials: true }
     // );
-    console.log(data.data);
+    // console.log(data.data);
     setEvents((curr) => {
       if (format === "min") {
         return [...curr, ` ${time_delay / 1000}s`];
@@ -465,7 +465,7 @@ let startNode = {}
     // if not template then dont do anything
   };
   //---end of function
-// Final Submit Function for data of Flow 
+// Final Submit Function for data of Flow
 const FinalSubmit=async()=>{
   const data={
     title:flowtitle,

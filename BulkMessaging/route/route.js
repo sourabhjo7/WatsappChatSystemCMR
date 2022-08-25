@@ -189,7 +189,7 @@ router.post("/createnewflow", async (req, res) => {
     startNode
   } = req.body; // recieving details of messages contact list and triggers also time delay
 
-
+    console.log(contactList);
 
   // time_delay is comming in seconds
 
@@ -264,7 +264,7 @@ router.post("/createnewflow", async (req, res) => {
 
     await flowData.save();
 
-    for(let phNum of customerList){
+    for(let phNum of contactList){
       const customer = await Customer.findOneAndUpdate({userPhoneNo: phNum}, {
         currFlow: {
           flowID: flowData._id.toString(),
@@ -276,7 +276,7 @@ router.post("/createnewflow", async (req, res) => {
       }, {new: true});
 
     }
-
+    console.log(flowData);
   res.status(200).json({
     data: flowData
   });

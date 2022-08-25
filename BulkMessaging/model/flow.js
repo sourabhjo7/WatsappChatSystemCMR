@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const flowSchema = new mongoose.Schema({
   title: String,
   tMessageList: Object,
-  customerList: [String],
+  contactList: [String],
   cid:  String
 });
 
