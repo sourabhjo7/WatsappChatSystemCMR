@@ -476,12 +476,12 @@ const FinalSubmit=async()=>{
   }
   console.log(data);
   try{
-    var response = axios.post(`${baseBulkMessagingURL}/createnewflow`,data,{validateStatus:true,withCredentials:true});
+    var response = axios.post(`${baseBulkMessagingURL}/createnewflow`,data,{ validateStatus: false, withCredentials: true });
   }
   catch(e){
     console.log(e);
   }
-  console.log(response);
+  console.log(response.data);
 }
 
   return (
