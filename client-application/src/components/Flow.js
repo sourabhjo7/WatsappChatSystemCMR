@@ -47,7 +47,7 @@ function Flow({
   const initialNodes = [];
   const [nodes, setNodes] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-  const [flowtitle,setFlowTitle]=useState("");
+  const [flowtitle, setFlowTitle] = useState("");
 
   //getting all the approved templates
   const getTemplates = async () => {
@@ -64,39 +64,56 @@ function Flow({
   };
 
   const getOptedinUsers = async () => {
+    let optedinUsers,
+      storedUsers,
+      toBePopulateUsers = [];
+    await axios
+      .post(
+        `${baseBulkMessagingURL}/optedinUsers`,
+        { userId },
+        { validateStatus: false, withCredentials: true }
+      )
+      .then((response) => {
+        //setting the optedinUsers with the response from the API
+        optedinUsers = response.data.users;
+      });
 
-    let optedinUsers, storedUsers, toBePopulateUsers = [];
-    await axios.post(`${baseBulkMessagingURL}/optedinUsers`, {userId}, { validateStatus: false, withCredentials: true }).then((response) => {
-            //setting the optedinUsers with the response from the API
-            optedinUsers = response.data.users;
+    await axios
+      .get(`${baseBulkMessagingURL}/storedCustomers`, {
+        validateStatus: false,
+        withCredentials: true,
+      })
+      .then((response) => {
+        //getting the stored users from the response from the API
+        storedUsers = response.data.users;
+      });
+
+    //gettig name of the customers from the stored users
+    for (let optUser of optedinUsers) {
+      const optUserFullPhoneNo = optUser.countryCode + optUser.phoneCode;
+
+      let found = false;
+      for (let user of storedUsers) {
+        // console.log(user.userName, optUserFullPhoneNo);
+        if (optUserFullPhoneNo === user.userPhoneNo) {
+          toBePopulateUsers.push({
+            phoneNo: optUserFullPhoneNo,
+            userName: user.userName,
           });
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        toBePopulateUsers.push({
+          phoneNo: optUserFullPhoneNo,
+          userName: "{Name}",
+        });
+      }
+    }
 
-          await axios.get(`${baseBulkMessagingURL}/storedCustomers`, { validateStatus: false, withCredentials: true }).then((response) => {
-            //getting the stored users from the response from the API
-            storedUsers = response.data.users;
-          });
-
-          //gettig name of the customers from the stored users
-          for(let optUser of optedinUsers){
-            const optUserFullPhoneNo = optUser.countryCode + optUser.phoneCode;
-
-            let found = false;
-            for(let user of storedUsers){
-              // console.log(user.userName, optUserFullPhoneNo);
-              if(optUserFullPhoneNo === user.userPhoneNo){
-                toBePopulateUsers.push({phoneNo: optUserFullPhoneNo, userName: user.userName});
-                found = true;
-                break;
-              }
-            }
-            if(!found){
-              toBePopulateUsers.push({phoneNo: optUserFullPhoneNo, userName: "{Name}"});
-            }
-          }
-
-
-          setOptedinUsers(toBePopulateUsers);
-          setSearchedOptedinUsers(toBePopulateUsers);
+    setOptedinUsers(toBePopulateUsers);
+    setSearchedOptedinUsers(toBePopulateUsers);
   };
 
   //searching functionality
@@ -296,6 +313,7 @@ function Flow({
     "Delete",
   ]);
   const [keyword, setKeyword] = useState("");
+  const [keywordList,setKeywordList]=useState([]);
   // const moveCard = useCallback((dragIndex, hoverIndex) => {
   //   console.log("move Card");
   //   setBoard((prevCards) =>
@@ -311,10 +329,14 @@ function Flow({
     setEvents((curr) => {
       return [...curr, keyword];
     });
+    setKeywordList((curr)=>{
+      return [...curr,keyword];
+    })
+
   };
 
   // dnd components
-let startNode = {}
+  let startNode = {};
   const FlowDataSubmit = () => {
     // lets find the start and end
     let FlowData = {};
@@ -400,17 +422,16 @@ let startNode = {}
                 event = Number(time);
               } else {
                 let flagk = 0;
-                events.forEach((event) => {
-                  if (event == helperObject[edges[j].target]) {
+                keywordList.forEach((keyword) => {
+                  if (keyword == helperObject[edges[j].target]) {
                     flagk = 1;
                   }
                 });
 
-                if(flagk){
-                  event = `!${helperObject[edges[j].target].toLowerCase()}`;
-                }
-                else{
+                if (flagk) {
                   event = `${helperObject[edges[j].target].toLowerCase()}`;
+                } else {
+                  event = `!${helperObject[edges[j].target].toLowerCase()}`;
                 }
               }
             } else {
@@ -463,24 +484,26 @@ let startNode = {}
     // if not template then dont do anything
   };
   //---end of function
-// Final Submit Function for data of Flow
-const FinalSubmit=async()=>{
-  const data={
-    title:flowtitle,
-    tMessageList:FlowDataSubmit(),
-    contactList:selectedNos,
-    cid:userId,
-    startNode:startNode.data.label
-  }
-  console.log(data);
-  try{
-    var response = axios.post(`${baseBulkMessagingURL}/createnewflow`,data,{ validateStatus: false, withCredentials: true });
-  }
-  catch(e){
-    console.log(e);
-  }
-  console.log(response.data);
-}
+  // Final Submit Function for data of Flow
+  const FinalSubmit = async () => {
+    const data = {
+      title: flowtitle,
+      tMessageList: FlowDataSubmit(),
+      contactList: selectedNos,
+      cid: userId,
+      startNode: startNode.data.label,
+    };
+    console.log(data);
+    try {
+      var response = axios.post(`${baseBulkMessagingURL}/createnewflow`, data, {
+        validateStatus: false,
+        withCredentials: true,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+    console.log(response.data);
+  };
 
   return (
     <div className="rootCon">
@@ -560,50 +583,50 @@ const FinalSubmit=async()=>{
             </div>
 
             {/* container for selected templates */}
-                <div className="selected-flow-area">
-                <div className="Selected-container ">
-                  {selectedTemplates.map((temp, index) => {
-                    return (
-                      <DragCards
-                        template={temp}
-                        deleteTemplate={deleteTemplate}
-                        showDel={true}
-                        // moveCard={moveCard}
-                      />
-                    );
-                  })}
-                </div>
-                {/* Events section  */}
-                <div className="Selected-container " style={{ width: "20vw" }}>
-                  {events.map((temp, index) => {
-                    return (
-                      <DragCards
-                        template={temp}
-                        deleteTemplate={deleteTemplate}
-                        showDel={false}
-                        // moveCard={moveCard}
-                      />
-                    );
-                  })}
-                </div>
-                {/* this is the board where selected templates are droped  */}
-                <div className="Dnd-flow-canva">
-                  <DndFlowMap
-                    nodes={nodes}
-                    setNodes={setNodes}
-                    edges={edges}
-                    setEdges={setEdges}
-                    onEdgesChange={onEdgesChange}
-                    templates={templates}
-                    setTemplates={setTemplates}
-                    selectedTemplates={selectedTemplates}
-                    setSelectedTemplates={setSelectedTemplates}
-                    events={events}
-                    setEvents={setEvents}
-                  />
-                </div>
+            <div className="selected-flow-area">
+              <div className="Selected-container ">
+                {selectedTemplates.map((temp, index) => {
+                  return (
+                    <DragCards
+                      template={temp}
+                      deleteTemplate={deleteTemplate}
+                      showDel={true}
+                      // moveCard={moveCard}
+                    />
+                  );
+                })}
+              </div>
+              {/* Events section  */}
+              <div className="Selected-container " style={{ width: "20vw" }}>
+                {events.map((temp, index) => {
+                  return (
+                    <DragCards
+                      template={temp}
+                      deleteTemplate={deleteTemplate}
+                      showDel={false}
+                      // moveCard={moveCard}
+                    />
+                  );
+                })}
+              </div>
+              {/* this is the board where selected templates are droped  */}
+              <div className="Dnd-flow-canva">
+                <DndFlowMap
+                  nodes={nodes}
+                  setNodes={setNodes}
+                  edges={edges}
+                  setEdges={setEdges}
+                  onEdgesChange={onEdgesChange}
+                  templates={templates}
+                  setTemplates={setTemplates}
+                  selectedTemplates={selectedTemplates}
+                  setSelectedTemplates={setSelectedTemplates}
+                  events={events}
+                  setEvents={setEvents}
+                />
+              </div>
 
-                {/* <div className="Selected-container " >
+              {/* <div className="Selected-container " >
                 {board.map((temp, index) => {
                   return (
                     <DragCards
@@ -618,7 +641,7 @@ const FinalSubmit=async()=>{
                   );
                 })}
               </div> */}
-              </div>
+            </div>
           </div>
 
           <div className="InpNoCon">
@@ -706,8 +729,10 @@ const FinalSubmit=async()=>{
             </div>
           </div>
           <div className="brdBtnCon">
-                <button className="joinbtn brdCsBtn" onClick={FinalSubmit}>Submit</button>
-              </div>
+            <button className="joinbtn brdCsBtn" onClick={FinalSubmit}>
+              Submit
+            </button>
+          </div>
         </div>
       </div>
     </div>
