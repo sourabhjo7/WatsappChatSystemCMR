@@ -182,7 +182,7 @@ function App() {
             } />
 
             <Route path="/profile" element={
-              <div>
+              <div> 
                 {userData.role === "Admin" && showAlert && <AlertBox setShowAlert={setShowAlert} alertData={alertData}/>}
                 <Profile
                   baseURL={baseUserSystemURL}
