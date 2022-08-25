@@ -413,7 +413,19 @@ let startNode = {}
               if (Number(str[0]) >= 0 && Number(str[0]) <= 9) {
                 event = Number(time);
               } else {
-                event = `!${helperObject[edges[j].target].toLowerCase()}`;
+                let flagk = 0;
+                events.forEach((event) => {
+                  if (event == helperObject[edges[j].target]) {
+                    flagk = 1;
+                  }
+                });
+                
+                if(flagk){
+                  event = `!${helperObject[edges[j].target].toLowerCase()}`;
+                }
+                else{
+                  event = `${helperObject[edges[j].target].toLowerCase()}`;
+                }
               }
             } else {
               event = undefined;
