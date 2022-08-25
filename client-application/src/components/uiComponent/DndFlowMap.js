@@ -174,21 +174,43 @@ for(let i=0;i<nodes.length;i++){
       for(let j =0;j<edges.length;j++){
         if(edges[j].source==nodes[i].id){
           let event,action;
-              let e=helperObject[edges[j].target];
-              let str=e.split("");
-              let time="";
-              for(let ind=0;ind<str.length-1;ind++){
-                time=time+str[ind];
-              }
-              if(Number(str[0])>=0 &&Number(str[0])<=9){
-               event= Number(time);  
-              }else{
-              event= `!${helperObject[edges[j].target].toLowerCase()}`;
-              }
-            
+          let flage=0;
+          templates.forEach(template => {
+           if( template.elementName == helperObject[edges[j].target]){
+               flage=1;
+           }
+          });
+          if(!flage){
+           
+            let e=helperObject[edges[j].target];
+            let str=e.split("");
+            let time="";
+            for(let ind=0;ind<str.length-1;ind++){
+              time=time+str[ind];
+            }
+
+            if(Number(str[0])>=0 &&Number(str[0])<=9){
+             event= Number(time);  
+            }else{
+            event= `!${helperObject[edges[j].target].toLowerCase()}`;
+            }
+          }else{
+            event=undefined;
+          }
             for(let k=0;k<edges.length;k++){
               if(edges[k].source==edges[j].target){
-                action= helperObject[edges[k].target];
+                let flagt=0;
+                templates.forEach(template => {
+                 if( template.elementName == helperObject[edges[k].target]){
+                     flagt=1;
+                 }
+                });
+                if(flagt){
+                  action= helperObject[edges[k].target];
+                }else{
+                  action=undefined;
+                }
+                
                 break;
               }
             }
