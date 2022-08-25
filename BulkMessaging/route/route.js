@@ -181,82 +181,83 @@ router.post("/updateTempStatus", async (req, res) => {
 // Method  Post
 
 router.post("/createnewflow", async (req, res) => {
-  // let {
-  //   title,
-  //   tMessages,
-  //   contactList,
-  //   triggers,
-  //   timeDelay,
-  //   cid,
-  // } = req.body; // recieving details of messages contact list and triggers also time delay
+  const {
+    title,
+    tMessageList,
+    contactList,
+    cid,
+    startNode
+  } = req.body; // recieving details of messages contact list and triggers also time delay
 
-  // time_delay is comming in miliseconds
 
-  const title = "New Flow",
-    tMessageList = {
-      "app_details": {
-        tMessage: "Choose One: | [Option 1] | [Option 2] | [Option 3]",
-        events: [{
-          event: 30,
-          action: "app_schedule_test"
-        },{
-          event: "Hii",
-          action: "app_order_confirmation"
-        }]
-      },
-      "app_order_confirmation": {
-        tMessage: "Your Order with id {{1}} is {{2}}.",
-        events: [{
-          event: "test",
-          action: "app_test_code"
-        }]
-      },
-      "app_otp_code": {
-        tMessage: "Your OTP for {{1}} is {{2}}.",
-        events: [{
-          event: "!end",
-          action: "!end"
-        }]
-      },
-      "app_test_code": {
-        tMessage: "Testing the bot",
-        events: [{
-          event: "test2",
-          action: "app_test2_code"
-        },{
-          event: "test3",
-          action: "app_test3_code"
-        }
-      ]
-      },
-      "app_test2_code": {
-        tMessage: "Testing the bot 2",
-        events: [{
-          event: "!end",
-          action: "!end"
-        }]
-      },
-      "app_test3_code": {
-        tMessage: "Testing the bot 3",
-        events: [{
-          event: "!end",
-          action: "!end"
-        }]
-      },"app_schedule_test": {
-        tMessage: "Testing the schedule message of bot",
-        events: [{
-          event: "!end",
-          action: "!end"
-        }]
-      }
-    },
-    customerList = ["918949190774"],
-    cid = "62c95ec3ad093aad23fe14f9";
+
+  // time_delay is comming in seconds
+
+  // const title = "New Flow",
+  //   tMessageList = {
+  //     "app_details": {
+  //       tMessage: "Choose One: | [Option 1] | [Option 2] | [Option 3]",
+  //       events: [{
+  //         event: 30,
+  //         action: "app_schedule_test"
+  //       },{
+  //         event: "Hii",
+  //         action: "app_order_confirmation"
+  //       }]
+  //     },
+  //     "app_order_confirmation": {
+  //       tMessage: "Your Order with id {{1}} is {{2}}.",
+  //       events: [{
+  //         event: "test",
+  //         action: "app_test_code"
+  //       }]
+  //     },
+  //     "app_otp_code": {
+  //       tMessage: "Your OTP for {{1}} is {{2}}.",
+  //       events: [{
+  //         event: "!end",
+  //         action: "!end"
+  //       }]
+  //     },
+  //     "app_test_code": {
+  //       tMessage: "Testing the bot",
+  //       events: [{
+  //         event: "test2",
+  //         action: "app_test2_code"
+  //       },{
+  //         event: "test3",
+  //         action: "app_test3_code"
+  //       }
+  //     ]
+  //     },
+  //     "app_test2_code": {
+  //       tMessage: "Testing the bot 2",
+  //       events: [{
+  //         event: "!end",
+  //         action: "!end"
+  //       }]
+  //     },
+  //     "app_test3_code": {
+  //       tMessage: "Testing the bot 3",
+  //       events: [{
+  //         event: "!end",
+  //         action: "!end"
+  //       }]
+  //     },"app_schedule_test": {
+  //       tMessage: "Testing the schedule message of bot",
+  //       events: [{
+  //         event: "!end",
+  //         action: "!end"
+  //       }]
+  //     }
+  //   },
+  //   customerList = ["918949190774"],
+  //   cid = "62c95ec3ad093aad23fe14f9";
 
     const flowData = new Flow({
       title,
       tMessageList,
-      customerList,
+      contactList,
       cid
     });
 
@@ -268,7 +269,7 @@ router.post("/createnewflow", async (req, res) => {
         currFlow: {
           flowID: flowData._id.toString(),
           currPos: {
-            temp: "app_details",
+            temp: startNode,
             show: true
           }
         },
