@@ -47,7 +47,7 @@ function Flow({
   const initialNodes = [];
   const [nodes, setNodes] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-  const [flowtitle, setFlowTitle] = useState("");
+  const [flowtitle, setFlowTitle] = useState("Sample Title");
 
   //getting all the approved templates
   const getTemplates = async () => {

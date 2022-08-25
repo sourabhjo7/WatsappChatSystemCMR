@@ -7,7 +7,6 @@ import ReactFlow, {
   Controls,
   MarkerType,
   updateEdge,
-  MiniMap,
   applyNodeChanges,
   onNodesChange
 } from "react-flow-renderer";
@@ -23,7 +22,7 @@ const getId = () => `dndnode_${id++}`;
 
 function DndFlowMap({nodes,setNodes,edges,setEdges,onEdgesChange,settemplates,setTemplates, SelectedTemplates,setSelectedTemplates,events,setEvents}) {
   const reactFlowWrapper = useRef(null);
- 
+
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
   const onConnect = useCallback(
@@ -159,7 +158,6 @@ function DndFlowMap({nodes,setNodes,edges,setEdges,onEdgesChange,settemplates,se
             onDragOver={onDragOver}
             fitView
           >
-            <MiniMap />
            <Controls />
           </ReactFlow>
         </div>
