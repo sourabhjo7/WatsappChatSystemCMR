@@ -188,14 +188,6 @@ function Flow({
     getAcutalTime();
   }, [format, inputTime]);
 
-  let dummyData = {
-    msg_array: ["hi", "hello"],
-    contact_list: [9549408165, 7845321246],
-    triggers: {
-      hi: 2,
-    },
-    time_delay: time_delay,
-  };
   const handleSubmit = async (e) => {
     // const { data } = await axios.post(
     //   `${baseBulkMessagingURL}/createnewflow`,
