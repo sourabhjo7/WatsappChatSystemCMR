@@ -41,9 +41,7 @@ function AllFlows({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, userNa
             })}
           </div>
           <div className="flow_mid_child_container message">
-            {selectedFlow.tMessages.map((message, index) => {
-              return <p key={"message" + index}>{message}</p>
-            })}
+            
           </div>
         </div>
       )

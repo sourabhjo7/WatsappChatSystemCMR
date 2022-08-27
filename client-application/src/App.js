@@ -26,6 +26,7 @@ import AgentDb from "./components/roleDashboards/AgentDb";
 // import ManagerAssignPage from "./components/ManagerAssignPage";
 import Broadcasting from "./components/Broadcasting";
 import Flow from "./components/Flow";
+import Campaign from "./components/Campaign";
 import AllFlows from "./components/AllFlows";
 
 import NewTemplateRequest from "./components/NewTemplateRequest";
@@ -252,6 +253,25 @@ function App() {
               userData.role === "Manager" ? (//Only Managers have Access to Flow Page
                 <ReactFlowProvider>
                   <Flow
+                  baseBulkMessagingURL={baseBulkMessagingURL}
+                  baseUserSystemURL={baseUserSystemURL}
+                  getRole="managers"
+                  setIsLogedin={setIsLogedin}
+                  userId={userData.user_id}
+                  userName={userData.name}
+                  noOfRequestedChats={noOfRequestedChats}
+                />
+                </ReactFlowProvider>
+              ) : (
+                <h1>Access Denied!!</h1>
+              )
+            } />
+
+            {/* // flow route for manager to start flow  */}
+              <Route path="/campaign" element={
+              userData.role === "Manager" ? (//Only Managers have Access to Flow Page
+                <ReactFlowProvider>
+                  <Campaign
                   baseBulkMessagingURL={baseBulkMessagingURL}
                   baseUserSystemURL={baseUserSystemURL}
                   getRole="managers"
