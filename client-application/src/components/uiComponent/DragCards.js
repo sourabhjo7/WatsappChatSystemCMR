@@ -8,9 +8,9 @@ function DragCards({template,deleteTemplate, showDel}) {
         event.dataTransfer.setData('application/reactflow', nodeType);
         event.dataTransfer.effectAllowed = 'move';
       };
-    
+
   return (
-    <div 
+    <div
     onDragStart={(event) => onDragStart(event, `${template}`)} draggable
     style = {showDel ? {background: "#CDF6E5", color: "#999"} : {background: "#97A4FC"}}
       className="drag-card"

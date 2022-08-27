@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import "./App.css";
-// importing drag and drop dependency 
+// importing drag and drop dependency
 
 
 //importing axios for https requests
@@ -75,11 +75,11 @@ function App() {
   const ChatPageRender = () => {
     return (
       <>
-         
+
         <React.Suspense fallback={<></>}>
           {(userData.role === "Agent") && <ChatPage socket={socket} baseUserSystemURL={baseUserSystemURL} baseChatSystemURL={baseChatSystemURL} userData={userData} setIsLogedin={setIsLogedin} />}
         </React.Suspense>
-    
+
       </>
     )
   }
@@ -182,7 +182,7 @@ function App() {
             } />
 
             <Route path="/profile" element={
-              <div> 
+              <div>
                 {userData.role === "Admin" && showAlert && <AlertBox setShowAlert={setShowAlert} alertData={alertData}/>}
                 <Profile
                   baseURL={baseUserSystemURL}

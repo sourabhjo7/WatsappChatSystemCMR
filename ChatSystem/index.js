@@ -268,7 +268,6 @@ app.post("/hook", async (req, res) => {
     flow = await Flow.findOne({_id: customer.currFlow.flowID});
 
     if(flowPos.temp === flow.startNode && flowPos.show === true){
-      console.log("Started");
       flow.data.started = flow.data.started + 1;
 
       flow.markModified('data');
@@ -394,7 +393,7 @@ app.post("/hook", async (req, res) => {
                 const favDate = new Date(favTime);
 
                 schedule.scheduleJob(favDate, () => {
-                  sendMessage(flow.tMessageList[eventObj.action].tMessage, payload.destination || payload.source, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
+                  sendMessage(flow.tMessageList[eventObj.action].tMessage, payload.destination, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
                 })
               }
 
@@ -404,7 +403,7 @@ app.post("/hook", async (req, res) => {
                   show: false
                 }
                 found = true;
-                await sendMessage(flow.tMessageList[customer.currFlow.currPos.temp].tMessage, payload.destination || payload.source, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
+                await sendMessage(flow.tMessageList[customer.currFlow.currPos.temp].tMessage, payload.destination, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
                 break;
               }else if(eventObj.event === "!end"){
 
@@ -413,7 +412,7 @@ app.post("/hook", async (req, res) => {
 
                   flow.markModified('data');
                   await flow.save();
-                }
+                } 
 
                 customer.currFlow.currPos = {
                   temp: eventObj.action,
@@ -447,7 +446,7 @@ app.post("/hook", async (req, res) => {
           const favDate = new Date(favTime);
 
           schedule.scheduleJob(favDate, () => {
-            sendMessage(flow.tMessageList[eventObj.action].tMessage, payload.destination || payload.source, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
+            sendMessage(flow.tMessageList[eventObj.action].tMessage, payload.source, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
           })
         }
 
@@ -458,7 +457,7 @@ app.post("/hook", async (req, res) => {
             show: false
           }
           found = true;
-          await sendMessage(flow.tMessageList[customer.currFlow.currPos.temp].tMessage, payload.destination || payload.source, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
+          await sendMessage(flow.tMessageList[customer.currFlow.currPos.temp].tMessage, payload.source, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
           break;
         }else if(eventObj.event === "!end"){
 
@@ -483,7 +482,6 @@ app.post("/hook", async (req, res) => {
       }
       customer.markModified('currFlow');
       await customer.save();
-
     }
   }
 

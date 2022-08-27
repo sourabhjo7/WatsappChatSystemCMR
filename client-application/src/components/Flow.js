@@ -1,5 +1,5 @@
 import update from "immutability-helper";
-import React, { useState, useEffect, useCallback } from "react";
+import React, {useState, useEffect, useCallback} from "react";
 import axios from "axios";
 import "./Flow.css";
 import Sidebar from "./uiComponent/Sidebar";
@@ -7,7 +7,7 @@ import TopCon from "./uiComponent/TopCon";
 import Card from "./uiComponent/Card";
 import DragCards from "./uiComponent/DragCards";
 import DndFlowMap from "./uiComponent/DndFlowMap";
-import { ReactFlowProvider } from "react-flow-renderer";
+import {ReactFlowProvider} from "react-flow-renderer";
 import ReactFlow, {
   addEdge,
   useNodesState,
@@ -17,7 +17,7 @@ import ReactFlow, {
   updateEdge,
   MiniMap,
   applyNodeChanges,
-  onNodesChange,
+  onNodesChange
 } from "react-flow-renderer";
 
 function Flow({
@@ -26,7 +26,7 @@ function Flow({
   setIsLogedin,
   userName,
   userId,
-  noOfRequestedChats,
+  noOfRequestedChats
 }) {
   //defining state variables
   const [templates, setTemplates] = useState([]);
@@ -47,46 +47,42 @@ function Flow({
   const initialNodes = [];
   const [nodes, setNodes] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-  const [flowtitle, setFlowTitle] = useState("Sample Title");
+  const [flowtitle, setFlowTitle] = useState("");
 
   //getting all the approved templates
   const getTemplates = async () => {
-    await axios
-      .post(
-        `${baseBulkMessagingURL}/aprovedTemplates`,
-        { userId },
-        { validateStatus: false, withCredentials: true }
-      )
-      .then((response) => {
-        //setting the templates with the response from the API
-        setTemplates(response.data.templates);
-      });
+    await axios.post(`${baseBulkMessagingURL}/aprovedTemplates`, {
+      userId
+    }, {
+      validateStatus: false,
+      withCredentials: true
+    }).then((response) => {
+      //setting the templates with the response from the API
+      setTemplates(response.data.templates);
+    });
   };
 
   const getOptedinUsers = async () => {
     let optedinUsers,
       storedUsers,
       toBePopulateUsers = [];
-    await axios
-      .post(
-        `${baseBulkMessagingURL}/optedinUsers`,
-        { userId },
-        { validateStatus: false, withCredentials: true }
-      )
-      .then((response) => {
-        //setting the optedinUsers with the response from the API
-        optedinUsers = response.data.users;
-      });
+    await axios.post(`${baseBulkMessagingURL}/optedinUsers`, {
+      userId
+    }, {
+      validateStatus: false,
+      withCredentials: true
+    }).then((response) => {
+      //setting the optedinUsers with the response from the API
+      optedinUsers = response.data.users;
+    });
 
-    await axios
-      .get(`${baseBulkMessagingURL}/storedCustomers`, {
-        validateStatus: false,
-        withCredentials: true,
-      })
-      .then((response) => {
-        //getting the stored users from the response from the API
-        storedUsers = response.data.users;
-      });
+    await axios.get(`${baseBulkMessagingURL}/storedCustomers`, {
+      validateStatus: false,
+      withCredentials: true
+    }).then((response) => {
+      //getting the stored users from the response from the API
+      storedUsers = response.data.users;
+    });
 
     //gettig name of the customers from the stored users
     for (let optUser of optedinUsers) {
@@ -96,19 +92,13 @@ function Flow({
       for (let user of storedUsers) {
         // console.log(user.userName, optUserFullPhoneNo);
         if (optUserFullPhoneNo === user.userPhoneNo) {
-          toBePopulateUsers.push({
-            phoneNo: optUserFullPhoneNo,
-            userName: user.userName,
-          });
+          toBePopulateUsers.push({phoneNo: optUserFullPhoneNo, userName: user.userName});
           found = true;
           break;
         }
       }
       if (!found) {
-        toBePopulateUsers.push({
-          phoneNo: optUserFullPhoneNo,
-          userName: "{Name}",
-        });
+        toBePopulateUsers.push({phoneNo: optUserFullPhoneNo, userName: "{Name}"});
       }
     }
 
@@ -133,9 +123,7 @@ function Flow({
 
   //function for selecting a number by checking
   const listSelectedNos = async () => {
-    const checkboxes = document.querySelectorAll(
-      "input[type=checkbox]:checked"
-    );
+    const checkboxes = document.querySelectorAll("input[type=checkbox]:checked");
     let selectedPhoneNo = await Array.from(checkboxes).map((i) => i.value);
 
     setSelNosByCheck(selectedPhoneNo);
@@ -156,9 +144,7 @@ function Flow({
       });
     }
 
-    const checkboxes = Array.from(
-      document.querySelectorAll("input[type=checkbox]:checked")
-    );
+    const checkboxes = Array.from(document.querySelectorAll("input[type=checkbox]:checked"));
 
     //Unchecking the checkboxes in the optedin list
     for (let checkbox of checkboxes) {
@@ -197,9 +183,15 @@ function Flow({
     // console.log(data.data);
     setEvents((curr) => {
       if (format === "min") {
-        return [...curr, ` ${time_delay / 1000}s`];
+        return [
+          ...curr,
+          ` ${time_delay / 1000}s`
+        ];
       } else {
-        return [...curr, ` ${time_delay / 1000}s`];
+        return [
+          ...curr,
+          ` ${time_delay / 1000}s`
+        ];
       }
     });
   };
@@ -210,7 +202,10 @@ function Flow({
   }, []);
 
   useEffect(() => {
-    setSelectedNos([...selNosByCheck, ...selNosByText]);
+    setSelectedNos([
+      ...selNosByCheck,
+      ...selNosByText
+    ]);
   }, [selNosByCheck, selNosByText]);
 
   const [board, setBoard] = useState([]);
@@ -220,7 +215,10 @@ function Flow({
     if (board.indexOf(e.target.value) === -1) {
       setSelectedTemplates((curr) => {
         if (curr.indexOf(e.target.value) === -1) {
-          return [...curr, e.target.value];
+          return [
+            ...curr,
+            e.target.value
+          ];
         }
         return curr;
       });
@@ -235,7 +233,7 @@ function Flow({
     });
   };
 
-  //   // dropping funnctionality
+  //    dropping funnctionality
   //   const [{ isOver }, drop] = useDrop(() => ({
   //     accept: "template",
   //     drop: (item) => addTemplateToBoard(item.templateName),
@@ -244,7 +242,7 @@ function Flow({
   //     }),
   //   }));
 
-  // // adding templates to board section
+  //  adding templates to board section
   // const addTemplateToBoard = (templateName) => {
 
   //   setBoard((board) => {
@@ -259,7 +257,7 @@ function Flow({
   //       board.splice(board.indexOf(emptyDiv,1));
   //   }
 
-  //   // when adding we want templateName to be removed from selected area
+  //    when adding we want templateName to be removed from selected area
   //   setSelectedTemplates((curr) => {
   //     const ind = curr.indexOf(templateName);
   //     if(ind!=-1){
@@ -284,7 +282,7 @@ function Flow({
   //   });
 
   //   if(!events.includes(e.target.value)){
-  //     // when deleting it should go to  selected template
+  //      when deleting it should go to  selected template
 
   //     setSelectedTemplates((curr) => {
   //       if (curr.indexOf(e.target.value) == -1) {
@@ -302,10 +300,10 @@ function Flow({
     "Read",
     "Sent",
     "Delivered",
-    "Delete",
+    "Delete"
   ]);
   const [keyword, setKeyword] = useState("");
-  const [keywordList,setKeywordList]=useState([]);
+  const [keywordList, setKeywordList] = useState([]);
   // const moveCard = useCallback((dragIndex, hoverIndex) => {
   //   console.log("move Card");
   //   setBoard((prevCards) =>
@@ -319,10 +317,16 @@ function Flow({
   // }, []);
   const handleKeyword = (e) => {
     setEvents((curr) => {
-      return [...curr, keyword];
+      return [
+        ...curr,
+        keyword
+      ];
     });
-    setKeywordList((curr)=>{
-      return [...curr,keyword];
+    setKeywordList((curr) => {
+      return [
+        ...curr,
+        keyword
+      ];
     })
 
   };
@@ -338,7 +342,7 @@ function Flow({
     for (let i = 0; i < nodes.length; i++) {
       let flag = 1;
       for (let j = 0; j < edges.length; j++) {
-        if (nodes[i].id == edges[j].target) {
+        if (nodes[i].id === edges[j].target) {
           flag = 0;
           break;
         }
@@ -395,7 +399,8 @@ function Flow({
         // check all edges where source is this node
         for (let j = 0; j < edges.length; j++) {
           if (edges[j].source == nodes[i].id) {
-            let event, action;
+            let event,
+              action;
             let flage = 0;
             templates.forEach((template) => {
               if (template.elementName == helperObject[edges[j].target]) {
@@ -446,25 +451,25 @@ function Flow({
                 break;
               }
             }
-            events.push({ event, action });
+            events.push({event, action});
           }
         }
         tMessageListobj = {
           tMessage: tMessage,
-          events: events,
+          events: events
         };
         const tname = nodes[i].type;
-        FlowData[`${tname}`] = tMessageListobj;
-      }
-      // IF node is template and also in last array that is ending node
-      else if (flag && flagend) {
-        let event, action;
+        FlowData[`${tname}`] = // IF node is template and also in last array that is ending node
+        tMessageListobj;
+      } else if (flag && flagend) {
+        let event,
+          action;
         event = "!end";
         action = "!end";
-        events.push({ event, action });
+        events.push({event, action});
         tMessageListobj = {
           tMessage: tMessage,
-          events: events,
+          events: events
         };
         const tname = nodes[i].type;
         FlowData[`${tname}`] = tMessageListobj;
@@ -483,13 +488,13 @@ function Flow({
       tMessageList: FlowDataSubmit(),
       contactList: selectedNos,
       cid: userId,
-      startNode: startNode.data.label,
+      startNode: startNode.data.label
     };
     console.log(data);
     try {
       var response = axios.post(`${baseBulkMessagingURL}/createnewflow`, data, {
         validateStatus: false,
-        withCredentials: true,
+        withCredentials: true
       });
     } catch (e) {
       console.log(e);
@@ -497,128 +502,89 @@ function Flow({
     console.log(response.data);
   };
 
-  return (
-    <div className="rootCon">
-      <Sidebar
-        role="Manager"
-        baseURL={baseUserSystemURL}
-        setIsLogedin={setIsLogedin}
-        page="flow"
-        noOfRequestedChats={noOfRequestedChats}
-      />
+  return (<div className="rootCon">
+    <Sidebar role="Manager" baseURL={baseUserSystemURL} setIsLogedin={setIsLogedin} page="flow" noOfRequestedChats={noOfRequestedChats}/>
 
-      <div className="dataCon">
-        <TopCon userName={userName} page="Flow" />
+    <div className="dataCon">
+      <TopCon userName={userName} page="Flow"/>
 
+      <div>
+        <div>
+          <h3>Templates:</h3>
+          {/* card component */}
+          <div className="cards-container">
+            {
+              templates.map((temp, index) => {
+                return <Card template={temp} select={selectTemplate}/>;
+              })
+            }
+          </div>
+        </div>
         <div>
           <div>
-            <h3>Templates:</h3>
-            {/* card component   */}
-            <div className="cards-container">
-              {templates.map((temp, index) => {
-                return <Card template={temp} select={selectTemplate} />;
-              })}
+            <h3>Build Flow:</h3>
+            <div className="flow_title_container">
+              <input type="text" placeholder="Give flow a title" value={flowtitle} onChange={(e) => setFlowTitle(e.target.value)}/>
             </div>
-          </div>
-          <div>
-            <div style={{ display: "flex" }}>
-              <h3>Build Flow:</h3>
-              <div>
-                <span style={{ fontSize: "20px", marginLeft: "30px" }}>
-                  Enter Flow Title:
-                </span>
-                <input
-                  type="text"
-                  value={flowtitle}
-                  onChange={(e) => setFlowTitle(e.target.value)}
-                />
-              </div>
-              <div>
-                <span style={{ fontSize: "20px", marginLeft: "30px" }}>
-                  Time Delay:
-                </span>
-                <input
-                  type="number"
-                  value={inputTime}
-                  onChange={(ele) => {
+            <div className="flow_timeKey_container">
+              <span>Add Time Delay:</span>
+
+              <div className="mid_input_container">
+
+                <input type="number" value={inputTime} onChange={(ele) => {
                     setinputTime(ele.target.value);
                   }}
                 />
 
-                <label style={{ fontSize: "20px" }} for="format">
-                  Format
-                </label>
-                <select
-                  value={format}
-                  onChange={(e) => {
+                <select value={format} onChange={(e) => {
                     setformat(e.target.value);
-                  }}
-                  name="format"
-                  id="format"
-                >
+                  }} name="format" id="format">
                   <option value="min">minutes</option>
-                  <option value="sec"> seconds</option>
+                  <option value="sec">
+                    seconds</option>
                 </select>
-                <input type="submit" onClick={handleSubmit} />
+
               </div>
-              <div>
-                <span style={{ fontSize: "20px", marginLeft: "30px" }}>
-                  Enter Keyword:
-                </span>
-                <input
-                  type="text"
-                  value={keyword}
-                  onChange={(e) => setKeyword(e.target.value)}
-                />
-                <input type="submit" onClick={handleKeyword} />
-              </div>
+
+              <button type="button" className="joinbtn" onClick={handleSubmit}>Add</button>
+            </div>
+            <div className="flow_timeKey_container">
+              <span>
+                Add Enter Keyword:
+              </span>
+              <input type="text" className="mid_input" value={keyword} onChange={(e) => setKeyword(e.target.value)}/>
+              <button type="button" className="joinbtn" onClick={handleKeyword}>Add</button>
             </div>
 
-            {/* container for selected templates */}
-            <div className="selected-flow-area">
-              <div className="Selected-container ">
-                {selectedTemplates.map((temp, index) => {
-                  return (
-                    <DragCards
-                      template={temp}
-                      deleteTemplate={deleteTemplate}
-                      showDel={true}
-                      // moveCard={moveCard}
-                    />
-                  );
-                })}
-              </div>
-              {/* Events section  */}
-              <div className="Selected-container " style={{ width: "20vw" }}>
-                {events.map((temp, index) => {
-                  return (
-                    <DragCards
-                      template={temp}
-                      deleteTemplate={deleteTemplate}
-                      showDel={false}
-                      // moveCard={moveCard}
-                    />
-                  );
-                })}
-              </div>
-              {/* this is the board where selected templates are droped  */}
-              <div className="Dnd-flow-canva">
-                <DndFlowMap
-                  nodes={nodes}
-                  setNodes={setNodes}
-                  edges={edges}
-                  setEdges={setEdges}
-                  onEdgesChange={onEdgesChange}
-                  templates={templates}
-                  setTemplates={setTemplates}
-                  selectedTemplates={selectedTemplates}
-                  setSelectedTemplates={setSelectedTemplates}
-                  events={events}
-                  setEvents={setEvents}
-                />
-              </div>
+            {/* Events section */}
+            <div className="flow_timeKey_container events_container">
+              {
+                events.map((temp, index) => {
+                  return (<DragCards template={temp} deleteTemplate={deleteTemplate} showDel={false}
+                    // moveCard={moveCard}
+                  />);
+                })
+              }
+            </div>
+          </div>
 
-              {/* <div className="Selected-container " >
+          {/* container for selected templates */}
+          <div className="selected-flow-area">
+            <div className="Selected-container ">
+              {
+                selectedTemplates.map((temp, index) => {
+                  return (<DragCards template={temp} deleteTemplate={deleteTemplate} showDel={true}
+                    // moveCard={moveCard}
+                  />);
+                })
+              }
+            </div>
+            {/* this is the board where selected templates are droped */}
+            <div className="Dnd-flow-canva">
+              <DndFlowMap nodes={nodes} setNodes={setNodes} edges={edges} setEdges={setEdges} onEdgesChange={onEdgesChange} templates={templates} setTemplates={setTemplates} selectedTemplates={selectedTemplates} setSelectedTemplates={setSelectedTemplates} events={events} setEvents={setEvents}/>
+            </div>
+
+            {/* <div className="Selected-container " >
                 {board.map((temp, index) => {
                   return (
                     <DragCards
@@ -632,103 +598,86 @@ function Flow({
                     />
                   );
                 })}
-              </div> */}
+              </div> */
+            }
+          </div>
+        </div>
+
+        <div className="InpNoCon">
+          <div className="optinNoCon">
+            <h3>Otp In Numbers:
+            </h3>
+            <div className="searchCon">
+              <input type="number" placeholder="Search by Number" onChange={(e) => {
+                  sortOptedinNumbers(e, "Number");
+                }}/>
+              <input type="text" placeholder="Search by Name" onChange={(e) => {
+                  sortOptedinNumbers(e, "Name");
+                }}/>
+            </div>
+            <div className="numbersList">
+              {
+                searchedOptedinUsers.map((user, index) => {
+                  return (<div key={index}>
+                    <label onClick={listSelectedNos} className="checkboxCon">
+                      <input type="checkbox" name={user.phoneNo} value={user.phoneNo}/>
+                      <span className="checkmark"></span>
+                    </label>
+                    <label htmlFor={user.phoneNo}>{user.phoneNo}</label>
+                    <span>{user.userName}</span>
+                  </div>);
+                })
+              }
             </div>
           </div>
 
-          <div className="InpNoCon">
-            <div className="optinNoCon">
-              <h3>Otp In Numbers: </h3>
-              <div className="searchCon">
-                <input
-                  type="number"
-                  placeholder="Search by Number"
-                  onChange={(e) => {
-                    sortOptedinNumbers(e, "Number");
-                  }}
-                />
-                <input
-                  type="text"
-                  placeholder="Search by Name"
-                  onChange={(e) => {
-                    sortOptedinNumbers(e, "Name");
-                  }}
-                />
-              </div>
-              <div className="numbersList">
-                {searchedOptedinUsers.map((user, index) => {
-                  return (
-                    <div key={index}>
-                      <label onClick={listSelectedNos} className="checkboxCon">
-                        <input
-                          type="checkbox"
-                          name={user.phoneNo}
-                          value={user.phoneNo}
-                        />
-                        <span className="checkmark"></span>
-                      </label>
-                      <label htmlFor={user.phoneNo}>{user.phoneNo}</label>
-                      <span>{user.userName}</span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+          <div className="newNoCon">
+            <h3>Input New Numbers:
+            </h3>
+            <span>Enter comma(,) seperated numbers</span>
+            <br/>
+            <textarea onChange={(e) => {
+                setNewNumbers(e.target.value);
+                let newNumbersArr = e.target.value.split(",");
+                newNumbersArr = newNumbersArr.map((i) => i.replace(" ", ""));
+                newNumbersArr = newNumbersArr.filter((number) => {
+                  return number.length === 12;
+                });
 
-            <div className="newNoCon">
-              <h3>Input New Numbers: </h3>
-              <span>Enter comma(,) seperated numbers</span>
-              <br />
-              <textarea
-                onChange={(e) => {
-                  setNewNumbers(e.target.value);
-                  let newNumbersArr = e.target.value.split(",");
-                  newNumbersArr = newNumbersArr.map((i) => i.replace(" ", ""));
-                  newNumbersArr = newNumbersArr.filter((number) => {
-                    return number.length === 12;
-                  });
+                setSelNosByText(newNumbersArr);
+              }} value={newNumbers}></textarea>
+            <br/>
+          </div>
 
-                  setSelNosByText(newNumbersArr);
-                }}
-                value={newNumbers}
-              ></textarea>
-              <br />
-            </div>
-
-            <div className="selectedNoCon">
-              <h3>Selected Numbers: </h3>
-              <div className="selectedNumbersList">
-                {selectedNos.length > 0 ? (
-                  selectedNos.map((number, index) => {
-                    return (
-                      <div key={index}>
-                        <span>{number}</span>
-                        <button
-                          className="rmSelectedNoBtn"
-                          onClick={() => {
-                            rmSelectedNo(number);
-                          }}
-                        >
-                          &#9587;
-                        </button>
-                      </div>
-                    );
-                  })
-                ) : (
-                  <span>No Number Selected...</span>
-                )}
-              </div>
+          <div className="selectedNoCon">
+            <h3>Selected Numbers:
+            </h3>
+            <div className="selectedNumbersList">
+              {
+                selectedNos.length > 0
+                  ? (selectedNos.map((number, index) => {
+                    return (<div key={index}>
+                      <span>{number}</span>
+                      <button className="rmSelectedNoBtn" onClick={() => {
+                          rmSelectedNo(number);
+                        }}>
+                        &#9587;
+                      </button>
+                    </div>);
+                  }))
+                  : (<span>No Number Selected...</span>)
+              }
             </div>
           </div>
-          <div className="brdBtnCon">
-            <button className="joinbtn brdCsBtn" onClick={FinalSubmit}>
-              Submit
-            </button>
-          </div>
+        </div>
+        <div className="brdBtnCon">
+          <button className="joinbtn brdCsBtn" onClick={FinalSubmit}>
+            Submit
+          </button>
         </div>
       </div>
     </div>
-  );
+  </div>);
 }
 
 export default Flow;
