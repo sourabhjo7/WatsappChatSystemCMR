@@ -501,7 +501,8 @@ function Flow({
     }
     console.log(response.data);
   };
-
+  console.log(nodes);
+  console.log(edges);
   return (<div className="rootCon">
     <Sidebar role="Manager" baseURL={baseUserSystemURL} setIsLogedin={setIsLogedin} page="flow" noOfRequestedChats={noOfRequestedChats}/>
 
