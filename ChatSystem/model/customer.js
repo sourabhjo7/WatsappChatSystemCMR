@@ -15,6 +15,9 @@ const customerSchema = new mongoose.Schema({
   allFLows: {
     type: Array,
     default: []
+  },
+  currCampaign: {
+    type: Object
   }
 });
 

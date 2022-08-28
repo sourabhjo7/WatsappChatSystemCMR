@@ -423,7 +423,7 @@ function Flow({
     };
     console.log(data);
     try {
-      var response = axios.post(`${baseBulkMessagingURL}/createnewflow`, data, {
+      var response = axios.post(`${baseBulkMessagingURL}/create_new_flow`, data, {
         validateStatus: false,
         withCredentials: true
       });

@@ -180,7 +180,7 @@ router.post("/updateTempStatus", async (req, res) => {
 // @description   route  for creating new flow
 // Method  Post
 
-router.post("/createnewflow", async (req, res) => {
+router.post("/create_new_flow", async (req, res) => {
   const {
     title,
     tMessageList,
@@ -255,6 +255,50 @@ router.post("/getflows", async (req, res) => {
     res.end();
   }
 
+});
+
+router.post("/create_new_campaign", async (req, res) => {
+  const {
+    title,
+    tFlowList,
+    contactList,
+    cid,
+    startFlow,
+    nodes,
+    edges
+  } = req.body;
+
+  const campaignData = new Campaign({
+    title,
+    tMessageList,
+    contactList,
+    cid,
+    data: {
+      started: 0,
+      ended: 0,
+    },
+    startNode,
+    defaultData: {
+      nodes: nodes,
+      edges: edges
+    }
+  });
+
+  await campaignData.save();
+
+  for(let phNum of contactList){
+
+    const customer = await Customer.findOne({userPhoneNo: phNum});
+
+    customer.currCampaign = {
+      campaignID: campaignData._id.toString(),
+      currPos: {
+        temp: startNode,
+        show: true
+      }
+    }
+    await customer.save();
+  }
 })
 
 module.exports = router
