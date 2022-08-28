@@ -488,7 +488,9 @@ function Flow({
       tMessageList: FlowDataSubmit(),
       contactList: selectedNos,
       cid: userId,
-      startNode: startNode.data.label
+      startNode: startNode.data.label,
+      nodes:nodes,
+      edges:edges
     };
     console.log(data);
     try {
@@ -501,8 +503,6 @@ function Flow({
     }
     console.log(response.data);
   };
-  console.log(nodes);
-  console.log(edges);
   return (<div className="rootCon">
     <Sidebar role="Manager" baseURL={baseUserSystemURL} setIsLogedin={setIsLogedin} page="flow" noOfRequestedChats={noOfRequestedChats}/>
 
