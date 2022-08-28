@@ -7,7 +7,8 @@ const flowSchema = new mongoose.Schema({
   contactList: [String],
   cid: String,
   data: Object,
-  startNode: String
+  startNode: String,
+  defaultData: Object
 });
 
 

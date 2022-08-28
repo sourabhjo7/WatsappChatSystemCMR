@@ -186,7 +186,9 @@ router.post("/createnewflow", async (req, res) => {
     tMessageList,
     contactList,
     cid,
-    startNode
+    startNode,
+    nodes,
+    edges
   } = req.body; // recieving details of messages contact list and triggers also time delay
 
     const flowData = new Flow({
@@ -198,7 +200,11 @@ router.post("/createnewflow", async (req, res) => {
         started: 0,
         ended: 0,
       },
-      startNode
+      startNode,
+      defaultData: {
+        nodes: nodes,
+        edges: edges
+      }
     });
 
 
