@@ -13,7 +13,7 @@ function DragCards({template,deleteTemplate, showDel}) {
     <div
     onDragStart={(event) => onDragStart(event, `${template}`)} draggable
     style = {showDel ? {background: "#CDF6E5", color: "#999"} : {background: "#97A4FC"}}
-      className="drag-card"
+      className="drag-card"   
       >
       <div className="content2">
 
