@@ -264,7 +264,6 @@ app.post("/hook", async (req, res) => {
   });
 
   if(customer){
-    console.log("Start:", customer.currFlow.currPos);
 
     flowPos = customer.currFlow.currPos;
     flow = await Flow.findOne({_id: customer.currFlow.flowID});
@@ -419,9 +418,7 @@ app.post("/hook", async (req, res) => {
                 if(!customer.currFlow.currPos.show){
                   flow.data.ended = flow.data.ended + 1;
                   flow.markModified('data');
-                  await flow.save(() => {
-                    console.log("Data Update: ", flow);
-                  });
+                  await flow.save();
 
                   const newFlowIndex = customer.allFLows.indexOf(flow._id) + 1;
 
@@ -503,9 +500,7 @@ app.post("/hook", async (req, res) => {
             flow.data.ended = flow.data.ended + 1;
 
             flow.markModified('data');
-            await flow.save(() => {
-              console.log("Data Update: ", flow);
-            });
+            await flow.save();
 
             const newFlowIndex = customer.allFLows.indexOf(flow._id) + 1;
 
@@ -542,7 +537,6 @@ app.post("/hook", async (req, res) => {
       }
       customer.markModified('currFlow');
       await customer.save();
-      console.log("Last:", customer.currFlow.currPos);
     }
   }
   return res.status(200).end();

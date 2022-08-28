@@ -233,67 +233,6 @@ function Flow({
     });
   };
 
-  //    dropping funnctionality
-  //   const [{ isOver }, drop] = useDrop(() => ({
-  //     accept: "template",
-  //     drop: (item) => addTemplateToBoard(item.templateName),
-  //     collect: (monitor) => ({
-  //       isOver: !!monitor.isOver(),
-  //     }),
-  //   }));
-
-  //  adding templates to board section
-  // const addTemplateToBoard = (templateName) => {
-
-  //   setBoard((board) => {
-  //     if(board.indexOf(templateName) === -1 || events.includes(templateName)){
-  //         return [...board, templateName]
-  //     }
-  //    return [...board];
-  //   });
-
-  //   const emptyDiv=" ";
-  //   if(board.includes(emptyDiv)){
-  //       board.splice(board.indexOf(emptyDiv,1));
-  //   }
-
-  //    when adding we want templateName to be removed from selected area
-  //   setSelectedTemplates((curr) => {
-  //     const ind = curr.indexOf(templateName);
-  //     if(ind!=-1){
-  //         curr.splice(ind, 1);
-  //     }
-
-  //     console.log(curr);
-  //     return [...curr];
-  //   });
-
-  // };
-
-  // const deleteBoardTemplate = (e) => {
-  //   setBoard((curr) => {
-  //     const ind = curr.indexOf(e.target.value);
-  //     if(ind!=-1){
-  //       curr.splice(ind, 1);
-  //     }
-
-  //     console.log(curr);
-  //     return [...curr];
-  //   });
-
-  //   if(!events.includes(e.target.value)){
-  //      when deleting it should go to  selected template
-
-  //     setSelectedTemplates((curr) => {
-  //       if (curr.indexOf(e.target.value) == -1) {
-  //         return [...curr, e.target.value];
-  //       }
-  //       return curr;
-  //     });
-  //   }
-
-  // };
-
   const [events, setEvents] = useState([
     "Enqueued",
     "Failed",
@@ -304,17 +243,7 @@ function Flow({
   ]);
   const [keyword, setKeyword] = useState("");
   const [keywordList, setKeywordList] = useState([]);
-  // const moveCard = useCallback((dragIndex, hoverIndex) => {
-  //   console.log("move Card");
-  //   setBoard((prevCards) =>
-  //     update(prevCards, {
-  //       $splice: [
-  //         [dragIndex, 1],
-  //         [hoverIndex, 0, prevCards[dragIndex]]
-  //       ]
-  //     })
-  //   );
-  // }, []);
+
   const handleKeyword = (e) => {
     setEvents((curr) => {
       return [
@@ -574,7 +503,7 @@ function Flow({
             <div className="Selected-container ">
               {
                 selectedTemplates.map((temp, index) => {
-                  return (<DragCards template={temp} deleteTemplate={deleteTemplate} showDel={true}
+                  return (<DragCards key={`selTemp${index}`} template={temp} deleteTemplate={deleteTemplate} showDel={true}
                     // moveCard={moveCard}
                   />);
                 })
