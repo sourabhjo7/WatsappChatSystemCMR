@@ -12,4 +12,4 @@ const campaignSchema = new mongoose.Schema({
 });
 
 
-module.exports = mongoose.model("Flow", flowSchema);
+module.exports = mongoose.model("Campaign", campaignSchema);

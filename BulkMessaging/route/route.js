@@ -23,6 +23,8 @@ const {
 const Customer = require("../model/customer");
 const Template = require("../model/template");
 const Flow = require("../model/flow");
+const Campaign = require("../model/campaign");
+
 
 const baseUserSystemURL = "http://localhost:3002";
 const baseChatSystemURL = "http://localhost:3001";
@@ -277,7 +279,7 @@ router.post("/create_new_campaign", async (req, res) => {
       started: 0,
       ended: 0,
     },
-    startNode,
+    startFlow,
     defaultData: {
       nodes: nodes,
       edges: edges
@@ -292,10 +294,7 @@ router.post("/create_new_campaign", async (req, res) => {
 
     customer.currCampaign = {
       campaignID: campaignData._id.toString(),
-      currPos: {
-        temp: startNode,
-        show: true
-      }
+      currFlowID: startFlow
     }
     await customer.save();
   }

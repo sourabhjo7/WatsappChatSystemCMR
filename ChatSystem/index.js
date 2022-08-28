@@ -27,6 +27,8 @@ const Customer = require("./model/customer");
 const Template = require("./model/template");
 const Chat = require("./model/chat");
 const Flow = require("./model/flow");
+const Campaign = require("./model/campaign");
+
 
 
 //requiring the hepler methods
@@ -257,13 +259,15 @@ app.post("/hook", async (req, res) => {
     }
   });
 
-  let flow, flowPos;
+  let flow, flowPos, campaign;
   //getting the flow from customer collection
   const customer = await Customer.findOne({
     userPhoneNo: payload.destination || payload.source
   });
 
   if(customer){
+
+    
 
     flowPos = customer.currFlow.currPos;
     flow = await Flow.findOne({_id: customer.currFlow.flowID});
