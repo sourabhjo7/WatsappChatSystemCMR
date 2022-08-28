@@ -582,7 +582,7 @@ function Flow({
             </div>
             {/* this is the board where selected templates are droped */}
             <div className="Dnd-flow-canva">
-              <DndFlowMap nodes={nodes} setNodes={setNodes} edges={edges} setEdges={setEdges} onEdgesChange={onEdgesChange} templates={templates} setTemplates={setTemplates} selectedTemplates={selectedTemplates} setSelectedTemplates={setSelectedTemplates} events={events} setEvents={setEvents}/>
+              <DndFlowMap flow={true} nodes={nodes} setNodes={setNodes} edges={edges} setEdges={setEdges} onEdgesChange={onEdgesChange} templates={templates} setTemplates={setTemplates} selectedTemplates={selectedTemplates} setSelectedTemplates={setSelectedTemplates} events={events} setEvents={setEvents}/>
             </div>
 
             {/* <div className="Selected-container " >

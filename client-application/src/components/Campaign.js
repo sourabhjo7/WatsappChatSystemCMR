@@ -9,15 +9,8 @@ import DragCards from "./uiComponent/DragCards";
 import DndFlowMap from "./uiComponent/DndFlowMap";
 import {ReactFlowProvider} from "react-flow-renderer";
 import ReactFlow, {
-  addEdge,
   useNodesState,
   useEdgesState,
-  Controls,
-  MarkerType,
-  updateEdge,
-  MiniMap,
-  applyNodeChanges,
-  onNodesChange
 } from "react-flow-renderer";
 
 function Campaign({
@@ -30,7 +23,7 @@ function Campaign({
 }) {
   //defining state variables
   const [flows, setFlows] = useState([]);
-
+  
   const [optedinUsers, setOptedinUsers] = useState([]);
   const [searchedOptedinUsers, setSearchedOptedinUsers] = useState([]);
 
@@ -409,10 +402,10 @@ function Campaign({
   const FinalSubmit = async () => {
     const data = {
       title: campaignTitle,
-      tMessageList: FlowDataSubmit(),
+      tFlowList: FlowDataSubmit(),
       contactList: selectedNos,
       cid: userId,
-      startNode: startNode.data.label
+      startFlow: startNode.id
     };
     console.log(data);
     try {
@@ -505,7 +498,7 @@ function Campaign({
             </div>
             {/* this is the board where selected flows are droped */}
             <div className="Dnd-flow-canva">
-              <DndFlowMap nodes={nodes} setNodes={setNodes} edges={edges} setEdges={setEdges} onEdgesChange={onEdgesChange} templates={flows} setTemplates={setFlows} selectedTemplates={selectedFlows} setSelectedTemplates={setSelectedFlows} events={events} setEvents={setEvents}/>
+              <DndFlowMap  flow={true} nodes={nodes} setNodes={setNodes} edges={edges} setEdges={setEdges} onEdgesChange={onEdgesChange} templates={flows} setTemplates={setFlows} selectedTemplates={selectedFlows} setSelectedTemplates={setSelectedFlows} events={events} setEvents={setEvents}/>
             </div>
 
           </div>

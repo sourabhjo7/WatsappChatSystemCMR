@@ -20,7 +20,7 @@ import CustomEdge from "./CustomEdge";
 let id = 0;
 const getId = () => `dndnode_${id++}`;
 
-function DndFlowMap({nodes,setNodes,edges,setEdges,onEdgesChange,settemplates,setTemplates, SelectedTemplates,setSelectedTemplates,events,setEvents}) {
+function DndFlowMap({ flow,nodes,setNodes,edges,setEdges,onEdgesChange,settemplates,setTemplates, SelectedTemplates,setSelectedTemplates,events,setEvents}) {
   const reactFlowWrapper = useRef(null);
 
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
