@@ -10,7 +10,7 @@ import ReactFlow, {
 
 
 
-function DndAllFlowsMap({nodes,setNodes,edges,setEdges}) {
+function DndAllFlowsMap({nodes,edges}) {
   const reactFlowWrapper = useRef(null);
 
 

@@ -37,8 +37,8 @@ function AllFlows({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, userNa
   ];
     const [flows, setFlows] = useState([]);
     const [selectedFlow, setSelectedFlow] = useState({});
-    const [nodes,setNodes]=useState(initialNodes);
-    const [edges,setEdges]=useState(initialEdges);
+    const [nodes,setNodes]=useState([]);
+    const [edges,setEdges]=useState([]);
     
     const getFlows = async () => {
 
@@ -47,7 +47,8 @@ function AllFlows({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, userNa
         console.log(response.data.flows);
         if(response.data.flows.length > 0){
           setFlows(response.data.flows);
-          setSelectedFlow(response.data.flows[0]);
+          setSelectedFlow(response.data.flows[0]);  
+
         }
       });
 
@@ -69,7 +70,7 @@ function AllFlows({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, userNa
             })}
           </div>
           <div className="flow_mid_child_container message">
-              <DndAllFlowsMap nodes={nodes} setNodes={setNodes} setEdges={setEdges} edges={edges} />
+              <DndAllFlowsMap nodes={selectedFlow.defaultData.nodes}  edges={selectedFlow.defaultData.edges} />
           </div>
         </div>
       )
