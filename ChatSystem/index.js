@@ -264,6 +264,8 @@ app.post("/hook", async (req, res) => {
   });
 
   if(customer){
+    console.log("Start:", customer.currFlow.currPos);
+
     flowPos = customer.currFlow.currPos;
     flow = await Flow.findOne({_id: customer.currFlow.flowID});
 
@@ -389,37 +391,63 @@ app.post("/hook", async (req, res) => {
             for(let eventObj of flow.tMessageList[flowPos.temp].events){
 
               if(typeof(eventObj.event) === "number"){
-                const favTime = new Date().getTime() + (eventObj.event*1000);
-                const favDate = new Date(favTime);
-
-                schedule.scheduleJob(favDate, () => {
-                  sendMessage(flow.tMessageList[eventObj.action].tMessage, payload.destination, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
-                })
-              }
-
-              if(eventObj.event === `${payload.payload.text.toLowerCase()}`){
                 customer.currFlow.currPos = {
                   temp: eventObj.action,
                   show: false
                 }
                 found = true;
-                await sendMessage(flow.tMessageList[customer.currFlow.currPos.temp].tMessage, payload.destination, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
+                const favTime = new Date().getTime() + (eventObj.event*1000);
+                const favDate = new Date(favTime);
+
+                schedule.scheduleJob(favDate, () => {
+                  sendMessage(flow.tMessageList[eventObj.action].tMessage, payload.destination || payload.source, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
+                })
+              }
+
+              if(eventObj.event === `${payload.payload.text.toLowerCase()}`){
+
+                customer.currFlow.currPos = {
+                  temp: eventObj.action,
+                  show: false
+                }
+                found = true;
+                await sendMessage(flow.tMessageList[customer.currFlow.currPos.temp].tMessage, payload.destination || payload.source, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
                 break;
+
               }else if(eventObj.event === "!end"){
 
                 if(!customer.currFlow.currPos.show){
                   flow.data.ended = flow.data.ended + 1;
-
                   flow.markModified('data');
                   await flow.save();
-                } 
 
-                customer.currFlow.currPos = {
-                  temp: eventObj.action,
-                  show: true
+                  const newFlowIndex = customer.allFLows.indexOf(flow._id) + 1;
+
+                  if(newFlowIndex < customer.allFLows.length){
+                    const newFlow = await Flow.findOne({_id: customer.allFLows[newFlowIndex]});
+
+                    customer.currFlow = {
+                      flowID: customer.allFLows[newFlowIndex],
+                      currPos: {
+                        temp: newFlow.startNode,
+                        show: true
+                      }
+                    }
+                  }
                 }
+
+                const newFlowIndex = customer.allFLows.indexOf(flow._id) + 1;
+                if(newFlowIndex === -1 || newFlowIndex >= customer.allFLows.length){
+                  customer.currFlow.currPos = {
+                    temp: eventObj.action,
+                    show: true
+                  }
+
+                }
+
                 found = true;
                 break;
+
               }
             }
 
@@ -429,6 +457,8 @@ app.post("/hook", async (req, res) => {
 
             customer.markModified('currFlow');
             await customer.save();
+            console.log("Last:", customer.currFlow.currPos);
+
           }
         }
 
@@ -442,11 +472,16 @@ app.post("/hook", async (req, res) => {
       for(let eventObj of flow.tMessageList[flowPos.temp].events){
 
         if(typeof(eventObj.event) === "number"){
+          customer.currFlow.currPos = {
+            temp: eventObj.action,
+            show: false
+          }
+          found = true;
           const favTime = new Date().getTime() + (eventObj.event*1000);
           const favDate = new Date(favTime);
 
           schedule.scheduleJob(favDate, () => {
-            sendMessage(flow.tMessageList[eventObj.action].tMessage, payload.source, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
+            sendMessage(flow.tMessageList[eventObj.action].tMessage, payload.destination || payload.source, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
           })
         }
 
@@ -457,20 +492,41 @@ app.post("/hook", async (req, res) => {
             show: false
           }
           found = true;
-          await sendMessage(flow.tMessageList[customer.currFlow.currPos.temp].tMessage, payload.source, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
+          await sendMessage(flow.tMessageList[customer.currFlow.currPos.temp].tMessage, payload.destination || payload.source, managerDel.assignedNumber, managerDel.appName, managerDel.apiKey);
           break;
         }else if(eventObj.event === "!end"){
 
+          //If flow ending for the first time
           if(!customer.currFlow.currPos.show){
             flow.data.ended = flow.data.ended + 1;
 
             flow.markModified('data');
             await flow.save();
+
+            const newFlowIndex = customer.allFLows.indexOf(flow._id) + 1;
+
+            if(newFlowIndex < customer.allFLows.length){
+              const newFlow = await Flow.findOne({_id: customer.allFLows[newFlowIndex]});
+
+              customer.currFlow = {
+                flowID: customer.allFLows[newFlowIndex],
+                currPos: {
+                  temp: newFlow.startNode,
+                  show: true
+                }
+              }
+
+            }
+
           }
 
-          customer.currFlow.currPos = {
-            temp: eventObj.action,
-            show: true
+          const newFlowIndex = customer.allFLows.indexOf(flow._id) + 1;
+          if(newFlowIndex === -1 || newFlowIndex >= customer.allFLows.length){
+            customer.currFlow.currPos = {
+              temp: eventObj.action,
+              show: true
+            }
+
           }
           found = true;
           break;
@@ -482,9 +538,9 @@ app.post("/hook", async (req, res) => {
       }
       customer.markModified('currFlow');
       await customer.save();
+      console.log("Last:", customer.currFlow.currPos);
     }
   }
-
   return res.status(200).end();
 });
 

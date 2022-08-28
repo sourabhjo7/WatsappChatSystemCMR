@@ -211,7 +211,10 @@ router.post("/createnewflow", async (req, res) => {
     await flowData.save();
 
     for(let phNum of contactList){
+
       const customer = await Customer.findOne({userPhoneNo: phNum});
+
+      customer.allFLows = [...customer.allFLows, flowData._id.toString()];
 
       if(!customer.currFlow || customer.currFlow.currPos.temp === "!end"){
         customer.currFlow = {
@@ -220,18 +223,9 @@ router.post("/createnewflow", async (req, res) => {
               temp: startNode,
               show: true
             }
-          },
-        customer.save();
+          }
       }
-      // const customer = await Customer.findOneAndUpdate({userPhoneNo: phNum}, {
-      //   currFlow: {
-      //     flowID: flowData._id.toString(),
-      //     currPos: {
-      //       temp: startNode,
-      //       show: true
-      //     }
-      //   },
-      // }, {new: true});
+      await customer.save();
     }
   res.status(200).json({
     data: flowData
