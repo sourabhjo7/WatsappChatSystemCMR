@@ -377,7 +377,7 @@ app.post("/hook", async (req, res) => {
           });
         }
       }else{
-        if(!flow){
+        if(!flow || flowPos.temp === "!end" && flowPos.show){
           //storing number in bot chat if alread didn't exist
           if(botChats.indexOf(payload.source) === -1){
             botChats.push(payload.source);
@@ -419,7 +419,9 @@ app.post("/hook", async (req, res) => {
                 if(!customer.currFlow.currPos.show){
                   flow.data.ended = flow.data.ended + 1;
                   flow.markModified('data');
-                  await flow.save();
+                  await flow.save(() => {
+                    console.log("Data Update: ", flow);
+                  });
 
                   const newFlowIndex = customer.allFLows.indexOf(flow._id) + 1;
 
@@ -501,7 +503,9 @@ app.post("/hook", async (req, res) => {
             flow.data.ended = flow.data.ended + 1;
 
             flow.markModified('data');
-            await flow.save();
+            await flow.save(() => {
+              console.log("Data Update: ", flow);
+            });
 
             const newFlowIndex = customer.allFLows.indexOf(flow._id) + 1;
 
