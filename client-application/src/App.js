@@ -76,7 +76,6 @@ function App() {
   const ChatPageRender = () => {
     return (
       <>
-
         <React.Suspense fallback={<></>}>
           {(userData.role === "Agent") && <ChatPage socket={socket} baseUserSystemURL={baseUserSystemURL} baseChatSystemURL={baseChatSystemURL} userData={userData} setIsLogedin={setIsLogedin} />}
         </React.Suspense>

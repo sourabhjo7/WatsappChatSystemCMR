@@ -211,15 +211,27 @@ router.post("/createnewflow", async (req, res) => {
     await flowData.save();
 
     for(let phNum of contactList){
-      const customer = await Customer.findOneAndUpdate({userPhoneNo: phNum}, {
-        currFlow: {
-          flowID: flowData._id.toString(),
-          currPos: {
-            temp: startNode,
-            show: true
-          }
-        },
-      }, {new: true});
+      const customer = await Customer.findOne({userPhoneNo: phNum});
+
+      if(!customer.currFlow || customer.currFlow.currPos.temp === "!end"){
+        customer.currFlow = {
+            flowID: flowData._id.toString(),
+            currPos: {
+              temp: startNode,
+              show: true
+            }
+          },
+        customer.save();
+      }
+      // const customer = await Customer.findOneAndUpdate({userPhoneNo: phNum}, {
+      //   currFlow: {
+      //     flowID: flowData._id.toString(),
+      //     currPos: {
+      //       temp: startNode,
+      //       show: true
+      //     }
+      //   },
+      // }, {new: true});
     }
   res.status(200).json({
     data: flowData
