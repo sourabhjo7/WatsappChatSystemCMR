@@ -298,6 +298,10 @@ router.post("/create_new_campaign", async (req, res) => {
     }
     await customer.save();
   }
+
+  res.status(200).json({
+    data: campaignData
+  });
 })
 
 module.exports = router
