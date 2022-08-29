@@ -12,6 +12,7 @@ import ReactFlow, {
   useNodesState,
   useEdgesState,
 } from "react-flow-renderer";
+import CampaignFlowCard from "./uiComponent/CampaignFlowCard";
 
 function Campaign({
   baseBulkMessagingURL,
@@ -41,7 +42,7 @@ function Campaign({
   const [nodes, setNodes] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [campaignTitle, setCampaignTitle] = useState("");
-
+  
   //getting all the approved templates
   const getFlows = async () => {
     await axios.post(`${baseBulkMessagingURL}/getflows`, {
@@ -199,24 +200,29 @@ function Campaign({
   const [board, setBoard] = useState([]);
   const [selectedFlows, setSelectedFlows] = useState([]);
   // to select a component
-  const selectFlows = (e) => {
-    if (board.indexOf(e.target.value) === -1) {
-      setSelectedFlows((curr) => {
-        if (curr.indexOf(e.target.value) === -1) {
-          return [
-            ...curr,
-            e.target.value
-          ];
+  const selectFlows = (title,id) => {
+    let f=1;
+    selectedFlows.map((flow)=>{
+      if(flow.title==title){
+        f=0;
+      }
+    });
+  
+      setSelectedFlows((selectedflow)=>{
+       if(f){
+        return [...selectedflow,{title,id}];
+       }
+        else{
+          return [...selectedflow];
         }
-        return curr;
       });
-    }
+    
   };
   const deleteTemplate = (e) => {
     setSelectedFlows((curr) => {
       const ind = curr.indexOf(e.target.value);
       curr.splice(ind, 1);
-      console.log(curr);
+      
       return [...curr];
     });
   };
@@ -298,8 +304,7 @@ function Campaign({
         events = [];
       let flag = 0;
       flows.forEach((template) => {
-        if (template.elementName == nodes[i].type) {
-          tMessage = template.data;
+        if (template.title == nodes[i].type) {
           flag = 1;
         }
       });
@@ -320,7 +325,7 @@ function Campaign({
               action;
             let flage = 0;
             flows.forEach((template) => {
-              if (template.elementName == helperObject[edges[j].target]) {
+              if (template.title == helperObject[edges[j].target]) {
                 flage = 1;
               }
             });
@@ -355,12 +360,12 @@ function Campaign({
               if (edges[k].source == edges[j].target) {
                 let flagt = 0;
                 flows.forEach((template) => {
-                  if (template.elementName == helperObject[edges[k].target]) {
+                  if (template.title == helperObject[edges[k].target]) {
                     flagt = 1;
                   }
                 });
                 if (flagt) {
-                  action = helperObject[edges[k].target];
+                  action = edges[k].target;
                 } else {
                   action = undefined;
                 }
@@ -372,11 +377,10 @@ function Campaign({
           }
         }
         tMessageListobj = {
-          tMessage: tMessage,
           events: events
         };
-        const tname = nodes[i].type;
-        FlowData[`${tname}`] = // IF node is template and also in last array that is ending node
+        const tid= nodes[i].id;
+        FlowData[`${tid}`] = // IF node is template and also in last array that is ending node
         tMessageListobj;
       } else if (flag && flagend) {
         let event,
@@ -385,11 +389,10 @@ function Campaign({
         action = "!end";
         events.push({event, action});
         tMessageListobj = {
-          tMessage: tMessage,
           events: events
         };
-        const tname = nodes[i].type;
-        FlowData[`${tname}`] = tMessageListobj;
+        const tid = nodes[i].id;
+        FlowData[`${tid}`] = tMessageListobj;
       }
       // if not template then dont do anything
     }
@@ -403,7 +406,7 @@ function Campaign({
     const data = {
       title: campaignTitle,
       tFlowList: FlowDataSubmit(),
-      contactList: selectedNos,
+      contactList: selectedNos ,
       cid: userId,
       startFlow: startNode.id
     };
@@ -432,7 +435,7 @@ function Campaign({
           <div className="cards-container">
             {
               flows.map((flow, index) => {
-                return <FlowCard flow={flow} select={selectFlows}/>;
+                return <CampaignFlowCard flow={flow} select={selectFlows}/>;
               })
             }
           </div>
@@ -477,7 +480,7 @@ function Campaign({
             <div className="flow_timeKey_container events_container">
               {
                 events.map((temp, index) => {
-                  return (<DragCards template={temp} deleteTemplate={deleteTemplate} showDel={false}
+                  return (<DragCards template={temp} keyy={index}   deleteTemplate={deleteTemplate} showDel={false}
                     // moveCard={moveCard}
                   />);
                 })
@@ -489,8 +492,8 @@ function Campaign({
           <div className="selected-flow-area">
             <div className="Selected-container ">
               {
-                selectedFlows.map((temp, index) => {
-                  return (<DragCards template={temp} deleteTemplate={deleteTemplate} showDel={true}
+                selectedFlows.map((temp) => {
+                  return (<DragCards template={temp.title} keyy={temp.id} deleteTemplate={deleteTemplate} showDel={true}
                     // moveCard={moveCard}
                   />);
                 })
@@ -498,7 +501,7 @@ function Campaign({
             </div>
             {/* this is the board where selected flows are droped */}
             <div className="Dnd-flow-canva">
-              <DndFlowMap  flow={true} nodes={nodes} setNodes={setNodes} edges={edges} setEdges={setEdges} onEdgesChange={onEdgesChange} templates={flows} setTemplates={setFlows} selectedTemplates={selectedFlows} setSelectedTemplates={setSelectedFlows} events={events} setEvents={setEvents}/>
+              <DndFlowMap  flow={false} nodes={nodes} setNodes={setNodes} edges={edges} setEdges={setEdges} onEdgesChange={onEdgesChange} templates={flows} setTemplates={setFlows} selectedTemplates={selectedFlows} setSelectedTemplates={setSelectedFlows} events={events} setEvents={setEvents}/>
             </div>
 
           </div>
