@@ -6,9 +6,7 @@ const campaignSchema = new mongoose.Schema({
   tFlowList: Object,
   contactList: [String],
   cid: String,
-  data: Object,
   startFlow: String,
-  defaultData: Object
 });
 
 

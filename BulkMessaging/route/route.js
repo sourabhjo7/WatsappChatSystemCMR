@@ -265,25 +265,15 @@ router.post("/create_new_campaign", async (req, res) => {
     tFlowList,
     contactList,
     cid,
-    startFlow,
-    nodes,
-    edges
+    startFlow
   } = req.body;
 
   const campaignData = new Campaign({
     title,
-    tMessageList,
+    tFlowList,
     contactList,
     cid,
-    data: {
-      started: 0,
-      ended: 0,
-    },
-    startFlow,
-    defaultData: {
-      nodes: nodes,
-      edges: edges
-    }
+    startFlow
   });
 
   await campaignData.save();
