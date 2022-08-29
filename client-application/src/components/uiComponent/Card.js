@@ -13,11 +13,11 @@ function Card({ template, select }) {
           </div>
           <div className="face face2">
             <div className="content">
-              <p>
+              <textarea style={{border:"none"}} rows="3" cols="25" >
                 {template.data.length > 80
                   ? `${template.data.substr(0, 80)}...`
                   : template.data}
-              </p>
+              </textarea>
               <button onClick={select} value={template.elementName}>
                 Select
               </button>
