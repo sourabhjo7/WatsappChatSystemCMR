@@ -1,7 +1,26 @@
 import React from "react";
 import "./Card.css";
 
-function Card({ template, select }) {
+function Card({ templates,template, select,setTemplates }) {
+
+  const change=(e)=>{
+    let i=0,ind=0;
+    templates.map(temp=>{
+      if(temp==template){
+        ind=i;
+      }
+      i++;
+});
+console.log(e.target.value);
+// as we dont have same temolates
+setTemplates((templates)=>{
+  templates[ind].data=e.target.value;
+  return [...templates];
+});
+
+
+  }
+  
   return (
     <>
       <div className="Card-container">
@@ -13,7 +32,7 @@ function Card({ template, select }) {
           </div>
           <div className="face face2">
             <div className="content">
-              <textarea style={{border:"none",overflow:"hidden"}} rows="3" cols="25" >
+              <textarea onChange={change} style={{border:"none",overflow:"hidden"}} rows="3" cols="25" >
                 {template.data.length > 80
                   ? `${template.data.substr(0, 80)}...`
                   : template.data}

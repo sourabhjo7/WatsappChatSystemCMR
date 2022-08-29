@@ -445,7 +445,7 @@ function Flow({
           <div className="cards-container">
             {
               templates.map((temp, index) => {
-                return <Card template={temp} select={selectTemplate}/>;
+                return <Card setTemplates={setTemplates} templates={templates} template={temp} select={selectTemplate}/>;
               })
             }
           </div>
