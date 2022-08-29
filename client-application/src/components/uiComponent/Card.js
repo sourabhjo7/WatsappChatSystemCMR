@@ -13,7 +13,7 @@ function Card({ template, select }) {
           </div>
           <div className="face face2">
             <div className="content">
-              <textarea style={{border:"none"}} rows="3" cols="25" >
+              <textarea style={{border:"none",overflow:"hidden"}} rows="3" cols="25" >
                 {template.data.length > 80
                   ? `${template.data.substr(0, 80)}...`
                   : template.data}
