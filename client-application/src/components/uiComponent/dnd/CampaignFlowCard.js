@@ -1,7 +1,7 @@
 import React from 'react'
 import "./Card.css";
 
-function CampaignFlowCard({flow,select}) {
+const CampaignFlowCard = ({flow,select}) => {
   return (
     <>
     <div className="Card-container">
@@ -26,5 +26,4 @@ function CampaignFlowCard({flow,select}) {
   </>
   )
 }
-
 export default CampaignFlowCard

@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import "./App.css";
-// importing drag and drop dependency
-
 
 //importing axios for https requests
 import axios from "axios";
@@ -17,25 +15,25 @@ import Profile from "./components/Profile";
 
 import AllUsers from "./components/AllUsers";
 import CreateNewUser from "./components/CreateNewUser";
-import Login from "./components/Login";
+import Login from "./components/login/index";
 
 import AdminDb from "./components/roleDashboards/AdminDb";
 import ManagerDb from "./components/roleDashboards/ManagerDb";
 import AgentDb from "./components/roleDashboards/AgentDb";
 
 // import ManagerAssignPage from "./components/ManagerAssignPage";
-import Broadcasting from "./components/Broadcasting";
-import Flow from "./components/Flow";
-import Campaign from "./components/Campaign";
-import AllFlows from "./components/AllFlows";
+import Broadcasting from "./components/broadcasting/index";
+import Flow from "./components/flow/index";
+import Campaign from "./components/campaign/index";
+import AllFlows from "./components/allFlows/index";
 
-import NewTemplateRequest from "./components/NewTemplateRequest";
-import TemplateRequests from "./components/TemplateRequests";
-import AlertBox from "./components/uiComponent/AlertBox";
+import NewTemplateRequest from "./components/template/NewTemplateRequest";
+import TemplateRequests from "./components/template/TemplateRequests";
+import AlertBox from "./components/uiComponent/alertBox/index";
 
 import ManagerChat from "./components/chatComponents/ManagerChat";
 
-import ManagerProfile from "./components/ManagerProfile";
+import ManagerProfile from "./components/indiManagerProfile/index";
 import { ReactFlowProvider } from 'react-flow-renderer';
 
 //Importing as lazy so that socket only runs when user is agent or manager

@@ -1,5 +1,5 @@
 import React from 'react';
-import "./Sidebar.css";
+import "./index.css";
 import axios from "axios";
 
 const OverviewIcon = () => {
@@ -27,125 +27,125 @@ const AgentIcon = () => {
   </svg>
 }
 
-function Sidebar({role, baseURL, setIsLogedin, page, noOfPendingTemplates=0, noOfRequestedChats=0}) {
-    const logOut = async () => {
-      await axios.get(`${baseURL}/auth/logout`, { validateStatus: false, withCredentials: true }).then((response) => {
-        setIsLogedin(false);
-        window.location = "/";
-      });
+const Sidebar = ({role, baseURL, setIsLogedin, page, noOfPendingTemplates=0, noOfRequestedChats=0}) => {
+  const logOut = async () => {
+    await axios.get(`${baseURL}/auth/logout`, { validateStatus: false, withCredentials: true }).then((response) => {
+      setIsLogedin(false);
+      window.location = "/";
+    });
+  }
+
+
+  const Links = () => {
+    if(role === "Admin"){
+      return <div className="links">
+        <a href="/" className={page === "overview" ? "active" : "nonActive"}>
+          <OverviewIcon />
+          <span>Overview</span>
+        </a>
+
+        <a href="/managers" className={page === "managers" ? "active" : "nonActive"}>
+          <AgentIcon />
+          <span>Managers</span>
+        </a>
+
+        <a href="/template_requests" className={page === "templateRequests" ? "active" : "nonActive"}>
+          <AgentIcon />
+          <span>Template Requests <b className="floatNumber">{noOfPendingTemplates}</b></span>
+        </a>
+
+        <a href="/create_new_user" className={page === "createNewUser" ? "active" : "nonActive"}>
+          <NewUserIcon />
+          <span>Add new Manager</span>
+        </a>
+
+      </div>;
+    }else if(role === "Agent"){
+      return <div className="links">
+
+        <a href="/" className={page === "overview" ? "active" : "nonActive"}>
+          <OverviewIcon />
+          <span>Overview</span>
+        </a>
+
+        <a href="/chat" className={page === "chat" ? "active" : "nonActive"}>
+          <NewUserIcon />
+          <span>Chat</span>
+        </a>
+      </div>;
+    }else{
+      return <div className="links">
+
+        <a href="/" className={page === "overview" ? "active" : "nonActive"}>
+          <OverviewIcon />
+          <span>Overview</span>
+        </a>
+
+        <a href="/agents" className={page === "agents" ? "active" : "nonActive"}>
+          <AgentIcon />
+          <span>Agents</span>
+        </a>
+
+        <a href="/asign_agent" className={page === "assignAgents" ? "active" : "nonActive"}>
+          <AgentIcon />
+          <span>Assign Agents</span>
+        </a>
+
+        <a href="/chat_requests" className={page === "chat" ? "active" : "nonActive"}>
+          <AgentIcon />
+          <span>Chat Requests <b className="floatNumber">{noOfRequestedChats}</b></span>
+        </a>
+
+        <a href="/broadcast" className={page === "broadcasting" ? "active" : "nonActive"}>
+          <NewUserIcon />
+          <span>Broadcast</span>
+        </a>
+
+        <a href="/flow" className={page === "flow" ? "active" : "nonActive"}>
+          <NewUserIcon />
+          <span>Flow</span>
+        </a>
+
+        <a href="/allflows" className={page === "AllFlows" ? "active" : "nonActive"}>
+          <NewUserIcon />
+          <span>All Flows</span>
+        </a>
+
+        <a href="/campaign" className={page === "campaign" ? "active" : "nonActive"}>
+          <NewUserIcon />
+          <span>Campaign</span>
+        </a>
+
+        <a href="/new_template_request" className={page === "newTemplateRequest" ? "active" : "nonActive"}>
+          <NewUserIcon />
+          <span>Your Template</span>
+        </a>
+
+        <a href="/create_new_user" className={page === "createNewUser" ? "active" : "nonActive"}>
+          <NewUserIcon />
+          <span>Add new Agent</span>
+        </a>
+
+
+      </div>;
     }
 
-
-    const Links = () => {
-      if(role === "Admin"){
-        return <div className="links">
-          <a href="/" className={page === "overview" ? "active" : "nonActive"}>
-            <OverviewIcon />
-            <span>Overview</span>
-          </a>
-
-          <a href="/managers" className={page === "managers" ? "active" : "nonActive"}>
-            <AgentIcon />
-            <span>Managers</span>
-          </a>
-
-          <a href="/template_requests" className={page === "templateRequests" ? "active" : "nonActive"}>
-            <AgentIcon />
-            <span>Template Requests <b className="floatNumber">{noOfPendingTemplates}</b></span>
-          </a>
-
-          <a href="/create_new_user" className={page === "createNewUser" ? "active" : "nonActive"}>
-            <NewUserIcon />
-            <span>Add new Manager</span>
-          </a>
-
-        </div>;
-      }else if(role === "Agent"){
-        return <div className="links">
-
-          <a href="/" className={page === "overview" ? "active" : "nonActive"}>
-            <OverviewIcon />
-            <span>Overview</span>
-          </a>
-
-          <a href="/chat" className={page === "chat" ? "active" : "nonActive"}>
-            <NewUserIcon />
-            <span>Chat</span>
-          </a>
-        </div>;
-      }else{
-        return <div className="links">
-
-          <a href="/" className={page === "overview" ? "active" : "nonActive"}>
-            <OverviewIcon />
-            <span>Overview</span>
-          </a>
-
-          <a href="/agents" className={page === "agents" ? "active" : "nonActive"}>
-            <AgentIcon />
-            <span>Agents</span>
-          </a>
-
-          <a href="/asign_agent" className={page === "assignAgents" ? "active" : "nonActive"}>
-            <AgentIcon />
-            <span>Assign Agents</span>
-          </a>
-
-          <a href="/chat_requests" className={page === "chat" ? "active" : "nonActive"}>
-            <AgentIcon />
-            <span>Chat Requests <b className="floatNumber">{noOfRequestedChats}</b></span>
-          </a>
-
-          <a href="/broadcast" className={page === "broadcasting" ? "active" : "nonActive"}>
-            <NewUserIcon />
-            <span>Broadcast</span>
-          </a>
-
-          <a href="/flow" className={page === "flow" ? "active" : "nonActive"}>
-            <NewUserIcon />
-            <span>Flow</span>
-          </a>
-
-          <a href="/allflows" className={page === "AllFlows" ? "active" : "nonActive"}>
-            <NewUserIcon />
-            <span>All Flows</span>
-          </a>
-          
-          <a href="/campaign" className={page === "campaign" ? "active" : "nonActive"}>
-            <NewUserIcon />
-            <span>Campaign</span>
-          </a>
-
-          <a href="/new_template_request" className={page === "newTemplateRequest" ? "active" : "nonActive"}>
-            <NewUserIcon />
-            <span>Your Template</span>
-          </a>
-
-          <a href="/create_new_user" className={page === "createNewUser" ? "active" : "nonActive"}>
-            <NewUserIcon />
-            <span>Add new Agent</span>
-          </a>
+  }
 
 
-        </div>;
-      }
-
-    }
-
-
-    return (
-        <div className="sidebar">
-          <h1>Logo</h1>
+  return (
+      <div className="sidebar">
+        <h1>Logo</h1>
 
 
-          <Links />
+        <Links />
 
-          <div className="logoutCon" onClick={logOut}>
-            <LogoutIcon/>
-            <span className="logoutBtn">LogOut</span>
-          </div>
+        <div className="logoutCon" onClick={logOut}>
+          <LogoutIcon/>
+          <span className="logoutBtn">LogOut</span>
         </div>
-    )
+      </div>
+  )
 }
 
 export default Sidebar;

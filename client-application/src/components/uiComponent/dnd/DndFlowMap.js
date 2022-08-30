@@ -10,17 +10,23 @@ import ReactFlow, {
   applyNodeChanges,
   onNodesChange
 } from "react-flow-renderer";
-import CustomEdge from "./CustomEdge";
-// const edgeTypes = {
-//   custom: CustomEdge,
-// };
-
-
 
 let cusid = 0;
 
-
-function DndFlowMap({ flow,nodes,setNodes,edges,setEdges,onEdgesChange,settemplates,setTemplates, SelectedTemplates,setSelectedTemplates,events,setEvents}) {
+const DndFlowMap = ({
+  flow,
+  nodes,
+  setNodes,
+  edges,
+  setEdges,
+  onEdgesChange,
+  settemplates,
+  setTemplates,
+  SelectedTemplates,
+  setSelectedTemplates,
+  events,
+  setEvents
+}) => {
   const reactFlowWrapper = useRef(null);
 
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
@@ -48,8 +54,8 @@ function DndFlowMap({ flow,nodes,setNodes,edges,setEdges,onEdgesChange,settempla
     else{
     return `${id}`;
     }
-  
-};
+
+  };
   const onDragOver = useCallback((event) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = "move";
@@ -60,7 +66,7 @@ function DndFlowMap({ flow,nodes,setNodes,edges,setEdges,onEdgesChange,settempla
       event.preventDefault();
 
       const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
-        const dragData=JSON.parse(event.dataTransfer.getData("application/reactflow") ); 
+        const dragData=JSON.parse(event.dataTransfer.getData("application/reactflow") );
         const type=dragData.nodeType;
         const id=dragData.id;
       // check if the dropped element is valid
@@ -88,13 +94,12 @@ function DndFlowMap({ flow,nodes,setNodes,edges,setEdges,onEdgesChange,settempla
                 curr.splice(ind, 1);
             }
 
-            
             return [...curr];
       })
     },
     [reactFlowInstance]
   );
-  
+
   const onEdgeUpdateStart = useCallback(() => {
     edgeUpdateSuccessful.current = false;
   }, []);
@@ -112,37 +117,6 @@ function DndFlowMap({ flow,nodes,setNodes,edges,setEdges,onEdgesChange,settempla
     edgeUpdateSuccessful.current = true;
   }, []);
 
-
-
-
-  /* now we have to use nodes and edges to make a different data structure
-    tMessageList = {
-      "app_details": {
-        tMessage: "Choose One: | [Option 1] | [Option 2] | [Option 3]",
-        events: [{
-          event: "Hello",
-          action: "app_otp_code"
-        }]
-      },
-      "app_order_confirmation": {
-        tMessage: "Your Order with id {{1}} is {{2}}.",
-        events: [{
-          event: "test",
-          action: "app_test_code"
-        }]
-      },
-      "app_otp_code": {
-        tMessage: "Your OTP for {{1}} is {{2}}.",
-        events: [{
-          event: "!end",
-          action: "!end"
-        }]
-      },
-
-    },
-
-
-  */
    const onNodesChange = useCallback(
       (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
       [setNodes]
@@ -174,7 +148,8 @@ function DndFlowMap({ flow,nodes,setNodes,edges,setEdges,onEdgesChange,settempla
         </div>
       </div>
     </>
-  );}
+  );
+}
 
 
 export default DndFlowMap;

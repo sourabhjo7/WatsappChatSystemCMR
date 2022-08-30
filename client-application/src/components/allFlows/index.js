@@ -1,15 +1,14 @@
 import React, {useState, useEffect} from 'react'
 import axios from "axios";
 
-import "./AllFlows.css"
+import "./index.css"
 
-import Sidebar from "./uiComponent/Sidebar";
-import TopCon from "./uiComponent/TopCon";
-import DndAllFlowsMap from './uiComponent/DndAllFlowsMap';
+import Sidebar from "../uiComponent/sidebar/index";
+import TopCon from "../uiComponent/TopCon";
+import DndAllFlowsMap from './DndAllFlowsMap';
 
 
-
-function AllFlows({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, userName, userId, noOfRequestedChats}) {
+const AllFlows = ({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, userName, userId, noOfRequestedChats}) => {
   const initialNodes = [
     {
       id: '1',
@@ -17,7 +16,7 @@ function AllFlows({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, userNa
       data: { label: 'Input Node' },
       position: { x: 250, y: 25 },
     },
-  
+
     {
       id: '2',
       // you can also pass a React component as a label
@@ -39,7 +38,7 @@ function AllFlows({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, userNa
     const [selectedFlow, setSelectedFlow] = useState({});
     const [nodes,setNodes]=useState([]);
     const [edges,setEdges]=useState([]);
-    
+
     const getFlows = async () => {
 
       await axios.post(`${baseBulkMessagingURL}/getflows`, {managerId: userId}, { validateStatus: false, withCredentials: true }).then((response) => {
@@ -47,7 +46,7 @@ function AllFlows({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, userNa
         console.log(response.data.flows);
         if(response.data.flows.length > 0){
           setFlows(response.data.flows);
-          setSelectedFlow(response.data.flows[0]);  
+          setSelectedFlow(response.data.flows[0]);
 
         }
       });

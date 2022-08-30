@@ -3,7 +3,7 @@ import "./ChatPage.css";
 import axios from "axios";
 
 import Chat from "./Chat";
-import Sidebar from "../uiComponent/Sidebar";
+import Sidebar from "../uiComponent/sidebar/index";
 import TopCon from "../uiComponent/TopCon";
 
 
