@@ -1,5 +1,4 @@
-import update from "immutability-helper";
-import React, {useState, useEffect, useCallback} from "react";
+import React, {useState, useEffect} from "react";
 import axios from "axios";
 import "../flow/index.css";
 
@@ -8,8 +7,7 @@ import TopCon from "../uiComponent/TopCon";
 
 import DragCards from "../uiComponent/dnd/DragCards";
 import DndFlowMap from "../uiComponent/dnd/DndFlowMap";
-import {ReactFlowProvider} from "react-flow-renderer";
-import ReactFlow, {
+import {
   useNodesState,
   useEdgesState,
 } from "react-flow-renderer";
@@ -198,13 +196,12 @@ const Campaign = ({
     ]);
   }, [selNosByCheck, selNosByText]);
 
-  const [board, setBoard] = useState([]);
   const [selectedFlows, setSelectedFlows] = useState([]);
   // to select a component
   const selectFlows = (title,id) => {
     let f=1;
-    selectedFlows.map((flow)=>{
-      if(flow.title==title){
+    selectedFlows.forEach((flow)=>{
+      if(flow.title === title){
         f=0;
       }
     });
@@ -281,7 +278,7 @@ const Campaign = ({
     for (let i = 0; i < nodes.length; i++) {
       let flag = 1;
       for (let j = 0; j < edges.length; j++) {
-        if (nodes[i].id == edges[j].source) {
+        if (nodes[i].id === edges[j].source) {
           flag = 0;
           break;
         }
@@ -292,7 +289,6 @@ const Campaign = ({
     }
 
     let tMessageListobj = {};
-    console.log(startNode);
     let helperObject = {};
 
     for (let i = 0; i < nodes.length; i++) {
@@ -305,14 +301,14 @@ const Campaign = ({
         events = [];
       let flag = 0;
       flows.forEach((template) => {
-        if (template.title == nodes[i].type) {
+        if (template.title === nodes[i].type) {
           flag = 1;
         }
       });
 
       let flagend = 0;
       endNodes.forEach((endNode) => {
-        if (endNode.type == nodes[i].type) {
+        if (endNode.type === nodes[i].type) {
           flagend = 1;
         }
       });
@@ -321,12 +317,12 @@ const Campaign = ({
       if (flag && !flagend) {
         // check all edges where source is this node
         for (let j = 0; j < edges.length; j++) {
-          if (edges[j].source == nodes[i].id) {
+          if (edges[j].source === nodes[i].id) {
             let event,
               action;
             let flage = 0;
             flows.forEach((template) => {
-              if (template.title == helperObject[edges[j].target]) {
+              if (template.title === helperObject[edges[j].target]) {
                 flage = 1;
               }
             });
@@ -343,7 +339,7 @@ const Campaign = ({
               } else {
                 let flagk = 0;
                 keywordList.forEach((keyword) => {
-                  if (keyword == helperObject[edges[j].target]) {
+                  if (keyword === helperObject[edges[j].target]) {
                     flagk = 1;
                   }
                 });
@@ -358,10 +354,10 @@ const Campaign = ({
               event = undefined;
             }
             for (let k = 0; k < edges.length; k++) {
-              if (edges[k].source == edges[j].target) {
+              if (edges[k].source === edges[j].target) {
                 let flagt = 0;
                 flows.forEach((template) => {
-                  if (template.title == helperObject[edges[k].target]) {
+                  if (template.title === helperObject[edges[k].target]) {
                     flagt = 1;
                   }
                 });

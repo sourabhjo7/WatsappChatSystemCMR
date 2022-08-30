@@ -5,8 +5,8 @@ const Card = ({ templates,template, select,setTemplates }) => {
 
     const change=(e)=>{
       let i=0,ind=0;
-      templates.map(temp=>{
-        if(temp==template){
+      templates.forEach(temp=>{
+        if(temp === template){
           ind=i;
         }
         i++;

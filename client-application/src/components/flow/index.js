@@ -1,5 +1,4 @@
-import update from "immutability-helper";
-import React, {useState, useEffect, useCallback} from "react";
+import React, {useState, useEffect} from "react";
 import axios from "axios";
 import "./index.css";
 import Sidebar from "../uiComponent/sidebar/index";
@@ -8,17 +7,9 @@ import TopCon from "../uiComponent/TopCon";
 import Card from "../uiComponent/dnd/Card";
 import DragCards from "../uiComponent/dnd/DragCards";
 import DndFlowMap from "../uiComponent/dnd/DndFlowMap";
-import {ReactFlowProvider} from "react-flow-renderer";
-import ReactFlow, {
-  addEdge,
+import {
   useNodesState,
-  useEdgesState,
-  Controls,
-  MarkerType,
-  updateEdge,
-  MiniMap,
-  applyNodeChanges,
-  onNodesChange
+  useEdgesState
 } from "react-flow-renderer";
 
 const Flow = ({
@@ -287,7 +278,7 @@ const Flow = ({
     for (let i = 0; i < nodes.length; i++) {
       let flag = 1;
       for (let j = 0; j < edges.length; j++) {
-        if (nodes[i].id == edges[j].source) {
+        if (nodes[i].id === edges[j].source) {
           flag = 0;
           break;
         }
@@ -311,7 +302,7 @@ const Flow = ({
         events = [];
       let flag = 0;
       templates.forEach((template) => {
-        if (template.elementName == nodes[i].type) {
+        if (template.elementName === nodes[i].type) {
           tMessage = template.data;
           flag = 1;
         }
@@ -319,7 +310,7 @@ const Flow = ({
 
       let flagend = 0;
       endNodes.forEach((endNode) => {
-        if (endNode.type == nodes[i].type) {
+        if (endNode.type === nodes[i].type) {
           flagend = 1;
         }
       });
@@ -328,12 +319,12 @@ const Flow = ({
       if (flag && !flagend) {
         // check all edges where source is this node
         for (let j = 0; j < edges.length; j++) {
-          if (edges[j].source == nodes[i].id) {
+          if (edges[j].source === nodes[i].id) {
             let event,
               action;
             let flage = 0;
             templates.forEach((template) => {
-              if (template.elementName == helperObject[edges[j].target]) {
+              if (template.elementName === helperObject[edges[j].target]) {
                 flage = 1;
               }
             });
@@ -350,7 +341,7 @@ const Flow = ({
               } else {
                 let flagk = 0;
                 keywordList.forEach((keyword) => {
-                  if (keyword == helperObject[edges[j].target]) {
+                  if (keyword === helperObject[edges[j].target]) {
                     flagk = 1;
                   }
                 });
@@ -365,10 +356,10 @@ const Flow = ({
               event = undefined;
             }
             for (let k = 0; k < edges.length; k++) {
-              if (edges[k].source == edges[j].target) {
+              if (edges[k].source === edges[j].target) {
                 let flagt = 0;
                 templates.forEach((template) => {
-                  if (template.elementName == helperObject[edges[k].target]) {
+                  if (template.elementName === helperObject[edges[k].target]) {
                     flagt = 1;
                   }
                 });

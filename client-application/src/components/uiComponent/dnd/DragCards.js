@@ -1,7 +1,5 @@
 import React from "react";
 import "./DragCards.css";
-// import { useDrag,useDrop } from "react-dnd"; // drag functionality hook
-import { useRef } from 'react'
 
 const DragCards = ({template,deleteTemplate, showDel,keyy}) => {
   const onDragStart = (event, {nodeType,id}) => {

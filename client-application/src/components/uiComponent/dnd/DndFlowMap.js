@@ -2,13 +2,10 @@ import React, { useCallback, useRef, useState } from "react";
 import "./DndFlowMap";
 import ReactFlow, {
   addEdge,
-  useNodesState,
-  useEdgesState,
   Controls,
   MarkerType,
   updateEdge,
   applyNodeChanges,
-  onNodesChange
 } from "react-flow-renderer";
 
 let cusid = 0;
@@ -90,7 +87,7 @@ const DndFlowMap = ({
       // if dropped on canva then remove from template
       setSelectedTemplates((curr)=>{
         const ind = curr.indexOf(type);
-            if(ind!=-1){
+            if(ind !== -1){
                 curr.splice(ind, 1);
             }
 
