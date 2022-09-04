@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import axios from "axios";
 import "./index.css"
+import { callLogin } from '../../Services/Api';
 
 const Login = ({baseURL, changeLogin}) => {
   //defining state variables
@@ -9,14 +9,11 @@ const Login = ({baseURL, changeLogin}) => {
 
   //function for loging in a users
   const login = async () => {
-    axios.post(`${baseURL}/auth/login`, {email, password}, {validateStatus: false, withCredentials: true}).then((response) => {
-      if(response.status === 200 && response.data.success){
-        console.log("User Logedin");
-        changeLogin(response.data.user);//changing the state if login seccessful
-      }else{
-        console.log("Login Failed");
-      }
-    });
+   const user=callLogin(baseURL,email,password);
+   if(user!=false){
+    changeLogin(user);
+   }
+   //changing the state if login seccessful
   }
 
   return (

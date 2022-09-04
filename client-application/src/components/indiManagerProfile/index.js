@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import axios from "axios";
 
 import "./index.css";
 
@@ -11,6 +10,7 @@ import ManagerBar from "../charts/ManagerBar"
 import ManagerLine from "../charts/ManagerLine"
 
 import PlaceHolderImg from "../../images/managerPicPH.png";
+import { callagents, callcompletedchats, callindiuser, calltemplatesbymanager } from '../../Services/Api';
 
 const ManagerProfile = ({baseURL, baseChatSystemURL, userData, setIsLogedin, noOfPendingTemplates}) => {
 
@@ -34,19 +34,16 @@ const ManagerProfile = ({baseURL, baseChatSystemURL, userData, setIsLogedin, noO
 
       //Getting details on this perticular manager
       const getManager = async () => {
-        await axios.post(`${baseURL}/indi_user`, {userId: id}, { validateStatus: false, withCredentials: true }).then((response) => {
-          const managerDel = response.data.foundUser;
-          setTotalEscalations(managerDel.escalations);
-          setTotalNoOfEscalations(managerDel.escalations.length);
-          setManager(managerDel);
-        });
+        const managerDel = await callindiuser(baseURL,id);
+        setTotalEscalations(managerDel.escalations);
+        setTotalNoOfEscalations(managerDel.escalations.length);
+        setManager(managerDel);
       }
 
       //getting all the agents in the database
       const getAgents = async () => {
-        await axios.get(`${baseURL}/agents`, { validateStatus: false, withCredentials: true }).then((response) => {
-          const allAgents = response.data.agents;
-
+        
+        const allAgents=await callagents(baseURL)
           //filtering out the agents which are not created by this manager
           const allAgentsOfThisManager = allAgents.filter((agent) => {
             return agent.creatorUID === id
@@ -54,23 +51,21 @@ const ManagerProfile = ({baseURL, baseChatSystemURL, userData, setIsLogedin, noO
 
           setAgents(allAgentsOfThisManager);
           setTotalNoOfAgents(allAgentsOfThisManager.length);
-        });
+
       }
 
       //function for getting all the completed chats from the database
       const getCompletedChats = async () => {
-        await axios.post(`${baseChatSystemURL}/completedChats`, {managerID: id},{ validateStatus: false, withCredentials: true }).then((response) => {
-          setTotalCompletedChats(response.data.chats);
-          setTotalNoOfCompletedChats(response.data.chats.length);
-        });
+       const chats=await callcompletedchats(baseChatSystemURL,id);
+       setTotalCompletedChats(chats);
+      setTotalNoOfCompletedChats(chats.length);
       }
 
       //function for getting all the templates from the database
       const getTemplates = async() => {
-        await axios.post(`${baseChatSystemURL}/allTemplatesByManager`, {managerID: id},{ validateStatus: false, withCredentials: true }).then((response) => {
-          setTemplates(response.data.templates);
-          setTotalNoOfTemplates(response.data.templates.length);
-        });
+        const templates=await calltemplatesbymanager(baseChatSystemURL,id);
+        setTemplates(templates);
+        setTotalNoOfTemplates(templates.length);
       }
 
       //filtering data based on time
@@ -173,7 +168,7 @@ const ManagerProfile = ({baseURL, baseChatSystemURL, userData, setIsLogedin, noO
                   <option value="bar">Bar</option>
                   <option value="line">Line</option>
                 </select>
-                <div className className="manProChartCon">
+                <div  className="manProChartCon">
                 {showBar ? (
                   <ManagerBar
                     totalEscalations={totalEscalations}

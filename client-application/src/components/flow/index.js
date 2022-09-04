@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from "react";
-import axios from "axios";
 import "./index.css";
 import Sidebar from "../uiComponent/sidebar/index";
 import TopCon from "../uiComponent/TopCon";
@@ -11,6 +10,7 @@ import {
   useNodesState,
   useEdgesState
 } from "react-flow-renderer";
+import { callapprovedtemplates, callcreate_new_flow, calloptedinUsers, callstoredCustomers } from "../../Services/Api";
 
 const Flow = ({
   baseBulkMessagingURL,
@@ -43,39 +43,17 @@ const Flow = ({
 
   //getting all the approved templates
   const getTemplates = async () => {
-    await axios.post(`${baseBulkMessagingURL}/aprovedTemplates`, {
-      userId
-    }, {
-      validateStatus: false,
-      withCredentials: true
-    }).then((response) => {
-      //setting the templates with the response from the API
-      setTemplates(response.data.templates);
-    });
+    const temps= await callapprovedtemplates(baseBulkMessagingURL,userId);
+    setTemplates(temps);
   };
 
   const getOptedinUsers = async () => {
     let optedinUsers,
       storedUsers,
       toBePopulateUsers = [];
-    await axios.post(`${baseBulkMessagingURL}/optedinUsers`, {
-      userId
-    }, {
-      validateStatus: false,
-      withCredentials: true
-    }).then((response) => {
-      //setting the optedinUsers with the response from the API
-      optedinUsers = response.data.users;
-    });
-
-    await axios.get(`${baseBulkMessagingURL}/storedCustomers`, {
-      validateStatus: false,
-      withCredentials: true
-    }).then((response) => {
-      //getting the stored users from the response from the API
-      storedUsers = response.data.users;
-    });
-
+       optedinUsers=await calloptedinUsers(baseBulkMessagingURL,userId);
+        storedUsers=await callstoredCustomers(baseBulkMessagingURL);
+   
     //gettig name of the customers from the stored users
     for (let optUser of optedinUsers) {
       const optUserFullPhoneNo = optUser.countryCode + optUser.phoneCode;
@@ -167,12 +145,7 @@ const Flow = ({
   }, [format, inputTime]);
 
   const handleSubmit = async (e) => {
-    // const { data } = await axios.post(
-    //   `${baseBulkMessagingURL}/createnewflow`,
-    //   dummyData,
-    //   { validateStatus: false, withCredentials: true }
-    // );
-    // console.log(data.data);
+  
     setEvents((curr) => {
       if (format === "min") {
         return [
@@ -414,15 +387,8 @@ const Flow = ({
       edges:edges
     };
     console.log(data);
-    try {
-      var response = axios.post(`${baseBulkMessagingURL}/create_new_flow`, data, {
-        validateStatus: false,
-        withCredentials: true
-      });
-    } catch (e) {
-      console.log(e);
-    }
-    console.log(response.data);
+    const res=await callcreate_new_flow(baseBulkMessagingURL,data);
+console.log("saved===>",res);
   };
   return (<div className="rootCon">
     <Sidebar role="Manager" baseURL={baseUserSystemURL} setIsLogedin={setIsLogedin} page="flow" noOfRequestedChats={noOfRequestedChats}/>
