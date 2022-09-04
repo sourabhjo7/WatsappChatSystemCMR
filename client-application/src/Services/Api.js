@@ -58,3 +58,11 @@ return response.data.users;
       
     });
   }
+
+  export const callcreate_new_campaign =async(baseBulkMessagingURL,data)=>{
+    return await  axios.post(`${baseBulkMessagingURL}/create_new_campaign`, data, {
+      validateStatus: false,
+      withCredentials: true
+    });
+    
+  }

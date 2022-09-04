@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from "react";
-import axios from "axios";
 import "../flow/index.css";
 
 import Sidebar from "../uiComponent/sidebar/index";
@@ -12,6 +11,7 @@ import {
   useEdgesState,
 } from "react-flow-renderer";
 import CampaignFlowCard from "../uiComponent/dnd/CampaignFlowCard";
+import { callcreate_new_campaign, callgetflows, calloptedinUsers, callstoredCustomers } from "../../Services/Api";
 
 const Campaign = ({
   baseBulkMessagingURL,
@@ -44,38 +44,19 @@ const Campaign = ({
 
   //getting all the approved templates
   const getFlows = async () => {
-    await axios.post(`${baseBulkMessagingURL}/getflows`, {
-      managerId: userId
-    }, {
-      validateStatus: false,
-      withCredentials: true
-    }).then((response) => {
+    const flows= await callgetflows(baseBulkMessagingURL,userId); 
       //setting the flows with the response from the API
-      setFlows(response.data.flows);
-    });
+      setFlows(flows);
   };
 
   const getOptedinUsers = async () => {
     let optedinUsers,
       storedUsers,
       toBePopulateUsers = [];
-    await axios.post(`${baseBulkMessagingURL}/optedinUsers`, {
-      userId
-    }, {
-      validateStatus: false,
-      withCredentials: true
-    }).then((response) => {
-      //setting the optedinUsers with the response from the API
-      optedinUsers = response.data.users;
-    });
+      optedinUsers =await calloptedinUsers(baseBulkMessagingURL,userId);
+     
+     storedUsers= await callstoredCustomers(baseBulkMessagingURL);
 
-    await axios.get(`${baseBulkMessagingURL}/storedCustomers`, {
-      validateStatus: false,
-      withCredentials: true
-    }).then((response) => {
-      //getting the stored users from the response from the API
-      storedUsers = response.data.users;
-    });
 
     //gettig name of the customers from the stored users
     for (let optUser of optedinUsers) {
@@ -409,15 +390,14 @@ const Campaign = ({
     };
     console.log(data);
     try {
-      var response = axios.post(`${baseBulkMessagingURL}/create_new_campaign`, data, {
-        validateStatus: false,
-        withCredentials: true
-      });
-    } catch (e) {
+      var response = await callcreate_new_campaign(baseBulkMessagingURL,data);
+    console.log(response.data);
+    }
+    catch(e){
       console.log(e);
     }
-    console.log(response.data);
   };
+
 
   return (<div className="rootCon">
     <Sidebar role="Manager" baseURL={baseUserSystemURL} setIsLogedin={setIsLogedin} page="campaign" noOfRequestedChats={noOfRequestedChats}/>
