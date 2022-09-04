@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react'
-import axios from "axios";
 
 import "./index.css"
 
 import Sidebar from "../uiComponent/sidebar/index";
 import TopCon from "../uiComponent/TopCon";
 import DndAllFlowsMap from './DndAllFlowsMap';
+import { callgetflows } from '../../Services/Api';
 
 
 const AllFlows = ({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, userName, userId, noOfRequestedChats}) => {
@@ -14,15 +14,12 @@ const AllFlows = ({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, userNa
     const [selectedFlow, setSelectedFlow] = useState({});
 
     const getFlows = async () => {
-
-      await axios.post(`${baseBulkMessagingURL}/getflows`, {managerId: userId}, { validateStatus: false, withCredentials: true }).then((response) => {
-        //setting the templates with the response from the API
-        if(response.data.flows.length > 0){
-          setFlows(response.data.flows);
-          setSelectedFlow(response.data.flows[0]);
-
-        }
-      });
+      const data=await callgetflows(baseBulkMessagingURL,userId);
+      console.log("test--->",data);
+      if(data.length > 0){
+        setFlows(data);
+        setSelectedFlow(data[0]);
+      }
 
     }
 

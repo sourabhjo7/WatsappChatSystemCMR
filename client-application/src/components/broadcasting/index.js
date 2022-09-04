@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from 'react'
-import axios from "axios";
-
 import Sidebar from "../uiComponent/sidebar/index";
 import TopCon from "../uiComponent/TopCon";
+import { callapprovedtemplates, callbroadcastMessage, calloptedinUsers, callstoredCustomers } from '../../Services/Api';
 
 const Broadcasting = ({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, userName, userId, noOfRequestedChats}) => {
   //defining state variables
@@ -25,30 +24,23 @@ const Broadcasting = ({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, us
 
   //getting all the approved templates
   const getTemplates = async () => {
-
-    await axios.post(`${baseBulkMessagingURL}/aprovedTemplates`, {userId}, { validateStatus: false, withCredentials: true }).then((response) => {
-      //setting the templates with the response from the API
-      setTemplates(response.data.templates);
-      if(response.data.templates.length > 0){
-        setSelectedTemplate({...response.data.templates[0], example: JSON.parse(response.data.templates[0].meta).example});
-        setMessage(response.data.templates[0].data);
-      }
-    });
+    const approvedTemplates=await callapprovedtemplates(baseBulkMessagingURL,userId);
+ //setting the templates with the response from the API
+ console.log(approvedTemplates);
+ setTemplates(approvedTemplates);
+ if(approvedTemplates.length > 0){
+   setSelectedTemplate({...approvedTemplates[0], example: JSON.parse(approvedTemplates[0].meta).example});
+   setMessage(approvedTemplates[0].data);
+ }
+   
   }
 
   const getOptedinUsers = async () => {
 
     let optedinUsers, storedUsers, toBePopulateUsers = [];
-    await axios.post(`${baseBulkMessagingURL}/optedinUsers`, {userId}, { validateStatus: false, withCredentials: true }).then((response) => {
-      //setting the optedinUsers with the response from the API
-      optedinUsers = response.data.users;
-    });
-
-    await axios.get(`${baseBulkMessagingURL}/storedCustomers`, { validateStatus: false, withCredentials: true }).then((response) => {
-      //getting the stored users from the response from the API
-      storedUsers = response.data.users;
-    });
-
+      optedinUsers=await calloptedinUsers(baseBulkMessagingURL,userId);
+      storedUsers=await callstoredCustomers(baseBulkMessagingURL);
+      console.log(optedinUsers,"=====users====",storedUsers)
     //gettig name of the customers from the stored users
     for(let optUser of optedinUsers){
       const optUserFullPhoneNo = optUser.countryCode + optUser.phoneCode;
@@ -82,10 +74,11 @@ const Broadcasting = ({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, us
     const toBeBroadcastNo = [...selectedNos, ...newNumbersArr];
 
     if(toBeBroadcastNo.length > 1){
-      axios.post(`${baseBulkMessagingURL}/broadcastMessage`, {message, toBeBroadcastNo, userId}, {validateStatus: false, withCredentials: true}).then((response) => {
-        console.log(response.data);
-        setPopulateMessage("Broadcasting Successfull");
-      });
+     const d=await callbroadcastMessage(baseBulkMessagingURL,message,toBeBroadcastNo,userId);
+     if(d){
+      setPopulateMessage("Broadcasting Successfull");
+     }
+     
     }else{
       console.log("No Number Selected");
       setPopulateMessage("No Number Selected");

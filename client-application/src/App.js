@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import "./App.css";
 
-//importing axios for https requests
-import axios from "axios";
 
 //importing Router functionality
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
@@ -35,6 +33,7 @@ import ManagerChat from "./components/chatComponents/ManagerChat";
 
 import ManagerProfile from "./components/indiManagerProfile/index";
 import { ReactFlowProvider } from 'react-flow-renderer';
+import { callAssignedChats, callNoPendingChats, calltoken} from './Services/Api';
 
 //Importing as lazy so that socket only runs when user is agent or manager
 const ChatPage = React.lazy(() => import('./components/chatComponents/ChatPage'));
@@ -92,39 +91,46 @@ function App() {
       </>
     )
   }
+//function for checking the JWT from backend API
 
-  //function for checking the JWT from backend API
   const valToken = async () => {
-    await axios.get(baseUserSystemURL, { validateStatus: false, withCredentials: true }).then((response) => {
-      if(response.status === 404 || response.status === 401){
+      const user=await calltoken(baseUserSystemURL);
+      console.log(user);
+      if(user===false){
         setIsLogedin(false);
-      }else{
-        setUserData(response.data.user);
-        setIsLogedin(true);
-        getAssignedChats(response.data.user.user_id);
-        userId = response.data.user.user_id
-        // console.log(response.data.user);
       }
-    });
+      else{
+           setUserData(user);
+        setIsLogedin(true);
+        getAssignedChats(user.user_id);
+        userId = user.user_id
+      }
+      // if(response.status === 404 || response.status === 401){
+      //   setIsLogedin(false);
+      // }else{
+      //   setUserData(response.data.user);
+      //   setIsLogedin(true);
+      //   getAssignedChats(response.data.user.user_id);
+      //   userId = response.data.user.user_id
+      //   // console.log(response.data.user);
+      // }
   }
-
   //Getting all assigned rooms to this agent
   const getAssignedChats = async (user_id) => {
-
-    await axios.get(`${baseChatSystemURL}/assigned`, { validateStatus: false, withCredentials: true }).then((response) => {
-      //Filtering assigned rooms for this perticular agent
-      const filteredChats = response.data.assignList.filter((assined) => {
-        return assined.managerID === user_id
-      });
-      setNoOfRequestedChats(filteredChats.length);
+    const assignList= await callAssignedChats(baseChatSystemURL);
+ //Filtering assigned rooms for this perticular agent
+    const filteredChats = assignList.filter((assined) => {
+      return assined.managerID === user_id
     });
-  }
+      setNoOfRequestedChats(filteredChats.length);
+      console.log(filteredChats);
+    };
 
   //getting the number of pendng templates to show in notification
   const getNoOfPendingTemplates = async () => {
-    await axios.get(`${baseChatSystemURL}/noOfPendingTemplates `, { validateStatus: false, withCredentials: true }).then((response) => {
-      setNoOfPendingTemplates(response.data.noOfPendingTemplates);
-    });
+    const data=await callNoPendingChats(baseChatSystemURL);
+      setNoOfPendingTemplates(data);
+    
   }
 
   const changeLoginState = (user) => {//Function for changing the State after successFull Login
@@ -144,17 +150,17 @@ function App() {
         getAssignedChats(userId);
       }, 500);
     });
-  }, [socket]);
+  }, []);
 
   useEffect(() => {
-    {/* validating JWT on every time the component mount */}
+    /* validating JWT on every time the component mount */
     valToken();
 
-    {/* getting number of pending template on component mount */}
+    /* getting number of pending template on component mount */
     getNoOfPendingTemplates();
   }, [isLogedin]);
 
-  {/*Rendring dashboard based on the role of the user*/}
+  /*Rendring dashboard based on the role of the user*/
   const Dashboard = ({role}) => {
     if(role === "Admin"){
       return <AdminDb baseUserSystemURL={baseUserSystemURL} baseChatSystemURL={baseChatSystemURL} baseBulkMessagingURL={baseBulkMessagingURL} setIsLogedin={setIsLogedin} userData={userData} noOfPendingTemplates={noOfPendingTemplates}/>
