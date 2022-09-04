@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import "./App.css";
 
+//all the URLs of the backend systems
+import {baseUserSystemURL, baseChatSystemURL, baseBulkMessagingURL, baseUserSystemURLProd ,baseChatSystemURLProd , baseBulkMessagingURLProd } from "./constant";
 
 //importing Router functionality
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
@@ -39,25 +41,15 @@ import { callAssignedChats, callNoPendingChats, calltoken} from './Services/Api'
 const ChatPage = React.lazy(() => import('./components/chatComponents/ChatPage'));
 const ManagerAssign = React.lazy(() => import('./components/ManagerAssignPage'));
 
-
-
-//all the URLs of the backend systems
-let baseUserSystemURL = "http://localhost:3002";
-let baseChatSystemURL = "http://localhost:3001";
-let baseBulkMessagingURL = "http://localhost:3003";
-
-if(process.env.REACT_APP_ENV === "production"){
-  baseUserSystemURL = "http://localhost:5002";
-  baseChatSystemURL = "http://localhost:5001";
-  baseBulkMessagingURL = "http://localhost:5003";
-}else{
-  baseUserSystemURL = "http://localhost:3002";
-  baseChatSystemURL = "http://localhost:3001";
-  baseBulkMessagingURL = "http://localhost:3003";
-}
-
 let userId;//variable for storing the current id of the user
+
 function App() {
+
+  if(process.env.REACT_APP_ENV === "production"){
+    baseUserSystemURL = baseUserSystemURLProd;
+    baseChatSystemURL = baseChatSystemURLProd;
+    baseBulkMessagingURL = baseBulkMessagingURLProd;
+  }
 
   const [isLogedin, setIsLogedin] = useState(false);//login state variable
   const [userData, setUserData] = useState({});
@@ -130,7 +122,7 @@ function App() {
   const getNoOfPendingTemplates = async () => {
     const data=await callNoPendingChats(baseChatSystemURL);
       setNoOfPendingTemplates(data);
-    
+
   }
 
   const changeLoginState = (user) => {//Function for changing the State after successFull Login

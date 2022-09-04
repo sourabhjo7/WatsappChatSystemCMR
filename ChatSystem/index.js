@@ -19,8 +19,8 @@ const {
 const PORT = process.env.PORT;
 
 //URL of the chat system
-const baseUserSystemURL = "http://localhost:3002";
-let baseBulkMessagingURL = "http://localhost:3003";
+const {baseUserSystemURL, baseBulkMessagingURL} = require("./constant");
+
 
 //requiring the database collections
 const Customer = require("./model/customer");

@@ -26,8 +26,7 @@ const Flow = require("../model/flow");
 const Campaign = require("../model/campaign");
 
 
-const baseUserSystemURL = "http://localhost:3002";
-const baseChatSystemURL = "http://localhost:3001";
+const {baseUserSystemURL, baseChatSystemURL} = require("../constant")
 
 //getting the all opted user from the gupshup API
 router.post("/optedinUsers", async (req, res) => {
