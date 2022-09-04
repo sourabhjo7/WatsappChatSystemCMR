@@ -432,7 +432,7 @@ const Campaign = ({
           <div className="cards-container">
             {
               flows.map((flow, index) => {
-                return <CampaignFlowCard flow={flow} select={selectFlows}/>;
+                return <CampaignFlowCard key={`flows${index}`} flow={flow} select={selectFlows}/>;
               })
             }
           </div>
@@ -477,7 +477,7 @@ const Campaign = ({
             <div className="flow_timeKey_container events_container">
               {
                 events.map((temp, index) => {
-                  return (<DragCards template={temp} keyy={index} deleteTemplate={deleteTemplate} showDel={false}
+                  return (<DragCards template={`events1${temp}`} key={`events${index}`} deleteTemplate={deleteTemplate} showDel={false}
                     // moveCard={moveCard}
                   />);
                 })
@@ -490,7 +490,7 @@ const Campaign = ({
             <div className="Selected-container ">
               {
                 selectedFlows.map((temp) => {
-                  return (<DragCards template={temp.title} keyy={temp.id} deleteTemplate={deleteTemplate} showDel={true}
+                  return (<DragCards key={temp.id} template={temp.title} deleteTemplate={deleteTemplate} showDel={true}
                     // moveCard={moveCard}
                   />);
                 })
@@ -498,7 +498,7 @@ const Campaign = ({
             </div>
             {/* this is the board where selected flows are droped */}
             <div className="Dnd-flow-canva">
-              <DndFlowMap  flow={false} nodes={nodes} setNodes={setNodes} edges={edges} setEdges={setEdges} onEdgesChange={onEdgesChange} templates={flows} setTemplates={setFlows} selectedTemplates={selectedFlows} setSelectedTemplates={setSelectedFlows} events={events} setEvents={setEvents}/>
+              <DndFlowMap key={"flowMap"}  flow={false} nodes={nodes} setNodes={setNodes} edges={edges} setEdges={setEdges} onEdgesChange={onEdgesChange} templates={flows} setTemplates={setFlows} selectedTemplates={selectedFlows} setSelectedTemplates={setSelectedFlows} events={events} setEvents={setEvents}/>
             </div>
 
           </div>
@@ -519,7 +519,7 @@ const Campaign = ({
             <div className="numbersList">
               {
                 searchedOptedinUsers.map((user, index) => {
-                  return (<div key={index}>
+                  return (<div key={`optUser${index}`}>
                     <label onClick={listSelectedNos} className="checkboxCon">
                       <input type="checkbox" name={user.phoneNo} value={user.phoneNo}/>
                       <span className="checkmark"></span>
@@ -557,7 +557,7 @@ const Campaign = ({
               {
                 selectedNos.length > 0
                   ? (selectedNos.map((number, index) => {
-                    return (<div key={index}>
+                    return (<div key={`selNos${index}`}>
                       <span>{number}</span>
                       <button className="rmSelectedNoBtn" onClick={() => {
                           rmSelectedNo(number);

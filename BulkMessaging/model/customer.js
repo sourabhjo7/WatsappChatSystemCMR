@@ -21,4 +21,21 @@ const customerSchema = new mongoose.Schema({
   }
 });
 
+customerSchema.statics.createNewCustomer = function (userName, userPhoneNo){
+  return this.create({
+    userName,
+    userPhoneNo
+  }).then((data) => {
+    return data;
+  });
+}
+
+customerSchema.statics.getAllCustomers = function (){
+  return this.find();
+}
+
+customerSchema.statics.getCustomerByNum = function (num){
+  return this.findOne({userPhoneNo: num});
+}
+
 module.exports = mongoose.model("Customer", customerSchema);

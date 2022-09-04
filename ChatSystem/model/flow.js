@@ -11,5 +11,32 @@ const flowSchema = new mongoose.Schema({
   defaultData: Object
 });
 
+flowSchema.statics.createFlow = function (title, tMessageList, contactList, cid, startNode, nodes, edges){
+  return this.create({
+    title,
+    tMessageList,
+    contactList,
+    cid,
+    data: {
+      started: 0,
+      ended: 0,
+    },
+    startNode,
+    defaultData: {
+      nodes: nodes,
+      edges: edges
+    }
+  }).then((data) => {
+    return data;
+  });
+}
+
+flowSchema.statics.getFlowById = function (flowID) {
+  return this.findOne({_id: flowID});
+}
+
+flowSchema.statics.getFlowsByManagerId = function (managerId) {
+  return this.find({cid: managerId});
+}
 
 module.exports = mongoose.model("Flow", flowSchema);

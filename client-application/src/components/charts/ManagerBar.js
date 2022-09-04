@@ -42,7 +42,7 @@ for(let i = 4; i >= 0; i--){
   labels.push(monthArr[tempDate.getMonth()]);
 }
 
-
+ 
 function ManagerBar({totalEscalations, totalTemplates, totalCompletedChats}) {
 
     const filterEsc = (timeArr) =>{

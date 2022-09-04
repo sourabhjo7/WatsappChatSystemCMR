@@ -30,9 +30,8 @@ exports.register = async (req, res) => {
     if (req.userData.role !== role) {
 
       //checking if the user not already exist
-      const existingUser = await User.findOne({
-        email
-      });
+      const existingUser = await User.getUserByEmail(email);
+
       if (existingUser) {
         return res.status(401).send("User already exist");
       }
@@ -42,27 +41,13 @@ exports.register = async (req, res) => {
 
       let user;
 
+      user = await User.createNewUser("Manager", firstName, lastName, email.toLowerCase(), encPassword, role, assignedNumber, appName, apiKey)
+
       //setting the user based on the request role
       if(role === "Manager"){
-        user = await User.create({
-          firstName,
-          lastName,
-          email: email.toLowerCase(),
-          password: encPassword,
-          role,
-          assignedNumber,
-          appName,
-          apiKey
-        });
+        user = await User.createNewUser("Manager", firstName, lastName, email.toLowerCase(), encPassword, role, assignedNumber, appName, apiKey)
       }else{
-        user = await User.create({
-          firstName,
-          lastName,
-          email: email.toLowerCase(),
-          password: encPassword,
-          creatorUID,
-          role
-        });
+        user = await User.createNewUser("", firstName, lastName, email.toLowerCase(), encPassword, role)
       }
 
       //signing the jwt token
@@ -105,9 +90,7 @@ exports.login = async (req, res) => {
     } = req.body;
 
     //geting the user from the database
-    const user = await User.findOne({
-      email
-    });
+    const user = await User.getUserByEmail(email);
 
     //checking the password from the database of user by the input password
     if (user && (await bcrypt.compare(password, user.password))) {

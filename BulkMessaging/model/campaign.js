@@ -9,5 +9,20 @@ const campaignSchema = new mongoose.Schema({
   startFlow: String,
 });
 
+campaignSchema.statics.createCampaign = function (title, tFlowList, contactList, cid, startFlow){
+  return this.create({
+    title,
+    tFlowList,
+    contactList,
+    cid,
+    startFlow
+  }).then((data) => {
+    return data;
+  });
+}
+
+campaignSchema.statics.getCampaignById = function (campaignID) {
+  return this.findOne({_id: campaignID});
+}
 
 module.exports = mongoose.model("Campaign", campaignSchema);

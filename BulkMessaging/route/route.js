@@ -118,7 +118,9 @@ router.post("/broadcastMessage", async (req, res) => {
 
 //route for getting all the stored customers
 router.get("/storedCustomers", async (req, res) => {
-  const allCustomers = await Customer.find();
+
+  const allCustomers = await Customer.getAllCustomers();
+
   if (allCustomers) {
     res.status(200).json({
       users: allCustomers
@@ -131,7 +133,7 @@ router.get("/storedCustomers", async (req, res) => {
 
 //getting all the templated from the database
 router.get("/get_all_templates", async (req, res) => {
-  const allTemplates = await Template.find();
+  const allTemplates = await Template.getAllTemplates();
 
   if (allTemplates) {
 
@@ -165,9 +167,7 @@ router.post("/updateTempStatus", async (req, res) => {
     status
   } = req.body;
 
-  const template = await Template.findOne({
-    _id: tempID
-  });
+  const template = await Template.getTemplateById(tempID);
 
   if (template) {
     template.status = status;
@@ -193,28 +193,11 @@ router.post("/create_new_flow", async (req, res) => {
     edges
   } = req.body; // recieving details of messages contact list and triggers also time delay
 
-    const flowData = new Flow({
-      title,
-      tMessageList,
-      contactList,
-      cid,
-      data: {
-        started: 0,
-        ended: 0,
-      },
-      startNode,
-      defaultData: {
-        nodes: nodes,
-        edges: edges
-      }
-    });
-
-
-    await flowData.save();
+    const flowData = await Flow.createFlow();
 
     for(let phNum of contactList){
 
-      const customer = await Customer.findOne({userPhoneNo: phNum});
+      const customer = await Customer.getCustomerByNum(phNum);
 
       customer.allFLows = [...customer.allFLows, flowData._id.toString()];
 
@@ -237,7 +220,7 @@ router.post("/create_new_flow", async (req, res) => {
 router.post("/getFlow", async (req, res) => {
   try {
     const {flowID} = req.body;
-    const foundFlow = await Flow.findOne({_id: flowID});
+    const foundFlow = await Flow.getFlowById(flowID);
 
     res.status(200).json({foundFlow});
   } catch (e) {
@@ -250,7 +233,7 @@ router.post("/getflows", async (req, res) => {
   try{
     const {managerId} = req.body;
 
-    const foundFlows = await Flow.find({cid: managerId});
+    const foundFlows = await Flow.getFlowsByManagerId(managerId);
     res.status(200).json({flows: foundFlows});
   }catch(e){
     console.log(e);
@@ -268,19 +251,11 @@ router.post("/create_new_campaign", async (req, res) => {
     startFlow
   } = req.body;
 
-  const campaignData = new Campaign({
-    title,
-    tFlowList,
-    contactList,
-    cid,
-    startFlow
-  });
-
-  await campaignData.save();
+  const campaignData = await Campaign.createCampaign(title, tFlowList, contactList, cid, startFlow);
 
   for(let phNum of contactList){
 
-    const customer = await Customer.findOne({userPhoneNo: phNum});
+    const customer = await Customer.getCustomerByNum(phNum);
 
     customer.currCampaign = {
       campaignID: campaignData._id.toString(),

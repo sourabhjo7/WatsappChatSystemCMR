@@ -178,17 +178,7 @@ io.on("connection", (socket) => {
 
     let lastInteraction = new Date().getTime();
 
-
-    //Creating a new Chat Document
-    const newChat = await Chat.create({
-      customerName: chat.room,
-      userPhoneNo: chat.phoneNo,
-      messageList: chat.messageList,
-      agentName,
-      managerID,
-      lastInteraction
-    });
-
+    const newChat = await Chat.createNewChat(chat.room, chat.phoneNo, chat.messageList, agentName, managerID, lastInteraction);
 
     let managerDel;
     await axios.post(`${baseUserSystemURL}/indi_user`, {
@@ -261,14 +251,13 @@ app.post("/hook", async (req, res) => {
 
   let flow, flowPos, campaign, campaignExist = false;
   //getting the flow from customer collection
-  const customer = await Customer.findOne({
-    userPhoneNo: payload.destination || payload.source
-  });
+
+  const customer = await Customer.getCustomerByNum(payload.destination || payload.source);
 
   if(customer){
 
     flowPos = customer.currFlow.currPos;
-    flow = await Flow.findOne({_id: customer.currFlow.flowID});
+    flow = await Flow.getFlowById(customer.currFlow.flowID);
 
     if(flowPos.temp === flow.startNode && flowPos.show === true){
       flow.data.started = flow.data.started + 1;
@@ -280,7 +269,7 @@ app.post("/hook", async (req, res) => {
     //if current flow is from campaign
     if(flow && flowPos.temp !== "!end"){
       if(flow._id === customer.currCampaign.currFlowID){
-        campaign = await Campaign.findOne({_id: customer.currCampaign.campaignID});
+        campaign = await Campaign.getCampaignById(customer.currCampaign.campaignID);
         campaignExist = true;
       }
     }
@@ -290,8 +279,8 @@ app.post("/hook", async (req, res) => {
       if(customer.currCampaign && customer.currCampaign.currFlowID !== "!end"){
         campaignExist = true;
 
-        campaign = await Campaign.findOne({_id: customer.currCampaign.campaignID});
-        flow = await Flow.findOne({_id: customer.currCampaign.currFlowID});
+        campaign = await Campaign.getCampaignById(customer.currCampaign.campaignID);
+        flow = await Flow.getFlowById(customer.currCampaign.currFlowID);
 
         customer.currFlow = {
           flowID: flow._id.toString(),
@@ -315,10 +304,8 @@ app.post("/hook", async (req, res) => {
   if (type === 'message') {
 
     if (!customer) {
-      const newCustomer = Customer.create({
-        userName: payload.sender.name,
-        userPhoneNo: payload.source
-      })
+
+      const newCustomer = Customer.createNewCustomer(payload.sender.name, payload.source);
     }
 
     //method for checking if the user is a optin user and if not making it the optin user
@@ -426,7 +413,7 @@ app.post("/hook", async (req, res) => {
                   const favTime = new Date().getTime() + (eveObj.event*1000);
                   const favDate = new Date(favTime);
 
-                  flow = await FLow.findOne({_id: eveObj.action});
+                  flow = await FLow.getFlowById(eveObj.action);
                   customer.currCampaign.currFlowID = eveObj.action;
 
                   schedule.scheduleJob(favDate, () => {
@@ -442,7 +429,7 @@ app.post("/hook", async (req, res) => {
                 }
 
                 if(eveObj.event === `${payload.payload.text.toLowerCase()}`){
-                  const flow = await FLow.findOne({_id: eveObj.action});
+                  const flow = await FLow.getFlowById(eveObj.action);
                   customer.currCampaign.currFlowID = eveObj.action;
 
                   customer.currFlow = {
@@ -493,7 +480,7 @@ app.post("/hook", async (req, res) => {
                   const newFlowIndex = customer.allFLows.indexOf(flow._id) + 1;
 
                   if(newFlowIndex < customer.allFLows.length){
-                    const newFlow = await Flow.findOne({_id: customer.allFLows[newFlowIndex]});
+                    const newFlow = await Flow.getFlowById(customer.allFLows[newFlowIndex]);
 
                     customer.currFlow = {
                       flowID: customer.allFLows[newFlowIndex],
@@ -546,7 +533,7 @@ app.post("/hook", async (req, res) => {
             const favTime = new Date().getTime() + (eveObj.event*1000);
             const favDate = new Date(favTime);
 
-            flow = await FLow.findOne({_id: eveObj.action});
+            flow = await FLow.getFlowById(eveObj.action);
 
             customer.currCampaign.currFlowID = eveObj.action;
             schedule.scheduleJob(favDate, () => {
@@ -562,7 +549,7 @@ app.post("/hook", async (req, res) => {
           }
 
           if(eveObj.event === `${payload.type}`){
-            const flow = await FLow.findOne({_id: eveObj.action});
+            const flow = await FLow.getFlowById(eveObj.action);
 
             customer.currCampaign.currFlowID = eveObj.action;
             customer.currFlow = {
@@ -613,7 +600,7 @@ app.post("/hook", async (req, res) => {
             //if there exist a next flow in allFLows array
             const newFlowIndex = customer.allFLows.indexOf(flow._id) + 1;
             if(newFlowIndex < customer.allFLows.length){
-              const newFlow = await Flow.findOne({_id: customer.allFLows[newFlowIndex]});
+              const newFlow = await Flow.getFlowById(customer.allFLows[newFlowIndex]);
 
               customer.currFlow = {
                 flowID: customer.allFLows[newFlowIndex],
@@ -735,13 +722,8 @@ app.post("/completedChats", async (req, res) => {
     managerID
   } = req.body;
   let foundChats;
-  if (managerID) {
-    foundChats = await Chat.find({
-      managerID
-    });
-  } else {
-    foundChats = await Chat.find({});
-  }
+
+  foundChats = await Chat.findChats(managerID);
 
   res.status(200).json({
     chats: foundChats
@@ -754,9 +736,7 @@ app.post("/completedChats", async (req, res) => {
 app.get("/noOfPendingTemplates", async (req, res) => {
 
   //getting all the pending templates from the database
-  const pendingTemplates = await Template.find({
-    status: "Pending"
-  });
+  const pendingTemplates = await Template.getTemplateByStatus("Pending");
 
   //getting the length of pending templates array
   const noOfPendingTemplates = pendingTemplates.length;
@@ -772,10 +752,7 @@ app.post("/allTemplatesByManager", async (req, res) => {
     managerID
   } = req.body;
 
-  const foundTemplates = await Template.find({
-    requestByUID: managerID
-  });
-
+  const foundTemplates = await Template.getTemplateByManagerId(managerID);
   res.status(200).json({
     templates: foundTemplates
   });
@@ -794,23 +771,13 @@ app.post("/add_new_template", async (req, res) => {
   //sending the whatsapp notification to the admin on a new template request
   sendMessage(`A new template (${name}) is requested by ${requestByName}.`, process.env.ADMIN_NUMBER, process.env.GUPSHUP_TEMP_NOTICATION_NUM, process.env.GUPSHUP_APP_NAME, process.env.GUPSHUP_API_KEY);
 
-  const currentDate = new Date().getTime();
 
   //creating a new template in the database
-  await Template.create({
-    name,
-    format,
-    sample,
-    requestByName,
-    requestByUID,
-    status: "Pending",
-    creationDate: currentDate
-  });
+  await Template.createNewTemplate(name, format, sample, requestByName, requestByUID);
 
   //getting all the pending template so that we can return the no of pending template on adding a new template
-  const pendingTemplates = await Template.find({
-    status: "Pending"
-  });
+  const pendingTemplates = await Template.getTemplateByStatus("Pending");
+
   const noOfPendingTemplates = pendingTemplates.length;
 
   //emmiting new template so that clint can be auto updated
