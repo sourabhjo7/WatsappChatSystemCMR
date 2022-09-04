@@ -64,5 +64,22 @@ return response.data.users;
       validateStatus: false,
       withCredentials: true
     });
-    
+
+  }
+
+  export const callActiveagents= async (baseChatSystemURL)=>{
+    return await axios.get(`${baseChatSystemURL}/active_agents`, { validateStatus: false, withCredentials: true }).then(async (response) => {
+      return response.data.activeAgents;
+    });
+  }
+  export const callActiverooms= async (baseChatSystemURL)=>{
+    return await axios.get(`${baseChatSystemURL}/active_rooms`, { validateStatus: false, withCredentials: true }).then((response) => {
+      return response.data.chats;
+    });
+  }
+
+  export const newescalation =async(baseUserSystemURL,room,phoneNo,name,managerID)=>{
+    await axios.post(`${baseUserSystemURL}/new_escalation`, {room, customerPhoneNo: phoneNo, escalatedBy: name, managerID}, { validateStatus: false, withCredentials: true }).then((response) => {
+      console.log(response.data);
+    });
   }

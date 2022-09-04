@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./ChatPage.css";
-import axios from "axios";
 
 import Chat from "./Chat";
 import Sidebar from "../uiComponent/sidebar/index";
 import TopCon from "../uiComponent/TopCon";
+import { callActiveagents, callActiverooms, callAssignedChats, newescalation } from "../../Services/Api";
 
 
 function ChatPage({socket, userData, baseUserSystemURL, baseChatSystemURL, setIsLogedin}) {
@@ -23,41 +23,35 @@ function ChatPage({socket, userData, baseUserSystemURL, baseChatSystemURL, setIs
 
     //function for getting all the current active agents
     const getActiveAgents = async () => {
-      await axios.get(`${baseChatSystemURL}/active_agents`, { validateStatus: false, withCredentials: true }).then(async (response) => {
-        await setActiveAgents( () => {
-          return response.data.activeAgents.filter((agent) => {
-            return agent.email !== userData.email && agent.creatorUID === userData.creatorUID
-          })
-        });
-      });
+     const activeAgents= await callActiveagents(baseChatSystemURL)
+     await setActiveAgents( () => {
+      return activeAgents.filter((agent) => {
+        return agent.email !== userData.email && agent.creatorUID === userData.creatorUID
+      })
+    });
     }
 
     //Getting all active rooms exist currently
     const getRooms = async () => {
-
-      await axios.get(`${baseChatSystemURL}/active_rooms`, { validateStatus: false, withCredentials: true }).then((response) => {
-        const rooms = response.data.chats;
-        // console.log(rooms);
-        for(let i=0; i < rooms.length; i++){
-          if(rooms[i].managerID !== userData.creatorUID){
-            rooms.splice(i, 1);
-          }
+      const rooms=await callActiverooms(baseChatSystemURL);
+      // console.log(rooms);
+      for(let i=0; i < rooms.length; i++){
+        if(rooms[i].managerID !== userData.creatorUID){
+          rooms.splice(i, 1);
         }
-        setActiveRooms(rooms);
-      });
+      }
+      setActiveRooms(rooms);
     }
 
     //Getting all assigned rooms to this agent
     const getAssignedChats = async () => {
 
-      await axios.get(`${baseChatSystemURL}/assigned`, { validateStatus: false, withCredentials: true }).then((response) => {
-        //Filtering assigned rooms for this perticular agent
-        setAssignedChats(() => {
-          return response.data.assignList.filter((assined) => {
-            return assined.agentEmail === userData.email
-          });
+      const assignList=await callAssignedChats(baseChatSystemURL);
+       //Filtering assigned rooms for this perticular agent
+       setAssignedChats(() => {
+        return assignList.filter((assined) => {
+          return assined.agentEmail === userData.email
         });
-
       });
     }
 
@@ -103,9 +97,7 @@ function ChatPage({socket, userData, baseUserSystemURL, baseChatSystemURL, setIs
         managerID = userData.creatorUID;
 
         //Adding ecalation to DB
-        await axios.post(`${baseUserSystemURL}/new_escalation`, {room, customerPhoneNo: currActiveChat.phoneNo, escalatedBy: userData.name, managerID}, { validateStatus: false, withCredentials: true }).then((response) => {
-          console.log(response.data);
-        });
+       await newescalation(baseUserSystemURL,room,currActiveChat.phoneNo,userData.name,managerID);
 
         await socket.emit("reassign", {room, managerID, phoneNo: currActiveChat.phoneNo, assignedBy: userData.name});
       }

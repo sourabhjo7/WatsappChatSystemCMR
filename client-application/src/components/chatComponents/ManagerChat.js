@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./ChatPage.css";
-import axios from "axios";
-
 import Chat from "./Chat";
 import Sidebar from "../uiComponent/sidebar/index";
 import TopCon from "../uiComponent/TopCon";
+import { callAssignedChats } from "../../Services/Api";
 
 
 function ManagerChat({socket, userData, baseUserSystemURL, baseChatSystemURL, setIsLogedin, noOfRequestedChats}) {
@@ -25,16 +24,16 @@ function ManagerChat({socket, userData, baseUserSystemURL, baseChatSystemURL, se
     const getAssignedChats = async () => {
 
       //getting escalated chats for this manager
-      await axios.get(`${baseChatSystemURL}/assigned`, { validateStatus: false, withCredentials: true }).then((response) => {
-        //Filtering escalated rooms for this perticular manager
-        setAssignedChats(() => {
-          return response.data.assignList.filter((assined) => {
-            return assined.managerID === userData.user_id
-          });
-        });
+    const assignList= await callAssignedChats(baseChatSystemURL);
+   //Filtering escalated rooms for this perticular manager
+   setAssignedChats(() => {
+    return assignList.filter((assined) => {
+      return assined.managerID === userData.user_id
+    });
+  });
 
-      });
     }
+
 
     //function for disconnecting the chat
     const disconnect = async (room) => {
