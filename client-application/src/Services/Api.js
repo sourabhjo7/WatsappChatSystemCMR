@@ -91,7 +91,8 @@ return response.data.users;
     });
   }
   export const getescalation =async(baseUserSystemURL,managerID)=>{
-    return await axios.post(`${baseUserSystemURL}/get_escalation`,  {managerID:managerID}, { validateStatus: false, withCredentials: true }).then((response) => {
+    return await axios.post(`${baseUserSystemURL}/get_escalations`,  {managerID:managerID}, { validateStatus: false, withCredentials: true }).then((response) => {
+          console.log(response.data);
       return response.data.escalations;
     });
   }
@@ -131,7 +132,8 @@ return response.data.users;
 
   export const calltemplatesbymanager=async(baseChatSystemURL,id)=>{
     return await axios.post(`${baseChatSystemURL}/allTemplatesByManager`, {managerID: id},{ validateStatus: false, withCredentials: true }).then((response) => {
-    return response.data.templates;
+      console.log(response.data);
+      return response.data.templates;
     });
   }
 
@@ -164,3 +166,55 @@ return response.data.users;
       console.log(response.data);
     });
   }
+
+export const callgetUsers=async(baseURL,getRole)=>{
+  return await axios.get(`${baseURL}/${getRole}`, { validateStatus: false, withCredentials: true }).then((response) => {
+    return response.data[`${getRole}`];
+  });
+}
+
+
+
+export const calldelUser=async(url,userID)=>{
+ await axios.post(url, {userID} , { validateStatus: false, withCredentials: true }).then((response) => {
+    console.log(response);
+  });
+}
+
+export const callregNewUser=async(baseURL,newUserData)=>{
+  await axios.post(`${baseURL}/auth/register`, newUserData, {validateStatus: false, withCredentials: true}).then((response) => {
+    if(response.status === 201){
+      window.location = '/';
+    }else{
+      console.log("Registration Failed");
+    }
+  });
+}
+
+export const callassignAgent=async(baseChatSystemURL,room, agent,  userName)=>{
+  await axios.post(`${baseChatSystemURL}/assign_agent`, {room:room, agentEmail: agent.email, assignedBy: userName}, {validateStatus: false, withCredentials: true}).then((response) => {
+    if(response.status === 200){
+      console.log("Assignment Done");
+
+    }else{
+      console.log("Failed");
+    }
+  });
+}
+
+
+export const callchangeName=async(baseURL,newDel)=>{
+  return await axios.post(`${baseURL}/change_name`, newDel, {validateStatus: false, withCredentials: true}).then((response) => {
+   return response;
+  });
+}
+
+export const callchangePassword=async(baseURL,newPassword)=>{
+  axios.post(`${baseURL}/change_password`, newPassword, {validateStatus: false, withCredentials: true}).then((response) => {
+    if(response.status === 200){
+      // console.log(response.data);
+      window.location = "/";
+    }
+  });
+  
+}

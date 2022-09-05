@@ -748,14 +748,17 @@ app.get("/noOfPendingTemplates", async (req, res) => {
 
 //route for getting all the templates by a preticular manager
 app.post("/allTemplatesByManager", async (req, res) => {
+  
   const {
     managerID
   } = req.body;
-
+console.log("managerId====<",managerID);
   const foundTemplates = await Template.getTemplateByManagerId(managerID);
+  console.log(foundTemplates);
   res.status(200).json({
     templates: foundTemplates
   });
+
 });
 
 //route for adding a new temoplate request to the database

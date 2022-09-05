@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react'
-import axios from "axios";
 
 import Sidebar from "./uiComponent/sidebar/index";
 import TopCon from "./uiComponent/TopCon";
+import { callchangeName, callindiuser } from '../Services/Api';
 
 const Profile = ({
   baseURL,
@@ -32,43 +32,35 @@ const Profile = ({
 
       //Getting details on this perticular a user
       const getManagerDetails = async (managerUID) => {
-        axios.post(`${baseURL}/indi_user`, {userId: managerUID}, {validateStatus: false, withCredentials: true}).then((response) => {
-          if(response.status === 200){
-            // console.log(response.data.foundUser);
-            setUserDelByPost(response.data.foundUser);
+        const foundUser=await callindiuser(baseURL,managerUID);
+        setUserDelByPost(foundUser);
             setNewDel((curr) => {
               return {...curr,
-                assignedNumber: response.data.foundUser.assignedNumber,
-                appName: response.data.foundUser.appName,
-                apiKey: response.data.foundUser.apiKey
+                assignedNumber: foundUser.assignedNumber,
+                appName: foundUser.appName,
+                apiKey: foundUser.apiKey
               }
-            })
-          }
-        });
+            });
       }
 
 
       //function for changing the personal detail of the user
       const changeName = async () => {
-        axios.post(`${baseURL}/change_name`, newDel, {validateStatus: false, withCredentials: true}).then((response) => {
-          if(response.status === 200){
-            //setting the new detail in the state variable
-            setUserData((curr) => {
-              return {...curr, name: response.data.newDel}
-            });
-            window.location = "/";
-          }
-        });
+        const response=await callchangeName(baseURL,newDel);
+        if(response.status === 200){
+          //setting the new detail in the state variable
+          setUserData((curr) => {
+            return {...curr, name: response.data.newDel}
+          });
+          window.location = "/";
+        }
+        
       }
 
       //function for changing the password of the user
       const changePassword = async () => {
-        axios.post(`${baseURL}/change_password`, newPassword, {validateStatus: false, withCredentials: true}).then((response) => {
-          if(response.status === 200){
-            // console.log(response.data);
-            window.location = "/";
-          }
-        });
+            await callchangeName(baseURL,newPassword);
+
       }
 
       useEffect(() => {

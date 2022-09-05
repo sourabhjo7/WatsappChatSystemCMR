@@ -15,7 +15,8 @@ const NewTemplateRequest = ({baseBulkMessagingURL, baseChatSystemURL, baseUserSy
 
       //function for getting all the templates from the database
       const getTemplates = async () => {
-        const templates=await calltemplatesbymanager(baseChatSystemURL);
+        const templates=await calltemplatesbymanager(baseChatSystemURL,userID);
+        console.log(templates);
         setAllTemplates(templates);
       }
       useEffect(() => {

@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
-import axios from "axios";
+
 
 import Sidebar from "./uiComponent/sidebar/index";
 import TopCon from "./uiComponent/TopCon";
+import { callregNewUser } from '../Services/Api';
 
 
 const CreateNewUser = ({baseURL, userData, setIsLogedin, noOfPendingTemplates, noOfRequestedChats}) => {
@@ -19,7 +20,7 @@ const CreateNewUser = ({baseURL, userData, setIsLogedin, noOfPendingTemplates, n
       });
 
       //function for registering a new user
-      const regNewUser = () => {
+      const regNewUser = async () => {
 
         if(userData.role !== ""){
           if(userData.role === "Manager"){//is user is Manager then he/she should be creating a new agent user.
@@ -29,13 +30,7 @@ const CreateNewUser = ({baseURL, userData, setIsLogedin, noOfPendingTemplates, n
             newUserData.role = "Manager";
           }
 
-          axios.post(`${baseURL}/auth/register`, newUserData, {validateStatus: false, withCredentials: true}).then((response) => {
-            if(response.status === 201){
-              window.location = '/';
-            }else{
-              console.log("Registration Failed");
-            }
-          });
+          await callregNewUser(baseURL,newUserData);
         }
 
 

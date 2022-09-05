@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react'
-import axios from "axios";
+
 
 import Sidebar from "./uiComponent/sidebar/index";
 import TopCon from "./uiComponent/TopCon";
 
 import PlaceHolderImg from "../images/managerPicPH.png";
+import { calldelUser, callgetUsers } from '../Services/Api';
 
 const AllUsers = ({
   baseURL,
@@ -22,17 +23,14 @@ const AllUsers = ({
 
       //function for getting all the users
       const getUsers = async () => {
-        await axios.get(`${baseURL}/${getRole}`, { validateStatus: false, withCredentials: true }).then((response) => {
-          let allUsers = response.data[`${getRole}`];
-
-          if(getRole === "agents"){
-            allUsers = allUsers.filter((agent) => {
-              return agent.creatorUID === userID
-            })
-          }
-
-          setusersList(allUsers);
-        });
+        const allUsers=callgetUsers(baseURL,getRole);
+        if(getRole === "agents"){
+          allUsers = allUsers.filter((agent) => {
+            return agent.creatorUID === userID
+          })
+        }
+        setusersList(allUsers);
+       
       }
 
       //function for deleting a perticular user
@@ -45,14 +43,12 @@ const AllUsers = ({
         }else{
           url = `${baseURL}/del_manager`;
         }
-
-        await axios.post(url, {userID} , { validateStatus: false, withCredentials: true }).then((response) => {
-          console.log(response);
-          setusersList((list) => {
-            return list.filter((listEle) =>  listEle._id !== userID )
-          })
-        });
+        await calldelUser(url,userID);
+        setusersList((list) => {
+          return list.filter((listEle) =>  listEle._id !== userID )
+        })
       }
+
 
       useEffect(() => {
         getUsers();

@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react'
-import axios from "axios";
 
 import Sidebar from "./uiComponent/sidebar/index";
 import TopCon from "./uiComponent/TopCon";
+import { callActiveagents, callActiverooms, callassignAgent } from '../Services/Api';
 
 const ManagerAsignPage = ({
   socket,
@@ -23,39 +23,29 @@ const ManagerAsignPage = ({
 
         const agentSelect = e.target.parentElement.querySelector(".agentSelect");
         const agent = activeAgents[agentSelect.selectedIndex];
-
-        await axios.post(`${baseChatSystemURL}/assign_agent`, {room, agentEmail: agent.email, assignedBy: userName}, {validateStatus: false, withCredentials: true}).then((response) => {
-          if(response.status === 200){
-            console.log("Assignment Done");
-
-          }else{
-            console.log("Failed");
-          }
-        });
+          
+       await callassignAgent(baseChatSystemURL,room, agent,  userName);
       }
 
       //Getting all active rooms exist currently
       const getRooms = async () => {
-        await axios.get(`${baseChatSystemURL}/active_rooms`, { validateStatus: false, withCredentials: true }).then((response) => {
-          let rooms = response.data.chats;
-          // console.log(rooms);
-          for(let i=0; i < rooms.length; i++){
-            if(rooms[i].managerID !== userId){
-              rooms.splice(i, 1);
-            }
+        let rooms=await callActiverooms(baseChatSystemURL);
+        for(let i=0; i < rooms.length; i++){
+          if(rooms[i].managerID !== userId){
+            rooms.splice(i, 1);
           }
-          setActiveRooms(rooms);
-        });
+        }
+        setActiveRooms(rooms);
       }
 
       //function for getting all the current active agents
+    
       const getActiveAgents = async () => {
-        await axios.get(`${baseChatSystemURL}/active_agents`, { validateStatus: false, withCredentials: true }).then((response) => {
-          setActiveAgents(() => {
-            return response.data.activeAgents.filter((agent) => {
-              return agent.creatorUID === userId
-            })
-          });
+        const activeAgents=await callActiveagents(baseChatSystemURL);
+        setActiveAgents(() => {
+          return activeAgents.filter((agent) => {
+            return agent.creatorUID === userId
+          })
         });
       }
 
