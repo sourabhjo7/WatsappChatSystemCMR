@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import axios from "axios";
+
 
 import "./DB.css";
 
@@ -11,6 +11,7 @@ import ManagerLine from "../charts/ManagerLine"
 //importing UI Components
 import Sidebar from "../uiComponent/sidebar/index";
 import TopCon from "../uiComponent/TopCon";
+import { callActiveagents, callActiverooms, callAgents, callagents, callcompletedchats, calltemplatesbymanager, getescalation } from '../../Services/Api';
 
 const ManagerDb = ({
   baseUserSystemURL,
@@ -37,66 +38,55 @@ const ManagerDb = ({
 
   //function for getting all the agents from the database
   const getAgents = async () => {
-    await axios.get(`${baseUserSystemURL}/agents`, { validateStatus: false, withCredentials: true }).then((response) => {
-      const allAgents = response.data.agents;
+    const allAgents= await callAgents(baseUserSystemURL);
 
       const allAgentsOfThisManager = allAgents.filter((agent) => {
         return agent.creatorUID === userData.user_id
-      })
-
+      });
       setTotalNoOfAgents(allAgentsOfThisManager.length);
-    });
   }
 
   //function for getting all the active agents
   const getActiveAgents = async () => {
+    const active_agents=await callActiveagents(baseChatSystemURL);
+    const allActiveAgentsOfThisManager = active_agents.filter((agent) => {
+      return agent.creatorUID === userData.user_id
+    })
 
-    await axios.get(`${baseChatSystemURL}/active_agents`, { validateStatus: false, withCredentials: true }).then((response) => {
-      const allActiveAgentsOfThisManager = response.data.activeAgents.filter((agent) => {
-        return agent.creatorUID === userData.user_id
-      })
-
-      setTotalNoOfActiveAgents(allActiveAgentsOfThisManager.length);
-    });
+    setTotalNoOfActiveAgents(allActiveAgentsOfThisManager.length);
   }
 
   //function for getting all the active rooms
   const getRooms = async () => {
-    await axios.get(`${baseChatSystemURL}/active_rooms`, { validateStatus: false, withCredentials: true }).then((response) => {
-      let rooms = response.data.chats;
-
-      //removing rooms which are not for this perticular manager
-      for(let i=0; i < rooms.length; i++){
-        if(rooms[i].managerID !== userData.user_id){
-          rooms.splice(i, 1);
-        }
+    const rooms=await callActiverooms(baseChatSystemURL);
+     //removing rooms which are not for this perticular manager
+     for(let i=0; i < rooms.length; i++){
+      if(rooms[i].managerID !== userData.user_id){
+        rooms.splice(i, 1);
       }
-      setTotalNoOfOpenChats(rooms.length);
-    });
+    }
+    setTotalNoOfOpenChats(rooms.length);
   }
 
   //function for getting all the escalations of this perticular manager
   const getEscalations = async () => {
-    await axios.post(`${baseUserSystemURL}/get_escalations`, {managerID: userData.user_id},{ validateStatus: false, withCredentials: true }).then((response) => {
-      setTotalEscalations(response.data.escalations);
-      setTotalNoOfEscalations(response.data.escalations.length);
-    });
+    const escalations=await getescalation(baseUserSystemURL,userData.user_id)
+    setTotalEscalations(escalations);
+    setTotalNoOfEscalations(escalations.length);
   }
 
   //function for getting all the templates from the database
   const getTemplates = async() => {
-    await axios.post(`${baseChatSystemURL}/allTemplatesByManager`, {managerID: userData.user_id},{ validateStatus: false, withCredentials: true }).then((response) => {
-      setTotalTemplates(response.data.templates);
-      setTotalNoOfTemplates(response.data.templates.length);
-    });
+    const templates=await calltemplatesbymanager(baseChatSystemURL,userData.user_id);
+    setTotalTemplates(templates);
+    setTotalNoOfTemplates(templates.length);
   }
 
   //function for getting all the completed chats from the database
   const getCompletedChats = async () => {
-    await axios.post(`${baseChatSystemURL}/completedChats`, {managerID: userData.user_id},{ validateStatus: false, withCredentials: true }).then((response) => {
-      setTotalCompletedChats(response.data.chats);
-      setTotalNoOfCompletedChats(response.data.chats.length);
-    });
+    const chats=await callcompletedchats(baseChatSystemURL);
+    setTotalCompletedChats(chats);
+    setTotalNoOfCompletedChats(chats.length);
   }
 
   //filtering data based on time

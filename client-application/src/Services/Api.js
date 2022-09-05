@@ -90,6 +90,11 @@ return response.data.users;
       console.log(response.data);
     });
   }
+  export const getescalation =async(baseUserSystemURL,managerID)=>{
+    return await axios.post(`${baseUserSystemURL}/get_escalation`,  {managerID:managerID}, { validateStatus: false, withCredentials: true }).then((response) => {
+      return response.data.escalations;
+    });
+  }
   export const callLogin=async(baseURL,email,password)=>{
     return await axios.post(`${baseURL}/auth/login`, {email, password}, {validateStatus: false, withCredentials: true}).then((response) => {
       if(response.status === 200 && response.data.success){
@@ -101,6 +106,7 @@ return response.data.users;
       }
     });
   }
+  
 
   export const callindiuser=async(baseURL,id)=>{
     return await axios.post(`${baseURL}/indi_user`, {userId: id}, { validateStatus: false, withCredentials: true }).then((response) => {
