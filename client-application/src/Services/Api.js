@@ -216,5 +216,9 @@ export const callchangePassword=async(baseURL,newPassword)=>{
       window.location = "/";
     }
   });
-  
+}
+export const calllogout=async(baseURL)=>{
+  return await axios.get(`${baseURL}/auth/logout`, { validateStatus: false, withCredentials: true }).then((response) => {
+     return response
+    });
 }

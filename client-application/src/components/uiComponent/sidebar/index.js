@@ -1,6 +1,7 @@
 import React from 'react';
 import "./index.css";
 import axios from "axios";
+import { calllogout } from '../../../Services/Api';
 
 const OverviewIcon = () => {
   return <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -29,10 +30,11 @@ const AgentIcon = () => {
 
 const Sidebar = ({role, baseURL, setIsLogedin, page, noOfPendingTemplates=0, noOfRequestedChats=0}) => {
   const logOut = async () => {
-    await axios.get(`${baseURL}/auth/logout`, { validateStatus: false, withCredentials: true }).then((response) => {
+   const response= await calllogout(baseURL);
+    if(response.status === 200){
       setIsLogedin(false);
       window.location = "/";
-    });
+    }
   }
 
 
