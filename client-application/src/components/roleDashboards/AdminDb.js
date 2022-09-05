@@ -9,7 +9,7 @@ import AdminLine from "../charts/AdminLine";
 //importing UI Components
 import Sidebar from "../uiComponent/sidebar/index";
 import TopCon from "../uiComponent/TopCon";
-import { callAgents, callmanagers } from '../../Services/Api';
+import { callAgents, callcompletedchats, callgetalltemplates, callmanagers } from '../../Services/Api';
 
 const AdminDb = ({
   baseUserSystemURL,
@@ -45,17 +45,15 @@ const AdminDb = ({
 
       //function for getting all the templates from the database
       const getTemplates = async() => {
-        await axios.get(`${baseBulkMessagingURL}/get_all_templates`, { validateStatus: false, withCredentials: true }).then((response) => {
-          setTotalNoOfTemplates(response.data.allTemplates.length);
-        });
+        const allTemplates= await callgetalltemplates(baseBulkMessagingURL);
+        setTotalNoOfTemplates(allTemplates.length);
       }
 
       //function for getting all the completed chats from the database
       const getCompletedChats = async () => {
-        await axios.post(`${baseChatSystemURL}/completedChats`, {},{ validateStatus: false, withCredentials: true }).then((response) => {
-          setTotalCompletedChats(response.data.chats);
-          setTotalNoOfCompletedChats(response.data.chats.length);
-        });
+       const chats=await callcompletedchats(baseChatSystemURL);
+       setTotalCompletedChats(chats);
+       setTotalNoOfCompletedChats(chats.length);
       }
 
 

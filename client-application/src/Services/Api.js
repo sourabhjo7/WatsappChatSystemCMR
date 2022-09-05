@@ -104,6 +104,7 @@ return response.data.users;
 
   export const callindiuser=async(baseURL,id)=>{
     return await axios.post(`${baseURL}/indi_user`, {userId: id}, { validateStatus: false, withCredentials: true }).then((response) => {
+      console.log("indiuser:==:", response.data.foundUser);
       return response.data.foundUser;
      
     });
@@ -115,7 +116,7 @@ return response.data.users;
       return response.data.activeAgents;
     });
   }
-
+  
   export const callcompletedchats=async(baseChatSystemURL,id)=>{
     return await axios.post(`${baseChatSystemURL}/completedChats`, {managerID: id},{ validateStatus: false, withCredentials: true }).then((response) => {
       return response.data.chats;
@@ -136,5 +137,11 @@ return response.data.users;
   export const callmanagers=async(baseUserSystemURL)=>{
     return await axios.get(`${baseUserSystemURL}/managers`, { validateStatus: false, withCredentials: true }).then((response) => {
       return response.data.managers;
+    });
+  }
+  
+  export const callgetalltemplates=async(baseBulkMessagingURL)=>{
+    return await axios.get(`${baseBulkMessagingURL}/get_all_templates`, { validateStatus: false, withCredentials: true }).then((response) => {
+      return response.data.allTemplates;
     });
   }
