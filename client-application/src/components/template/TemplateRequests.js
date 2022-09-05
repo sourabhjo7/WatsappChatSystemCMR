@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react'
-import axios from "axios";
 
 import Sidebar from "../uiComponent/sidebar/index";
 import TopCon from "../uiComponent/TopCon";
+import { callgetalltemplates, updateTempStatus } from '../../Services/Api';
 
 const TemplateRequests = ({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, userName, noOfPendingTemplates, setNoOfPendingTemplates}) => {
 
@@ -11,22 +11,18 @@ const TemplateRequests = ({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin
 
       //function for getting all the templates from the database
       const getTemplates = async () => {
-        axios.get(`${baseBulkMessagingURL}/get_all_templates`, {validateStatus: false, withCredentials: true}).then((response) => {
-
-          const pendingChats = response.data.allTemplates.filter((template) => {
-            return template.status === "Pending"
-          })
-          setNoOfPendingTemplates(pendingChats.length);
-          setAllTemplates(response.data.allTemplates);
-        });
+        const alltemplates=await callgetalltemplates(baseBulkMessagingURL);
+        const pendingChats =alltemplates.filter((template) => {
+          return template.status === "Pending"
+        })
+        setNoOfPendingTemplates(pendingChats.length);
+        setAllTemplates(alltemplates);
       }
 
       //function for updating the status of the template
       const updateStatus = async (tempID, status) => {
-        axios.post(`${baseBulkMessagingURL}/updateTempStatus`, {tempID, status},{validateStatus: false, withCredentials: true}).then((response) => {
-          getTemplates();
-          console.log(response.data);
-        });
+        await updateTempStatus(baseBulkMessagingURL,tempID,status);
+        getTemplates();
       }
 
       //Status Button component

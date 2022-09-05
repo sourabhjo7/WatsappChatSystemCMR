@@ -106,7 +106,7 @@ return response.data.users;
       }
     });
   }
-  
+
 
   export const callindiuser=async(baseURL,id)=>{
     return await axios.post(`${baseURL}/indi_user`, {userId: id}, { validateStatus: false, withCredentials: true }).then((response) => {
@@ -152,3 +152,15 @@ return response.data.users;
     });
   }
 
+  export const AddNewTempplate=async(baseURL,newTemplate)=>{
+    await axios.post(`${baseURL}/add_new_template`, newTemplate, {validateStatus: false, withCredentials: true}).then((response) => {
+      // console.log(response.data);
+      window.location = "/";
+    });
+  }
+
+  export const updateTempStatus=async(baseBulkMessagingURL,tempID,status)=>{
+    await axios.post(`${baseBulkMessagingURL}/updateTempStatus`, {tempID, status},{validateStatus: false, withCredentials: true}).then((response) => {
+      console.log(response.data);
+    });
+  }

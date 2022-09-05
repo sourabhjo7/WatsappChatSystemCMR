@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
-import axios from "axios";
+import { AddNewTempplate } from '../../Services/Api';
+
 
 const nameLabel = "For example, a verification code template for an app will be: Your verification code is {{1}}. Hence, this can be named: app_verification_code. An element name can only be in lowercase alphanumeric characters and underscores. Special characters and white-space are not allowed."
 const sampleLabel = "A sample message should be a complete message replacing the placeholder given in the template with a meaningful word/statement/numbers/special characters. The placeholder should start and end with Square brackets. For example, Your verification code is [232323]"
@@ -15,10 +16,7 @@ const AddNewTemp = ({baseURL, userName, userID}) => {
     });
 
     const subTemplate = async () => {
-      axios.post(`${baseURL}/add_new_template`, newTemplate, {validateStatus: false, withCredentials: true}).then((response) => {
-        // console.log(response.data);
-        window.location = "/";
-      });
+      await AddNewTempplate(baseURL,newTemplate);
     }
 
     return (

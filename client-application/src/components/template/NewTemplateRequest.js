@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react'
-import axios from "axios";
 
 import Sidebar from "../uiComponent/sidebar/index";
 import TopCon from "../uiComponent/TopCon";
 
 import AddNewTemp from "./AddNewTemp";
+import { calltemplatesbymanager } from '../../Services/Api';
 
 const NewTemplateRequest = ({baseBulkMessagingURL, baseChatSystemURL, baseUserSystemURL, userName, userID, setIsLogedin, noOfRequestedChats}) => {
 
@@ -15,11 +15,9 @@ const NewTemplateRequest = ({baseBulkMessagingURL, baseChatSystemURL, baseUserSy
 
       //function for getting all the templates from the database
       const getTemplates = async () => {
-        axios.post(`${baseChatSystemURL}/allTemplatesByManager`, {managerID: userID}, {validateStatus: false, withCredentials: true}).then((response) => {
-          setAllTemplates(response.data.templates);
-        });
+        const templates=await calltemplatesbymanager(baseChatSystemURL);
+        setAllTemplates(templates);
       }
-
       useEffect(() => {
         getTemplates();
       }, [])
