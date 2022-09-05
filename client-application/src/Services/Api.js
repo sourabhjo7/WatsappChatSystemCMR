@@ -109,9 +109,10 @@ return response.data.users;
     });
   }
 
-  export const callagents= async (baseURL)=>{
-    return await axios.get(`${baseURL}/active_agents`, { validateStatus: false, withCredentials: true }).then(async (response) => {
-      return response.data.agents;
+  export const callagents= async (baseChatSystemURL)=>{
+    return await axios.get(`${baseChatSystemURL}/active_agents`, { validateStatus: false, withCredentials: true }).then(async (response) => {
+     console.log("called active agents",response.data.activeAgents);
+      return response.data.activeAgents;
     });
   }
 
@@ -124,5 +125,16 @@ return response.data.users;
   export const calltemplatesbymanager=async(baseChatSystemURL,id)=>{
     return await axios.post(`${baseChatSystemURL}/allTemplatesByManager`, {managerID: id},{ validateStatus: false, withCredentials: true }).then((response) => {
     return response.data.templates;
+    });
+  }
+
+  export const callAgents=async(baseUserSystemURL)=>{
+    return await axios.get(`${baseUserSystemURL}/agents`, { validateStatus: false, withCredentials: true }).then((response) => {
+      return response.data.agents;
+    });
+  }
+  export const callmanagers=async(baseUserSystemURL)=>{
+    return await axios.get(`${baseUserSystemURL}/managers`, { validateStatus: false, withCredentials: true }).then((response) => {
+      return response.data.managers;
     });
   }

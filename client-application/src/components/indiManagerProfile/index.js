@@ -43,7 +43,7 @@ const ManagerProfile = ({baseURL, baseChatSystemURL, userData, setIsLogedin, noO
       //getting all the agents in the database
       const getAgents = async () => {
         
-        const allAgents=await callagents(baseURL)
+        const allAgents=await callagents(baseChatSystemURL)
           //filtering out the agents which are not created by this manager
           const allAgentsOfThisManager = allAgents.filter((agent) => {
             return agent.creatorUID === id
