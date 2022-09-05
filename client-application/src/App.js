@@ -86,26 +86,16 @@ function App() {
 //function for checking the JWT from backend API
 
   const valToken = async () => {
-      const user=await calltoken(baseUserSystemURL);
-      console.log(user);
-      if(user===false){
+      const user = await calltoken(baseUserSystemURL);
+      if(!user){
         setIsLogedin(false);
       }
       else{
-           setUserData(user);
+        setUserData(user);
         setIsLogedin(true);
         getAssignedChats(user.user_id);
         userId = user.user_id
       }
-      // if(response.status === 404 || response.status === 401){
-      //   setIsLogedin(false);
-      // }else{
-      //   setUserData(response.data.user);
-      //   setIsLogedin(true);
-      //   getAssignedChats(response.data.user.user_id);
-      //   userId = response.data.user.user_id
-      //   // console.log(response.data.user);
-      // }
   }
   //Getting all assigned rooms to this agent
   const getAssignedChats = async (user_id) => {
@@ -115,7 +105,7 @@ function App() {
       return assined.managerID === user_id
     });
       setNoOfRequestedChats(filteredChats.length);
-      console.log(filteredChats);
+      // console.log(filteredChats);
     };
 
   //getting the number of pendng templates to show in notification
@@ -142,7 +132,7 @@ function App() {
         getAssignedChats(userId);
       }, 500);
     });
-  }, []);
+  }, [socket]);
 
   useEffect(() => {
     /* validating JWT on every time the component mount */

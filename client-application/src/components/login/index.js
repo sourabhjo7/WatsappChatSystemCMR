@@ -9,10 +9,10 @@ const Login = ({baseURL, changeLogin}) => {
 
   //function for loging in a users
   const login = async () => {
-   const user=callLogin(baseURL,email,password);
-   if(user!=false){
-    changeLogin(user);
-   }
+     const user= await callLogin(baseURL,email,password);
+     if(user){
+      changeLogin(user);
+     }
    //changing the state if login seccessful
   }
 
