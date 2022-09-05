@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import axios from "axios";
+
 
 //importing charts
 import AgentDNChart from "../charts/AgentDNChart";
@@ -9,6 +9,7 @@ import AdminLine from "../charts/AdminLine";
 //importing UI Components
 import Sidebar from "../uiComponent/sidebar/index";
 import TopCon from "../uiComponent/TopCon";
+import { callActiverooms, callAssignedChats, callcompletedchats } from '../../Services/Api';
 
 const AgentDb = ({baseUserSystemURL, baseChatSystemURL, setIsLogedin, userData, socket}) => {
 
@@ -25,43 +26,35 @@ const AgentDb = ({baseUserSystemURL, baseChatSystemURL, setIsLogedin, userData, 
 
       //Getting all active rooms exist currently
       const getRooms = async () => {
-
-        await axios.get(`${baseChatSystemURL}/active_rooms`, { validateStatus: false, withCredentials: true }).then((response) => {
-          const rooms = response.data.chats;
+          const rooms=await callActiverooms(baseChatSystemURL);
           for(let i=0; i < rooms.length; i++){
             if(rooms[i].managerID !== userData.creatorUID){
               rooms.splice(i, 1);
             }
           }
           setTotalNoOfOpenChats(rooms.length);
-        });
       }
 
       //function for getting all the completed chats from the database
       const getCompletedChats = async () => {
-        await axios.post(`${baseChatSystemURL}/completedChats`, {managerID: userData.creatorUID},{ validateStatus: false, withCredentials: true }).then((response) => {
-          const chatsByThisAgent = response.data.chats.filter((chat) => {
-            return chat.agentName === userData.name
-          })
-
-          getNoOfUniqueConstomerhandled(chatsByThisAgent);
-          setTotalCompletedChats(chatsByThisAgent);
-          setTotalNoOfCompletedChats(chatsByThisAgent.length);
-        });
+        const chats=await callcompletedchats(baseChatSystemURL);
+        const chatsByThisAgent = chats.filter((chat) => {
+          return chat.agentName === userData.name
+        })
+        getNoOfUniqueConstomerhandled(chatsByThisAgent);
+        setTotalCompletedChats(chatsByThisAgent);
+        setTotalNoOfCompletedChats(chatsByThisAgent.length);
       }
 
       //Getting all assigned rooms to this agent
       const getAssignedChats = async () => {
+        const assignList=await callAssignedChats(baseChatSystemURL);
+            //filtering out the vhats which are not assigned to this perticular agent
+            const assignedChats = assignList.filter((assined) => {
+              return assined.agentEmail === userData.email
+            });
 
-        await axios.get(`${baseChatSystemURL}/assigned`, { validateStatus: false, withCredentials: true }).then((response) => {
-
-          //filtering out the vhats which are not assigned to this perticular agent
-          const assignedChats = response.data.assignList.filter((assined) => {
-            return assined.agentEmail === userData.email
-          });
-
-          setNoOfAssignedChats(assignedChats.length);
-        });
+            setNoOfAssignedChats(assignedChats.length);
       }
 
       //For getting the number of unique customers handled by this perticular agent
