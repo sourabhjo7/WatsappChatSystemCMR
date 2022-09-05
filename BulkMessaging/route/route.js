@@ -192,24 +192,25 @@ router.post("/create_new_flow", async (req, res) => {
     edges
   } = req.body; // recieving details of messages contact list and triggers also time delay
 
-    const flowData = await Flow.createFlow();
+    const flowData = await Flow.createFlow(title, tMessageList, contactList, cid, startNode, nodes, edges);
 
     for(let phNum of contactList){
-
       const customer = await Customer.getCustomerByNum(phNum);
 
-      customer.allFLows = [...customer.allFLows, flowData._id.toString()];
+      if(customer){
+        customer.allFLows = [...customer.allFLows, flowData._id.toString()];
 
-      if(!customer.currFlow || customer.currFlow.currPos.temp === "!end"){
-        customer.currFlow = {
-            flowID: flowData._id.toString(),
-            currPos: {
-              temp: startNode,
-              show: true
+        if(!customer.currFlow || customer.currFlow.currPos.temp === "!end"){
+          customer.currFlow = {
+              flowID: flowData._id.toString(),
+              currPos: {
+                temp: startNode,
+                show: true
+              }
             }
-          }
+        }
+        await customer.save();
       }
-      await customer.save();
     }
   res.status(200).json({
     data: flowData

@@ -23,14 +23,14 @@ const AllUsers = ({
 
       //function for getting all the users
       const getUsers = async () => {
-        const allUsers=callgetUsers(baseURL,getRole);
+        let allUsers= await callgetUsers(baseURL,getRole);
         if(getRole === "agents"){
           allUsers = allUsers.filter((agent) => {
             return agent.creatorUID === userID
           })
         }
         setusersList(allUsers);
-       
+
       }
 
       //function for deleting a perticular user

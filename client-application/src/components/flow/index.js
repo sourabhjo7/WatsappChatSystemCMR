@@ -53,7 +53,7 @@ const Flow = ({
       toBePopulateUsers = [];
        optedinUsers=await calloptedinUsers(baseBulkMessagingURL,userId);
         storedUsers=await callstoredCustomers(baseBulkMessagingURL);
-   
+
     //gettig name of the customers from the stored users
     for (let optUser of optedinUsers) {
       const optUserFullPhoneNo = optUser.countryCode + optUser.phoneCode;
@@ -145,7 +145,7 @@ const Flow = ({
   }, [format, inputTime]);
 
   const handleSubmit = async (e) => {
-  
+
     setEvents((curr) => {
       if (format === "min") {
         return [
@@ -388,7 +388,7 @@ const Flow = ({
     };
     console.log(data);
     const res=await callcreate_new_flow(baseBulkMessagingURL,data);
-console.log("saved===>",res);
+    console.log("saved===>",res);
   };
   return (<div className="rootCon">
     <Sidebar role="Manager" baseURL={baseUserSystemURL} setIsLogedin={setIsLogedin} page="flow" noOfRequestedChats={noOfRequestedChats}/>
