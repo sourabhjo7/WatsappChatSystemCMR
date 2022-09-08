@@ -737,7 +737,6 @@ app.get("/noOfPendingTemplates", async (req, res) => {
 
   //getting all the pending templates from the database
   const pendingTemplates = await Template.getTemplateByStatus("Pending");
-
   //getting the length of pending templates array
   const noOfPendingTemplates = pendingTemplates.length;
 
@@ -748,7 +747,7 @@ app.get("/noOfPendingTemplates", async (req, res) => {
 
 //route for getting all the templates by a preticular manager
 app.post("/allTemplatesByManager", async (req, res) => {
-  
+
   const {
     managerID
   } = req.body;

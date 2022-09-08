@@ -388,6 +388,7 @@ const Flow = ({
     };
     console.log(data);
     const res=await callcreate_new_flow(baseBulkMessagingURL,data);
+    window.location = "/";
     console.log("saved===>",res);
   };
   return (<div className="rootCon">

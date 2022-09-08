@@ -35,7 +35,7 @@ import ManagerChat from "./components/chatComponents/ManagerChat";
 
 import ManagerProfile from "./components/indiManagerProfile/index";
 import { ReactFlowProvider } from 'react-flow-renderer';
-import { callAssignedChats, callNoPendingChats, calltoken} from './Services/Api';
+import { callAssignedChats, callNoPendingTemplates, calltoken} from './Services/Api';
 
 //Importing as lazy so that socket only runs when user is agent or manager
 const ChatPage = React.lazy(() => import('./components/chatComponents/ChatPage'));
@@ -110,9 +110,9 @@ function App() {
 
   //getting the number of pendng templates to show in notification
   const getNoOfPendingTemplates = async () => {
-    const data=await callNoPendingChats(baseChatSystemURL);
+    const data = await callNoPendingTemplates(baseChatSystemURL);
+    // console.log(data);
       setNoOfPendingTemplates(data);
-
   }
 
   const changeLoginState = (user) => {//Function for changing the State after successFull Login

@@ -17,7 +17,7 @@ import axios from "axios";
     });
   };
 
-  export const callNoPendingChats =async (baseChatSystemURL)=>{
+  export const callNoPendingTemplates =async (baseChatSystemURL)=>{
     return await axios.get(`${baseChatSystemURL}/noOfPendingTemplates `, { validateStatus: false, withCredentials: true }).then((response) => {
       return response.data.noOfPendingTemplates;
     });
@@ -123,7 +123,7 @@ return response.data.users;
       return response.data.activeAgents;
     });
   }
-  
+
   export const callcompletedchats=async(baseChatSystemURL,id)=>{
     return await axios.post(`${baseChatSystemURL}/completedChats`, {managerID: id},{ validateStatus: false, withCredentials: true }).then((response) => {
       return response.data.chats;
@@ -147,7 +147,7 @@ return response.data.users;
       return response.data.managers;
     });
   }
-  
+
   export const callgetalltemplates=async(baseBulkMessagingURL)=>{
     return await axios.get(`${baseBulkMessagingURL}/get_all_templates`, { validateStatus: false, withCredentials: true }).then((response) => {
       return response.data.allTemplates;

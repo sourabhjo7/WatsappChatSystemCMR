@@ -56,7 +56,7 @@ templateSchema.statics.getTemplateById = function (tempID){
 }
 
 templateSchema.statics.getTemplateByStatus = function (status){
-  return this.findOne({status});
+  return this.find({status});
 }
 
 templateSchema.statics.getTemplateByManagerId = function (managerID){

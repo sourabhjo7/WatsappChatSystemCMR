@@ -38,8 +38,8 @@ const AdminDb = ({
 
       //function for getting all the managers from the database
       const getManagers = async () => {
-      const allmanagers=callmanagers(baseUserSystemURL);
-      setTotalNoOfManagers(allmanagers.length);
+        const allmanagers= await callmanagers(baseUserSystemURL);
+        setTotalNoOfManagers(allmanagers.length);
       }
 
       //function for getting all the templates from the database
