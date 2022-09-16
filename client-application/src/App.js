@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import "./App.css";
 
 //all the URLs of the backend systems
-import {baseUserSystemURL, baseChatSystemURL, baseBulkMessagingURL, baseUserSystemURLProd ,baseChatSystemURLProd , baseBulkMessagingURLProd } from "./constant";
 
 //importing Router functionality
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
@@ -45,11 +44,9 @@ let userId;//variable for storing the current id of the user
 
 function App() {
 
-  if(process.env.REACT_APP_ENV === "production"){
-    baseUserSystemURL = baseUserSystemURLProd;
-    baseChatSystemURL = baseChatSystemURLProd;
-    baseBulkMessagingURL = baseBulkMessagingURLProd;
-  }
+  const baseUserSystemURL = process.env.REACT_APP_baseUserSystemURL;
+  const baseChatSystemURL = process.env.REACT_APP_baseChatSystemURL;
+  const baseBulkMessagingURL = process.env.REACT_APP_baseBulkMessagingURL;
 
   const [isLogedin, setIsLogedin] = useState(false);//login state variable
   const [userData, setUserData] = useState({});
@@ -100,7 +97,7 @@ function App() {
   //Getting all assigned rooms to this agent
   const getAssignedChats = async (user_id) => {
     const assignList= await callAssignedChats(baseChatSystemURL);
- //Filtering assigned rooms for this perticular agent
+    //Filtering assigned rooms for this perticular agent
     const filteredChats = assignList.filter((assined) => {
       return assined.managerID === user_id
     });
