@@ -14,8 +14,6 @@ import CampaignFlowCard from "../uiComponent/dnd/CampaignFlowCard";
 import { callcreate_new_campaign, callgetflows, calloptedinUsers, callstoredCustomers } from "../../Services/Api";
 
 const Campaign = ({
-  baseBulkMessagingURL,
-  baseUserSystemURL,
   setIsLogedin,
   userName,
   userId,
@@ -44,7 +42,7 @@ const Campaign = ({
 
   //getting all the approved templates
   const getFlows = async () => {
-    const flows= await callgetflows(baseBulkMessagingURL,userId); 
+    const flows= await callgetflows(userId);
       //setting the flows with the response from the API
       setFlows(flows);
   };
@@ -53,9 +51,9 @@ const Campaign = ({
     let optedinUsers,
       storedUsers,
       toBePopulateUsers = [];
-      optedinUsers =await calloptedinUsers(baseBulkMessagingURL,userId);
-     
-     storedUsers= await callstoredCustomers(baseBulkMessagingURL);
+      optedinUsers =await calloptedinUsers(userId);
+
+     storedUsers= await callstoredCustomers();
 
 
     //gettig name of the customers from the stored users
@@ -390,7 +388,7 @@ const Campaign = ({
     };
     console.log(data);
     try {
-      var response = await callcreate_new_campaign(baseBulkMessagingURL,data);
+      var response = await callcreate_new_campaign(data);
     console.log(response.data);
     }
     catch(e){
@@ -400,7 +398,7 @@ const Campaign = ({
 
 
   return (<div className="rootCon">
-    <Sidebar role="Manager" baseURL={baseUserSystemURL} setIsLogedin={setIsLogedin} page="campaign" noOfRequestedChats={noOfRequestedChats}/>
+    <Sidebar role="Manager" setIsLogedin={setIsLogedin} page="campaign" noOfRequestedChats={noOfRequestedChats}/>
 
     <div className="dataCon">
       <TopCon userName={userName} page="Campaign"/>

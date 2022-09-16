@@ -14,8 +14,6 @@ import TopCon from "../uiComponent/TopCon";
 import { callActiveagents, callActiverooms, callAgents, callagents, callcompletedchats, calltemplatesbymanager, getescalation } from '../../Services/Api';
 
 const ManagerDb = ({
-  baseUserSystemURL,
-  baseChatSystemURL,
   setIsLogedin,
   userData,
   noOfRequestedChats,
@@ -38,7 +36,7 @@ const ManagerDb = ({
 
   //function for getting all the agents from the database
   const getAgents = async () => {
-    const allAgents= await callAgents(baseUserSystemURL);
+    const allAgents= await callAgents();
 
       const allAgentsOfThisManager = allAgents.filter((agent) => {
         return agent.creatorUID === userData.user_id
@@ -48,7 +46,7 @@ const ManagerDb = ({
 
   //function for getting all the active agents
   const getActiveAgents = async () => {
-    const active_agents=await callActiveagents(baseChatSystemURL);
+    const active_agents=await callActiveagents();
     const allActiveAgentsOfThisManager = active_agents.filter((agent) => {
       return agent.creatorUID === userData.user_id
     })
@@ -58,7 +56,7 @@ const ManagerDb = ({
 
   //function for getting all the active rooms
   const getRooms = async () => {
-    const rooms=await callActiverooms(baseChatSystemURL);
+    const rooms=await callActiverooms();
      //removing rooms which are not for this perticular manager
      for(let i=0; i < rooms.length; i++){
       if(rooms[i].managerID !== userData.user_id){
@@ -70,21 +68,21 @@ const ManagerDb = ({
 
   //function for getting all the escalations of this perticular manager
   const getEscalations = async () => {
-    const escalations=await getescalation(baseUserSystemURL,userData.user_id)
+    const escalations=await getescalation(userData.user_id)
     setTotalEscalations(escalations);
     setTotalNoOfEscalations(escalations.length);
   }
 
   //function for getting all the templates from the database
   const getTemplates = async() => {
-    const templates=await calltemplatesbymanager(baseChatSystemURL,userData.user_id);
+    const templates=await calltemplatesbymanager(userData.user_id);
     setTotalTemplates(templates);
     setTotalNoOfTemplates(templates.length);
   }
 
   //function for getting all the completed chats from the database
   const getCompletedChats = async () => {
-    const chats=await callcompletedchats(baseChatSystemURL);
+    const chats=await callcompletedchats();
     setTotalCompletedChats(chats);
     setTotalNoOfCompletedChats(chats.length);
   }
@@ -157,7 +155,7 @@ const ManagerDb = ({
 
   return (
       <div className="rootCon">
-        <Sidebar role="Manager" baseURL={baseUserSystemURL} setIsLogedin={setIsLogedin} page="overview" noOfRequestedChats={noOfRequestedChats}/>
+        <Sidebar role="Manager" setIsLogedin={setIsLogedin} page="overview" noOfRequestedChats={noOfRequestedChats}/>
         <div className="dataCon">
           <TopCon userName={userData.name} page="Overview"/>
 

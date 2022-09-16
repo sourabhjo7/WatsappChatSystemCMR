@@ -41,13 +41,11 @@ exports.register = async (req, res) => {
 
       let user;
 
-      user = await User.createNewUser("Manager", firstName, lastName, email.toLowerCase(), encPassword, role, assignedNumber, appName, apiKey)
-
       //setting the user based on the request role
       if(role === "Manager"){
-        user = await User.createNewUser("Manager", firstName, lastName, email.toLowerCase(), encPassword, role, assignedNumber, appName, apiKey)
+        user = await User.createNewUser({firstName, lastName, email: email.toLowerCase(), encPassword, role, assignedNumber, appName, apiKey})
       }else{
-        user = await User.createNewUser("", firstName, lastName, email.toLowerCase(), encPassword, role)
+        user = await User.createNewUser({firstName, lastName, email: email.toLowerCase(), encPassword, role, creatorUID})
       }
 
       //signing the jwt token

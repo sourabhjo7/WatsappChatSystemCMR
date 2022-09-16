@@ -5,7 +5,6 @@ import TopCon from "./uiComponent/TopCon";
 import { callchangeName, callindiuser } from '../Services/Api';
 
 const Profile = ({
-  baseURL,
   setIsLogedin,
   userData,
   setUserData,
@@ -32,7 +31,7 @@ const Profile = ({
 
       //Getting details on this perticular a user
       const getManagerDetails = async (managerUID) => {
-        const foundUser=await callindiuser(baseURL,managerUID);
+        const foundUser=await callindiuser(managerUID);
         setUserDelByPost(foundUser);
             setNewDel((curr) => {
               return {...curr,
@@ -46,7 +45,7 @@ const Profile = ({
 
       //function for changing the personal detail of the user
       const changeName = async () => {
-        const response=await callchangeName(baseURL,newDel);
+        const response=await callchangeName(newDel);
         if(response.status === 200){
           //setting the new detail in the state variable
           setUserData((curr) => {
@@ -54,12 +53,12 @@ const Profile = ({
           });
           window.location = "/";
         }
-        
+
       }
 
       //function for changing the password of the user
       const changePassword = async () => {
-            await callchangeName(baseURL,newPassword);
+            await callchangeName(newPassword);
 
       }
 
@@ -70,7 +69,7 @@ const Profile = ({
 
       return (
           <div className="rootCon">
-            <Sidebar role={userData.role} baseURL={baseURL} setIsLogedin={setIsLogedin} page="profile" noOfPendingTemplates={noOfPendingTemplates} noOfRequestedChats={noOfRequestedChats}/>
+            <Sidebar role={userData.role} setIsLogedin={setIsLogedin} page="profile" noOfPendingTemplates={noOfPendingTemplates} noOfRequestedChats={noOfRequestedChats}/>
 
             <div className="dataCon">
               <TopCon userName={userData.name} page="Profile"/>

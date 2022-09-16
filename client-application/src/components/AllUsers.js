@@ -8,7 +8,6 @@ import PlaceHolderImg from "../images/managerPicPH.png";
 import { calldelUser, callgetUsers } from '../Services/Api';
 
 const AllUsers = ({
-  baseURL,
   getRole,
   setIsLogedin,
   userRole,
@@ -23,7 +22,7 @@ const AllUsers = ({
 
       //function for getting all the users
       const getUsers = async () => {
-        let allUsers= await callgetUsers(baseURL,getRole);
+        let allUsers= await callgetUsers(getRole);
         if(getRole === "agents"){
           allUsers = allUsers.filter((agent) => {
             return agent.creatorUID === userID
@@ -39,9 +38,9 @@ const AllUsers = ({
 
         //selecting the backend route based on role
         if(getRole === "agents"){
-          url = `${baseURL}/del_agent`;
+          url = `${process.env.REACT_APP_baseUserSystemURL}/del_agent`;
         }else{
-          url = `${baseURL}/del_manager`;
+          url = `${process.env.REACT_APP_baseUserSystemURL}/del_manager`;
         }
         await calldelUser(url,userID);
         setusersList((list) => {
@@ -74,7 +73,7 @@ const AllUsers = ({
 
       return (
           <div className="rootCon">
-              <Sidebar role = {userRole} baseURL={baseURL} setIsLogedin={setIsLogedin} page={getRole} noOfPendingTemplates={noOfPendingTemplates} noOfRequestedChats={noOfRequestedChats}/>
+              <Sidebar role = {userRole} setIsLogedin={setIsLogedin} page={getRole} noOfPendingTemplates={noOfPendingTemplates} noOfRequestedChats={noOfRequestedChats}/>
               <div className="dataCon">
                 <TopCon userName={userName} page={getRole === "agents" ? "Agents" : "Managers"} />
 

@@ -3,7 +3,7 @@ import Sidebar from "../uiComponent/sidebar/index";
 import TopCon from "../uiComponent/TopCon";
 import { callapprovedtemplates, callbroadcastMessage, calloptedinUsers, callstoredCustomers } from '../../Services/Api';
 
-const Broadcasting = ({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, userName, userId, noOfRequestedChats}) => {
+const Broadcasting = ({setIsLogedin, userName, userId, noOfRequestedChats}) => {
   //defining state variables
   const [templates, setTemplates] = useState([]);
   const [selectedTemplate, setSelectedTemplate] = useState({});
@@ -24,7 +24,7 @@ const Broadcasting = ({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, us
 
   //getting all the approved templates
   const getTemplates = async () => {
-    const approvedTemplates=await callapprovedtemplates(baseBulkMessagingURL,userId);
+    const approvedTemplates=await callapprovedtemplates(userId);
  //setting the templates with the response from the API
  console.log(approvedTemplates);
  setTemplates(approvedTemplates);
@@ -32,14 +32,14 @@ const Broadcasting = ({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, us
    setSelectedTemplate({...approvedTemplates[0], example: JSON.parse(approvedTemplates[0].meta).example});
    setMessage(approvedTemplates[0].data);
  }
-   
+
   }
 
   const getOptedinUsers = async () => {
 
     let optedinUsers, storedUsers, toBePopulateUsers = [];
-      optedinUsers=await calloptedinUsers(baseBulkMessagingURL,userId);
-      storedUsers=await callstoredCustomers(baseBulkMessagingURL);
+      optedinUsers=await calloptedinUsers(userId);
+      storedUsers=await callstoredCustomers();
       console.log(optedinUsers,"=====users====",storedUsers)
     //gettig name of the customers from the stored users
     for(let optUser of optedinUsers){
@@ -74,11 +74,11 @@ const Broadcasting = ({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, us
     const toBeBroadcastNo = [...selectedNos, ...newNumbersArr];
 
     if(toBeBroadcastNo.length > 1){
-     const d=await callbroadcastMessage(baseBulkMessagingURL,message,toBeBroadcastNo,userId);
+     const d=await callbroadcastMessage(message,toBeBroadcastNo,userId);
      if(d){
       setPopulateMessage("Broadcasting Successfull");
      }
-     
+
     }else{
       console.log("No Number Selected");
       setPopulateMessage("No Number Selected");
@@ -164,7 +164,7 @@ const Broadcasting = ({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, us
 
   return (
       <div className="rootCon">
-        <Sidebar role="Manager" baseURL={baseUserSystemURL} setIsLogedin={setIsLogedin} page="broadcasting" noOfRequestedChats={noOfRequestedChats}/>
+        <Sidebar role={process.env.REACT_APP_ManagerRole} setIsLogedin={setIsLogedin} page="broadcasting" noOfRequestedChats={noOfRequestedChats}/>
 
         <div className="dataCon">
           <TopCon userName={userName} page="Broadcast"/>

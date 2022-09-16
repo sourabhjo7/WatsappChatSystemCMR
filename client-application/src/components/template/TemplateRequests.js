@@ -4,14 +4,14 @@ import Sidebar from "../uiComponent/sidebar/index";
 import TopCon from "../uiComponent/TopCon";
 import { callgetalltemplates, updateTempStatus } from '../../Services/Api';
 
-const TemplateRequests = ({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, userName, noOfPendingTemplates, setNoOfPendingTemplates}) => {
+const TemplateRequests = ({setIsLogedin, userName, noOfPendingTemplates, setNoOfPendingTemplates}) => {
 
       //defining state variables
       const [allTemplates, setAllTemplates] = useState([]);
 
       //function for getting all the templates from the database
       const getTemplates = async () => {
-        const alltemplates=await callgetalltemplates(baseBulkMessagingURL);
+        const alltemplates=await callgetalltemplates();
         const pendingChats =alltemplates.filter((template) => {
           return template.status === "Pending"
         })
@@ -21,7 +21,7 @@ const TemplateRequests = ({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin
 
       //function for updating the status of the template
       const updateStatus = async (tempID, status) => {
-        await updateTempStatus(baseBulkMessagingURL,tempID,status);
+        await updateTempStatus(tempID,status);
         getTemplates();
       }
 
@@ -50,7 +50,7 @@ const TemplateRequests = ({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin
 
       return (
           <div className="rootCon">
-            <Sidebar role="Admin" baseURL={baseUserSystemURL} setIsLogedin={setIsLogedin} page="templateRequests" noOfPendingTemplates={noOfPendingTemplates} />
+            <Sidebar role={process.env.REACT_APP_AdminRole} setIsLogedin={setIsLogedin} page="templateRequests" noOfPendingTemplates={noOfPendingTemplates} />
 
             <div className="dataCon">
               <TopCon userName={userName} page="Template Requests"/>

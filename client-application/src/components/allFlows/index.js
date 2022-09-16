@@ -8,13 +8,13 @@ import DndAllFlowsMap from './DndAllFlowsMap';
 import { callgetflows } from '../../Services/Api';
 
 
-const AllFlows = ({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, userName, userId, noOfRequestedChats}) => {
+const AllFlows = ({setIsLogedin, userName, userId, noOfRequestedChats}) => {
 
     const [flows, setFlows] = useState([]);
     const [selectedFlow, setSelectedFlow] = useState({});
 
     const getFlows = async () => {
-      const data=await callgetflows(baseBulkMessagingURL,userId);
+      const data=await callgetflows(userId);
       console.log("test--->",data);
       if(data.length > 0){
         setFlows(data);
@@ -51,7 +51,7 @@ const AllFlows = ({baseBulkMessagingURL, baseUserSystemURL, setIsLogedin, userNa
 
     return (
       <div className="rootCon">
-        <Sidebar role="Manager" baseURL={baseUserSystemURL} setIsLogedin={setIsLogedin} page="AllFlows" noOfRequestedChats={noOfRequestedChats}/>
+        <Sidebar role={process.env.REACT_APP_ManagerRole} setIsLogedin={setIsLogedin} page="AllFlows" noOfRequestedChats={noOfRequestedChats}/>
 
         <div className="dataCon">
           <TopCon userName={userName} page="All Flows"/>

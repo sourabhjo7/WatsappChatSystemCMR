@@ -6,7 +6,7 @@ import TopCon from "./uiComponent/TopCon";
 import { callregNewUser } from '../Services/Api';
 
 
-const CreateNewUser = ({baseURL, userData, setIsLogedin, noOfPendingTemplates, noOfRequestedChats}) => {
+const CreateNewUser = ({userData, setIsLogedin, noOfPendingTemplates, noOfRequestedChats}) => {
 
       //defining state variables
       const [newUserData, setNewUserData] = useState({
@@ -30,7 +30,7 @@ const CreateNewUser = ({baseURL, userData, setIsLogedin, noOfPendingTemplates, n
             newUserData.role = "Manager";
           }
 
-          await callregNewUser(baseURL,newUserData);
+          await callregNewUser(newUserData);
         }
 
 
@@ -39,7 +39,7 @@ const CreateNewUser = ({baseURL, userData, setIsLogedin, noOfPendingTemplates, n
       return (
           <div  className="rootCon ">
 
-            <Sidebar role = {userData.role} baseURL={baseURL} setIsLogedin={setIsLogedin} page="createNewUser" noOfPendingTemplates={noOfPendingTemplates} noOfRequestedChats={noOfRequestedChats}/>
+            <Sidebar role = {userData.role} setIsLogedin={setIsLogedin} page="createNewUser" noOfPendingTemplates={noOfPendingTemplates} noOfRequestedChats={noOfRequestedChats}/>
 
             <div className="dataCon">
               <TopCon userName={userData.name} page={userData.role === "Admin" ? "Add New Manager" : "Add New Agent"} />

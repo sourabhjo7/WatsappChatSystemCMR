@@ -7,7 +7,7 @@ import TopCon from "../uiComponent/TopCon";
 import { callActiveagents, callActiverooms, callAssignedChats, newescalation } from "../../Services/Api";
 
 
-function ChatPage({socket, userData, baseUserSystemURL, baseChatSystemURL, setIsLogedin}) {
+function ChatPage({socket, userData, setIsLogedin}) {
 
     //defining state variables
     const [activeRooms, setActiveRooms] = useState([]);//store all active romms exist
@@ -23,7 +23,7 @@ function ChatPage({socket, userData, baseUserSystemURL, baseChatSystemURL, setIs
 
     //function for getting all the current active agents
     const getActiveAgents = async () => {
-     const activeAgents= await callActiveagents(baseChatSystemURL)
+     const activeAgents= await callActiveagents();
      await setActiveAgents( () => {
       return activeAgents.filter((agent) => {
         return agent.email !== userData.email && agent.creatorUID === userData.creatorUID
@@ -33,7 +33,7 @@ function ChatPage({socket, userData, baseUserSystemURL, baseChatSystemURL, setIs
 
     //Getting all active rooms exist currently
     const getRooms = async () => {
-      const rooms=await callActiverooms(baseChatSystemURL);
+      const rooms=await callActiverooms();
       // console.log(rooms);
       for(let i=0; i < rooms.length; i++){
         if(rooms[i].managerID !== userData.creatorUID){
@@ -46,7 +46,7 @@ function ChatPage({socket, userData, baseUserSystemURL, baseChatSystemURL, setIs
     //Getting all assigned rooms to this agent
     const getAssignedChats = async () => {
 
-      const assignList=await callAssignedChats(baseChatSystemURL);
+      const assignList=await callAssignedChats();
        //Filtering assigned rooms for this perticular agent
        setAssignedChats(() => {
         return assignList.filter((assined) => {
@@ -97,7 +97,7 @@ function ChatPage({socket, userData, baseUserSystemURL, baseChatSystemURL, setIs
         managerID = userData.creatorUID;
 
         //Adding ecalation to DB
-       await newescalation(baseUserSystemURL,room,currActiveChat.phoneNo,userData.name,managerID);
+       await newescalation(room, currActiveChat.phoneNo, userData.name, managerID);
 
         await socket.emit("reassign", {room, managerID, phoneNo: currActiveChat.phoneNo, assignedBy: userData.name});
       }
@@ -263,7 +263,7 @@ function ChatPage({socket, userData, baseUserSystemURL, baseChatSystemURL, setIs
     return (
         <div className="rootCon">
 
-          <Sidebar role="Agent" baseURL={baseUserSystemURL} setIsLogedin={setIsLogedin} page="chat" />
+          <Sidebar role={process.env.REACT_APP_AgentRole} setIsLogedin={setIsLogedin} page="chat" />
 
 
           <div className="dataCon">

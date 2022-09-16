@@ -12,7 +12,7 @@ import ManagerLine from "../charts/ManagerLine"
 import PlaceHolderImg from "../../images/managerPicPH.png";
 import { callagents, callcompletedchats, callindiuser, calltemplatesbymanager } from '../../Services/Api';
 
-const ManagerProfile = ({baseURL, baseChatSystemURL, userData, setIsLogedin, noOfPendingTemplates}) => {
+const ManagerProfile = ({userData, setIsLogedin, noOfPendingTemplates}) => {
 
       const {id} = useParams();//getting is of the manager form the URL
 
@@ -34,7 +34,7 @@ const ManagerProfile = ({baseURL, baseChatSystemURL, userData, setIsLogedin, noO
 
       //Getting details on this perticular manager
       const getManager = async () => {
-        const managerDel = await callindiuser(baseURL,id);
+        const managerDel = await callindiuser(id);
         setTotalEscalations(managerDel.escalations);
         setTotalNoOfEscalations(managerDel.escalations.length);
         setManager(managerDel);
@@ -42,8 +42,8 @@ const ManagerProfile = ({baseURL, baseChatSystemURL, userData, setIsLogedin, noO
 
       //getting all the agents in the database
       const getAgents = async () => {
-        
-        const allAgents=await callagents(baseChatSystemURL)
+
+        const allAgents=await callagents()
           //filtering out the agents which are not created by this manager
           const allAgentsOfThisManager = allAgents.filter((agent) => {
             return agent.creatorUID === id
@@ -56,14 +56,14 @@ const ManagerProfile = ({baseURL, baseChatSystemURL, userData, setIsLogedin, noO
 
       //function for getting all the completed chats from the database
       const getCompletedChats = async () => {
-       const chats=await callcompletedchats(baseChatSystemURL,id);
+       const chats=await callcompletedchats(id);
        setTotalCompletedChats(chats);
       setTotalNoOfCompletedChats(chats.length);
       }
 
       //function for getting all the templates from the database
       const getTemplates = async() => {
-        const templates=await calltemplatesbymanager(baseChatSystemURL,id);
+        const templates=await calltemplatesbymanager(id);
         setTemplates(templates);
         setTotalNoOfTemplates(templates.length);
       }
@@ -120,7 +120,7 @@ const ManagerProfile = ({baseURL, baseChatSystemURL, userData, setIsLogedin, noO
 
       return (
         <div className="rootCon">
-          <Sidebar role="Admin" baseURL={baseURL} setIsLogedin={setIsLogedin} page="managers" noOfPendingTemplates={noOfPendingTemplates}/>
+          <Sidebar role={process.env.REACT_APP_AdminRole} setIsLogedin={setIsLogedin} page="managers" noOfPendingTemplates={noOfPendingTemplates}/>
           <div className="dataCon">
             <TopCon userName={userData.name} page={manager.firstName+"'s Profile"}/>
 

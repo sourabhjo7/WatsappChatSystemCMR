@@ -2,14 +2,14 @@ import React, {useState} from 'react';
 import "./index.css"
 import { callLogin } from '../../Services/Api';
 
-const Login = ({baseURL, changeLogin}) => {
+const Login = ({changeLogin}) => {
   //defining state variables
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   //function for loging in a users
   const login = async () => {
-     const user= await callLogin(baseURL,email,password);
+     const user= await callLogin(email,password);
      if(user){
       changeLogin(user);
      }

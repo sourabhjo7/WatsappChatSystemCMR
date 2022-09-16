@@ -6,8 +6,7 @@ import { callActiveagents, callActiverooms, callassignAgent } from '../Services/
 
 const ManagerAsignPage = ({
   socket,
-  baseUserSystemURL,
-  baseChatSystemURL,userName,
+  userName,
   userId,
   setIsLogedin,
   noOfRequestedChats
@@ -23,13 +22,13 @@ const ManagerAsignPage = ({
 
         const agentSelect = e.target.parentElement.querySelector(".agentSelect");
         const agent = activeAgents[agentSelect.selectedIndex];
-          
-       await callassignAgent(baseChatSystemURL,room, agent,  userName);
+
+       await callassignAgent(room, agent,  userName);
       }
 
       //Getting all active rooms exist currently
       const getRooms = async () => {
-        let rooms=await callActiverooms(baseChatSystemURL);
+        let rooms=await callActiverooms();
         for(let i=0; i < rooms.length; i++){
           if(rooms[i].managerID !== userId){
             rooms.splice(i, 1);
@@ -39,9 +38,9 @@ const ManagerAsignPage = ({
       }
 
       //function for getting all the current active agents
-    
+
       const getActiveAgents = async () => {
-        const activeAgents=await callActiveagents(baseChatSystemURL);
+        const activeAgents=await callActiveagents();
         setActiveAgents(() => {
           return activeAgents.filter((agent) => {
             return agent.creatorUID === userId
@@ -64,7 +63,7 @@ const ManagerAsignPage = ({
 
       return (
           <div className="rootCon">
-          <Sidebar role = "Manager" baseURL={baseUserSystemURL} setIsLogedin={setIsLogedin} page="assignAgents" noOfRequestedChats={noOfRequestedChats}/>
+          <Sidebar role = "Manager" setIsLogedin={setIsLogedin} page="assignAgents" noOfRequestedChats={noOfRequestedChats}/>
 
             <div className="dataCon">
               <TopCon userName={userName} page="Assign Agents"/>

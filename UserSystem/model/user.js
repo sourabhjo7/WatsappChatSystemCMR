@@ -32,16 +32,28 @@ const userSchema = new mongoose.Schema({
     type: String,
   },
   escalations: {
-    type: [Object]
+    type: Array
   },
   token: {
     type: String,
   }
 });
 
-userSchema.statics.createNewUser = function (currUserRole, firstName, lastName, email, password, role, assignedNumber, appName, apiKey){
+userSchema.statics.createNewUser = function (userDel){
 
-  if(currUserRole === "Manager"){
+  const {
+    firstName,
+    lastName,
+    email,
+    encPassword: password,
+    role,
+    assignedNumber,
+    appName,
+    apiKey,
+    creatorUID
+  } = userDel
+
+  if(role === "Manager"){
     return this.create({
       firstName,
       lastName,
@@ -60,7 +72,8 @@ userSchema.statics.createNewUser = function (currUserRole, firstName, lastName, 
       lastName,
       email,
       password,
-      role
+      role,
+      creatorUID
     }).then((data) => {
       return data;
     });

@@ -11,7 +11,7 @@ import Sidebar from "../uiComponent/sidebar/index";
 import TopCon from "../uiComponent/TopCon";
 import { callActiverooms, callAssignedChats, callcompletedchats } from '../../Services/Api';
 
-const AgentDb = ({baseUserSystemURL, baseChatSystemURL, setIsLogedin, userData, socket}) => {
+const AgentDb = ({setIsLogedin, userData, socket}) => {
 
       //defining state variables
       const [totalNoOfOpenChats, setTotalNoOfOpenChats] = useState(0);
@@ -26,7 +26,7 @@ const AgentDb = ({baseUserSystemURL, baseChatSystemURL, setIsLogedin, userData, 
 
       //Getting all active rooms exist currently
       const getRooms = async () => {
-          const rooms=await callActiverooms(baseChatSystemURL);
+          const rooms=await callActiverooms();
           for(let i=0; i < rooms.length; i++){
             if(rooms[i].managerID !== userData.creatorUID){
               rooms.splice(i, 1);
@@ -37,7 +37,7 @@ const AgentDb = ({baseUserSystemURL, baseChatSystemURL, setIsLogedin, userData, 
 
       //function for getting all the completed chats from the database
       const getCompletedChats = async () => {
-        const chats=await callcompletedchats(baseChatSystemURL);
+        const chats=await callcompletedchats();
         const chatsByThisAgent = chats.filter((chat) => {
           return chat.agentName === userData.name
         })
@@ -48,7 +48,7 @@ const AgentDb = ({baseUserSystemURL, baseChatSystemURL, setIsLogedin, userData, 
 
       //Getting all assigned rooms to this agent
       const getAssignedChats = async () => {
-        const assignList=await callAssignedChats(baseChatSystemURL);
+        const assignList=await callAssignedChats();
             //filtering out the vhats which are not assigned to this perticular agent
             const assignedChats = assignList.filter((assined) => {
               return assined.agentEmail === userData.email
@@ -125,7 +125,7 @@ const AgentDb = ({baseUserSystemURL, baseChatSystemURL, setIsLogedin, userData, 
 
       return (
           <div className="rootCon">
-            <Sidebar role="Agent" baseURL={baseUserSystemURL} setIsLogedin={setIsLogedin} page="overview" />
+            <Sidebar role={process.env.REACT_APP_AgentRole} setIsLogedin={setIsLogedin} page="overview" />
             <div className="dataCon">
               <TopCon userName={userData.name} page="Overview"/>
 

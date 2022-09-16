@@ -6,7 +6,7 @@ import TopCon from "../uiComponent/TopCon";
 import { callAssignedChats } from "../../Services/Api";
 
 
-function ManagerChat({socket, userData, baseUserSystemURL, baseChatSystemURL, setIsLogedin, noOfRequestedChats}) {
+function ManagerChat({socket, userData, setIsLogedin, noOfRequestedChats}) {
 
     //defining state variables
     const [assignedChats, setAssignedChats] = useState([]);//store assigned rooms to agents
@@ -24,7 +24,7 @@ function ManagerChat({socket, userData, baseUserSystemURL, baseChatSystemURL, se
     const getAssignedChats = async () => {
 
       //getting escalated chats for this manager
-    const assignList= await callAssignedChats(baseChatSystemURL);
+    const assignList= await callAssignedChats();
    //Filtering escalated rooms for this perticular manager
    setAssignedChats(() => {
     return assignList.filter((assined) => {
@@ -174,7 +174,7 @@ function ManagerChat({socket, userData, baseUserSystemURL, baseChatSystemURL, se
     return (
         <div className="rootCon">
 
-          <Sidebar role="Manager" baseURL={baseUserSystemURL} setIsLogedin={setIsLogedin} page="chat" noOfRequestedChats={noOfRequestedChats}/>
+          <Sidebar role={process.env.REACT_APP_ManagerRole} setIsLogedin={setIsLogedin} page="chat" noOfRequestedChats={noOfRequestedChats}/>
 
 
           <div className="dataCon">

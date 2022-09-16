@@ -11,9 +11,6 @@ import TopCon from "../uiComponent/TopCon";
 import { callAgents, callcompletedchats, callgetalltemplates, callmanagers } from '../../Services/Api';
 
 const AdminDb = ({
-  baseUserSystemURL,
-  baseChatSystemURL,
-  baseBulkMessagingURL,
   setIsLogedin,
   userData,
   noOfPendingTemplates
@@ -32,25 +29,25 @@ const AdminDb = ({
 
       //function for getting all the agents from the database
       const getAgents = async () => {
-       const allagents=await callAgents(baseUserSystemURL);
+       const allagents=await callAgents();
       setTotalNoOfAgents(allagents.length);
       }
 
       //function for getting all the managers from the database
       const getManagers = async () => {
-        const allmanagers= await callmanagers(baseUserSystemURL);
+        const allmanagers= await callmanagers();
         setTotalNoOfManagers(allmanagers.length);
       }
 
       //function for getting all the templates from the database
       const getTemplates = async() => {
-        const allTemplates= await callgetalltemplates(baseBulkMessagingURL);
+        const allTemplates= await callgetalltemplates();
         setTotalNoOfTemplates(allTemplates.length);
       }
 
       //function for getting all the completed chats from the database
       const getCompletedChats = async () => {
-       const chats=await callcompletedchats(baseChatSystemURL);
+       const chats=await callcompletedchats();
        setTotalCompletedChats(chats);
        setTotalNoOfCompletedChats(chats.length);
       }
@@ -94,7 +91,7 @@ const AdminDb = ({
 
       return (
           <div className="rootCon ">
-            <Sidebar role = "Admin" baseURL={baseUserSystemURL} setIsLogedin={setIsLogedin} page="overview" noOfPendingTemplates={noOfPendingTemplates}/>
+            <Sidebar role = {process.env.REACT_APP_AdminRole} setIsLogedin={setIsLogedin} page="overview" noOfPendingTemplates={noOfPendingTemplates}/>
             <div className="dataCon">
               <TopCon userName={userData.name} page="Overview"/>
 

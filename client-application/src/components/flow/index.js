@@ -13,8 +13,6 @@ import {
 import { callapprovedtemplates, callcreate_new_flow, calloptedinUsers, callstoredCustomers } from "../../Services/Api";
 
 const Flow = ({
-  baseBulkMessagingURL,
-  baseUserSystemURL,
   setIsLogedin,
   userName,
   userId,
@@ -43,7 +41,7 @@ const Flow = ({
 
   //getting all the approved templates
   const getTemplates = async () => {
-    const temps= await callapprovedtemplates(baseBulkMessagingURL,userId);
+    const temps= await callapprovedtemplates(userId);
     setTemplates(temps);
   };
 
@@ -51,8 +49,8 @@ const Flow = ({
     let optedinUsers,
       storedUsers,
       toBePopulateUsers = [];
-       optedinUsers=await calloptedinUsers(baseBulkMessagingURL,userId);
-        storedUsers=await callstoredCustomers(baseBulkMessagingURL);
+       optedinUsers=await calloptedinUsers(userId);
+        storedUsers=await callstoredCustomers();
 
     //gettig name of the customers from the stored users
     for (let optUser of optedinUsers) {
@@ -387,12 +385,12 @@ const Flow = ({
       edges:edges
     };
     console.log(data);
-    const res=await callcreate_new_flow(baseBulkMessagingURL,data);
+    const res=await callcreate_new_flow(data);
     window.location = "/";
     console.log("saved===>",res);
   };
   return (<div className="rootCon">
-    <Sidebar role="Manager" baseURL={baseUserSystemURL} setIsLogedin={setIsLogedin} page="flow" noOfRequestedChats={noOfRequestedChats}/>
+    <Sidebar role={process.env.REACT_APP_ManagerRole} setIsLogedin={setIsLogedin} page="flow" noOfRequestedChats={noOfRequestedChats}/>
 
     <div className="dataCon">
       <TopCon userName={userName} page="Flow"/>

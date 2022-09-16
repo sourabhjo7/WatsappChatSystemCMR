@@ -6,7 +6,7 @@ import TopCon from "../uiComponent/TopCon";
 import AddNewTemp from "./AddNewTemp";
 import { calltemplatesbymanager } from '../../Services/Api';
 
-const NewTemplateRequest = ({baseBulkMessagingURL, baseChatSystemURL, baseUserSystemURL, userName, userID, setIsLogedin, noOfRequestedChats}) => {
+const NewTemplateRequest = ({userName, userID, setIsLogedin, noOfRequestedChats}) => {
 
       //defining state variables
       const [showAddCom, setShowAddComp] = useState(false);
@@ -15,7 +15,7 @@ const NewTemplateRequest = ({baseBulkMessagingURL, baseChatSystemURL, baseUserSy
 
       //function for getting all the templates from the database
       const getTemplates = async () => {
-        const templates=await calltemplatesbymanager(baseChatSystemURL,userID);
+        const templates=await calltemplatesbymanager(userID);
         console.log(templates);
         setAllTemplates(templates);
       }
@@ -25,7 +25,7 @@ const NewTemplateRequest = ({baseBulkMessagingURL, baseChatSystemURL, baseUserSy
 
       return (
           <div className="rootCon">
-            <Sidebar role="Manager" baseURL={baseUserSystemURL} setIsLogedin={setIsLogedin} page="newTemplateRequest" noOfRequestedChats={noOfRequestedChats}/>
+            <Sidebar role={process.env.REACT_APP_ManagerRole} setIsLogedin={setIsLogedin} page="newTemplateRequest" noOfRequestedChats={noOfRequestedChats}/>
 
             <div className="dataCon">
               <TopCon userName={userName} page="Your Templates"/>
@@ -43,7 +43,7 @@ const NewTemplateRequest = ({baseBulkMessagingURL, baseChatSystemURL, baseUserSy
                 }}>Add More</button>
 
                 {showAddCom ? (
-                  <AddNewTemp baseURL={baseChatSystemURL} userName={userName} userID={userID}/>
+                  <AddNewTemp userName={userName} userID={userID}/>
                 ) : (
                   <></>
                 )}

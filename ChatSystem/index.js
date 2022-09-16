@@ -513,7 +513,6 @@ app.post("/hook", async (req, res) => {
             customer.markModified('currCampaign');
             customer.markModified('currFlow');
             await customer.save();
-            console.log("Last:", customer.currFlow.currPos);
 
           }
         }
@@ -751,9 +750,7 @@ app.post("/allTemplatesByManager", async (req, res) => {
   const {
     managerID
   } = req.body;
-console.log("managerId====<",managerID);
   const foundTemplates = await Template.getTemplateByManagerId(managerID);
-  console.log(foundTemplates);
   res.status(200).json({
     templates: foundTemplates
   });

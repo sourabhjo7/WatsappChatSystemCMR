@@ -28,9 +28,9 @@ const AgentIcon = () => {
   </svg>
 }
 
-const Sidebar = ({role, baseURL, setIsLogedin, page, noOfPendingTemplates=0, noOfRequestedChats=0}) => {
+const Sidebar = ({role, setIsLogedin, page, noOfPendingTemplates=0, noOfRequestedChats=0}) => {
   const logOut = async () => {
-   const response= await calllogout(baseURL);
+   const response= await calllogout();
     if(response.status === 200){
       setIsLogedin(false);
       window.location = "/";
