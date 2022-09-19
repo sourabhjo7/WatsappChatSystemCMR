@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700&display=swap');
-
+@import "./saas/variables.scss";
 body {
-  color: #333;
+  color: $prim5;
   font-family: 'Source Sans Pro', sans-serif;
-  background: #F5F6F8;
+  background: $prim2;
 }
 
 .Chats {
@@ -47,19 +47,19 @@ body {
   padding: 8px 0;
   font-size: 1.6rem;
   border-radius: 8px 8px 0 0;
-  background: #CDF6E5;
+  background: $prim7;
   margin-bottom: 0;
 }
 
 .chatList {
-  /* border-bottom: 1px solid #777;
-  border-left: 1px solid #777;
-  border-right: 1px solid #777; */
+  /* border-bottom: 1px solid $prim1;
+  border-left: 1px solid 1;
+  border-right: 1px solid $prim1; */
   margin-top: 5px;
   border-radius: 0 0 8px 8px;
   padding: 10px 20px;
   background: #fff;
-  box-shadow: 0px 3px 8px 5px #EBECEE;
+  box-shadow: 0px 3px 8px 5px $prim3;
 }
 
 .chatList div {
@@ -70,8 +70,8 @@ body {
 }
 
 .joinbtn {
-  background: #CDF6E5;
-  color: #777;
+  background: $prim7;
+  color: $prim1;
   border: 0;
   border-radius: 5px;
   padding: 5px 10px;
@@ -82,7 +82,7 @@ body {
 .joinbtn:hover {
   box-shadow: 1px 1px 3px 3px rgba(0, 0, 0, 0.2);
   text-decoration: none;
-  color: #777;
+  color: $prim1;
   font-weight: bolder;
 }
 
@@ -101,7 +101,7 @@ body {
   min-height: 9vh;
   background: #fff;
   /* border-radius: 10px; */
-  box-shadow: 3px 3px 8px 5px #EBECEE;
+  box-shadow: 3px 3px 8px 5px $prim3;
 }
 
 .userCard p {
@@ -115,7 +115,7 @@ body {
 
 .rmBtn {
   width: 10%;
-  background: #DB5251;
+  background: $prim4;
   color: #fff;
   font-weight: bolder;
   border: 0;
@@ -127,8 +127,8 @@ body {
 
 .rmBtn:hover {
   background: #fff;
-  border: 1px solid #DB5251;
-  color: #DB5251;
+  border: 1px solid $prim4;
+  color: $prim4;
 }
 
 .disBtn {
@@ -137,24 +137,24 @@ body {
 }
 
 .assignBtn {
-  background: #CDF6E5;
+  background: $prim7;
   color: #666;
 }
 
 .assignBtn:hover {
   background: #fff;
-  border: 2px solid #CDF6E5;
+  border: 2px solid $prim7;
   color: #999;
 }
 
 .regForm {
   width: 33vw;
   margin: auto;
-  color: #444;
+  color: $prim6;
   background: #fff;
   padding: 20px 30px;
   border-radius: 5px;
-  box-shadow: 3px 3px 8px 5px #EBECEE;
+  box-shadow: 3px 3px 8px 5px $prim3;
 }
 
 .roleSelect {
@@ -208,7 +208,7 @@ body {
   align-items: center;
   font-weight: bolder;
   cursor: pointer;
-  border-bottom: 2px solid #F5F6F8;
+  border-bottom: 2px solid $prim2;
 }
 
 .chatsCon {
@@ -216,7 +216,7 @@ body {
   width: 71%;
   background: #fff;
   display: flex;
-  box-shadow: 0px 2px 8px 5px #F5F6F8;
+  box-shadow: 0px 2px 8px 5px $prim2;
 }
 
 .chatCon {
@@ -226,7 +226,7 @@ body {
 .chatTopCon {
   width: 100%;
   height: 8%;
-  border-bottom: 3px solid #F5F6F8;
+  border-bottom: 3px solid $prim2;
   margin-bottom: 20px;
   display: flex;
   align-items: center;
@@ -267,7 +267,7 @@ body {
   padding: 20px 30px;
   border-radius: 10px;
   background: #fff;
-  box-shadow: 4px 4px 6px 6px #EBECEE;
+  box-shadow: 4px 4px 6px 6px $prim3;
   justify-content: space-between;
 }
 
@@ -276,12 +276,12 @@ body {
 }
 
 .selectedTempCon .val textarea {
-  background: #CDF6E5;
+  background: $prim7;
   width: 30vw;
   height: 100%;
   padding: 10px 15px;
   border-radius: 10px;
-  box-shadow: 3px 3px 6px 6px #EBECEE;
+  box-shadow: 3px 3px 6px 6px $prim3;
 }
 
 .selectedTempCon .det {
@@ -321,7 +321,7 @@ body {
   overflow-y: scroll;
   background: #fff;
   border-radius: 10px;
-  box-shadow: 3px 3px 8px 5px #EBECEE;
+  box-shadow: 3px 3px 8px 5px $prim3;
 }
 
 .numbersList div, .selectedNumbersList div {
@@ -363,7 +363,7 @@ body {
 
 /* When the checkbox is checked, add a CDF6E5 background */
 .checkboxCon input:checked~.checkmark {
-  background-color: #CDF6E5;
+  background-color: $prim7;
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */
@@ -401,7 +401,7 @@ body {
   padding: 10px 15px;
   border-radius: 10px;
   margin-top: 5px;
-  box-shadow: 3px 3px 8px 5px #EBECEE;
+  box-shadow: 3px 3px 8px 5px $prim3;
 }
 
 .newNoCon span {
@@ -527,7 +527,7 @@ body {
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
-  color: #777;
+  color: $prim1;
 }
 
 .tempRightCon {
@@ -542,7 +542,7 @@ body {
   height: 15px;
   border-radius: 50%;
   background: #FF8400;
-  box-shadow: 0px 0px 5px 5px #EBECEE;
+  box-shadow: 0px 0px 5px 5px $prim3;
 }
 
 .Submitted {
@@ -550,7 +550,7 @@ body {
   height: 15px;
   border-radius: 50%;
   background: #97A4FC;
-  box-shadow: 0px 0px 5px 5px #EBECEE;
+  box-shadow: 0px 0px 5px 5px $prim3;
 }
 
 .Approved {
@@ -558,7 +558,7 @@ body {
   height: 15px;
   border-radius: 50%;
   background: #4EFFB5;
-  box-shadow: 0px 0px 5px 5px #EBECEE;
+  box-shadow: 0px 0px 5px 5px $prim3;
 }
 
 .staBtnCon {

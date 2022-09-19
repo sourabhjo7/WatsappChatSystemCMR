@@ -163,15 +163,15 @@ const Broadcasting = ({setIsLogedin, userName, userId, noOfRequestedChats}) => {
   }, [populateMessage])
 
   return (
-      <div className="rootCon">
+      <div id='rootCon' className="rootCon">
         <Sidebar role={process.env.REACT_APP_ManagerRole} setIsLogedin={setIsLogedin} page="broadcasting" noOfRequestedChats={noOfRequestedChats}/>
 
-        <div className="dataCon">
+        <div className="dataCon" id='dataCon'>
           <TopCon userName={userName} page="Broadcast"/>
 
-          <div className="broadcastCon">
+          <div className="broadcastCon"id='broadcastCon'>
 
-            <div className="selTempCon">
+            <div className="selTempCon" id='selTempCon'>
               <label>Select a Template: </label>
               <select onChange={(e) => {
                 setSelectedTemplate({...templates[e.target.selectedIndex], example: JSON.parse(templates[e.target.selectedIndex].meta).example});
@@ -185,24 +185,24 @@ const Broadcasting = ({setIsLogedin, userName, userId, noOfRequestedChats}) => {
               </select>
             </div>
 
-            <div className="selectedTempCon">
+            <div className="selectedTempCon" id='selectedTempCon'>
 
-              <div className="det">
-                <span className="tempName">{selectedTemplate.elementName}</span>
+              <div className="det" id='det'>
+                <span className="tempName" id='tempName'>{selectedTemplate.elementName}</span>
                 <span><b>Example</b>: {selectedTemplate.example}</span>
               </div>
-              <div className="val">
+              <div className="val" id='val'>
                 <textarea onChange={(e) => {
                   setMessage(e.target.value);
                 }} value={message}></textarea>
               </div>
             </div>
 
-            <div className="InpNoCon">
+            <div className="InpNoCon"id='InpNoCon'>
 
-              <div className="optinNoCon">
+              <div className="optinNoCon" id='optinNoCon'>
                 <h3>Otp In Numbers: </h3>
-                <div className="searchCon">
+                <div className="searchCon"id='searchCon'>
                   <input type="number" placeholder="Search by Number" onChange={(e) => {
                     sortOptedinNumbers(e, "Number")
                   }}/>
@@ -210,7 +210,7 @@ const Broadcasting = ({setIsLogedin, userName, userId, noOfRequestedChats}) => {
                     sortOptedinNumbers(e, "Name")
                   }}/>
                 </div>
-                <div className="numbersList">
+                <div id='numbersList' className="numbersList">
                   {searchedOptedinUsers.map((user, index) => {
                     return (
                       <div key={index}>
@@ -226,7 +226,7 @@ const Broadcasting = ({setIsLogedin, userName, userId, noOfRequestedChats}) => {
                 </div>
               </div>
 
-              <div className="newNoCon">
+              <div className="newNoCon" id='newNoCon'>
                 <h3>Input New Numbers: </h3>
                 <span>Enter comma(,) seperated numbers</span><br/>
                 <textarea onChange={(e) => {
@@ -242,15 +242,15 @@ const Broadcasting = ({setIsLogedin, userName, userId, noOfRequestedChats}) => {
                 }} value={newNumbers}></textarea><br/>
               </div>
 
-              <div className="selectedNoCon">
+              <div className="selectedNoCon" id='selectedNoCon'>
                 <h3>Selected Numbers: </h3>
-                <div className="selectedNumbersList">
+                <div className="selectedNumbersList" id='selectedNumbersList'>
                   {selectedNos.length>0 ?
                     selectedNos.map((number, index) => {
                     return (
                       <div key={index}>
                         <span>{number}</span>
-                        <button className="rmSelectedNoBtn" onClick={(() => {
+                        <button className="rmSelectedNoBtn" id='rmSelectedNoBtn' onClick={(() => {
                           rmSelectedNo(number);
                         })}>&#9587;</button>
                       </div>
@@ -265,8 +265,8 @@ const Broadcasting = ({setIsLogedin, userName, userId, noOfRequestedChats}) => {
             </div>
 
 
-            <div className="brdBtnCon">
-              <button className="joinbtn brdCsBtn" onClick={broadcast}>Broadcast</button>
+            <div className="brdBtnCon" id='brdBtnCon'>
+              <button className="joinbtn brdCsBtn" id='joinbtn_brdCsBtn' onClick={broadcast}>Broadcast</button>
               <span>{populateMessage}</span>
             </div>
 

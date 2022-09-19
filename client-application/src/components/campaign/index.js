@@ -397,17 +397,17 @@ const Campaign = ({
   };
 
 
-  return (<div className="rootCon">
+  return (<div className="rootCon" id="rootCon">
     <Sidebar role="Manager" setIsLogedin={setIsLogedin} page="campaign" noOfRequestedChats={noOfRequestedChats}/>
 
-    <div className="dataCon">
+    <div className="dataCon" id="dataCon">
       <TopCon userName={userName} page="Campaign"/>
 
       <div>
         <div>
           <h3>FLows:</h3>
           {/* card component */}
-          <div className="cards-container">
+          <div className="cards-container" id="cards-container">
             {
               flows.map((flow, index) => {
                 return <CampaignFlowCard key={`flows${index}`} flow={flow} select={selectFlows}/>;
@@ -417,14 +417,14 @@ const Campaign = ({
         </div>
         <div>
           <div>
-            <h3>Build Campaign:</h3>
-            <div className="flow_title_container">
+            <h3 id="heading_container">Build Campaign:</h3>
+            <div className="flow_title_container" id="flow_title_container">
               <input type="text" placeholder="Give Campaign a title" value={campaignTitle} onChange={(e) => setCampaignTitle(e.target.value)}/>
             </div>
-            <div className="flow_timeKey_container">
+            <div className="flow_timeKey_container" id="flow_timeKey_container">
               <span>Add Time Delay:</span>
 
-              <div className="mid_input_container">
+              <div className="mid_input_container" id="mid_input_container">
 
                 <input type="number" value={inputTime} onChange={(ele) => {
                     setinputTime(ele.target.value);
@@ -441,18 +441,18 @@ const Campaign = ({
 
               </div>
 
-              <button type="button" className="joinbtn" onClick={handleSubmit}>Add</button>
+              <button type="button" className="joinbtn" id="joinbtn" onClick={handleSubmit}>Add</button>
             </div>
             <div className="flow_timeKey_container">
               <span>
                 Add Enter Keyword:
               </span>
-              <input type="text" className="mid_input" value={keyword} onChange={(e) => setKeyword(e.target.value)}/>
-              <button type="button" className="joinbtn" onClick={handleKeyword}>Add</button>
+              <input type="text" className="mid_input" id="mid_input" value={keyword} onChange={(e) => setKeyword(e.target.value)}/>
+              <button type="button" className="joinbtn" id="joinbtn" onClick={handleKeyword}>Add</button>
             </div>
 
             {/* Events section */}
-            <div className="flow_timeKey_container events_container">
+            <div className="flow_timeKey_container events_container" id="flow_timeKey_container1">
               {
                 events.map((temp, index) => {
                   return (<DragCards template={`events1${temp}`} key={`events${index}`} deleteTemplate={deleteTemplate} showDel={false}
@@ -464,8 +464,8 @@ const Campaign = ({
           </div>
 
           {/* container for selected flows */}
-          <div className="selected-flow-area">
-            <div className="Selected-container ">
+          <div className="selected-flow-area" id="selected-flow-area">
+            <div className="Selected-container " id="Selected-container " >
               {
                 selectedFlows.map((temp) => {
                   return (<DragCards key={temp.id} template={temp.title} deleteTemplate={deleteTemplate} showDel={true}
@@ -475,18 +475,18 @@ const Campaign = ({
               }
             </div>
             {/* this is the board where selected flows are droped */}
-            <div className="Dnd-flow-canva">
+            <div className="Dnd-flow-canva" id="Dnd-flow-canva">
               <DndFlowMap key={"flowMap"}  flow={false} nodes={nodes} setNodes={setNodes} edges={edges} setEdges={setEdges} onEdgesChange={onEdgesChange} templates={flows} setTemplates={setFlows} selectedTemplates={selectedFlows} setSelectedTemplates={setSelectedFlows} events={events} setEvents={setEvents}/>
             </div>
 
           </div>
         </div>
 
-        <div className="InpNoCon">
-          <div className="optinNoCon">
+        <div className="InpNoCon" id="InpNoCon">
+          <div className="optinNoCon" id="optinNoCon">
             <h3>Otp In Numbers:
             </h3>
-            <div className="searchCon">
+            <div className="searchCon" id="searchCon">
               <input type="number" placeholder="Search by Number" onChange={(e) => {
                   sortOptedinNumbers(e, "Number");
                 }}/>
@@ -494,7 +494,7 @@ const Campaign = ({
                   sortOptedinNumbers(e, "Name");
                 }}/>
             </div>
-            <div className="numbersList">
+            <div className="numbersList" id="numbersList">
               {
                 searchedOptedinUsers.map((user, index) => {
                   return (<div key={`optUser${index}`}>
@@ -510,7 +510,7 @@ const Campaign = ({
             </div>
           </div>
 
-          <div className="newNoCon">
+          <div className="newNoCon" id="newNoCon">
             <h3>Input New Numbers:
             </h3>
             <span>Enter comma(,) seperated numbers</span>
@@ -528,10 +528,10 @@ const Campaign = ({
             <br/>
           </div>
 
-          <div className="selectedNoCon">
+          <div className="selectedNoCon" id="selectedNoCon">
             <h3>Selected Numbers:
             </h3>
-            <div className="selectedNumbersList">
+            <div className="selectedNumbersList" id="selectedNumbersList">
               {
                 selectedNos.length > 0
                   ? (selectedNos.map((number, index) => {
@@ -549,8 +549,8 @@ const Campaign = ({
             </div>
           </div>
         </div>
-        <div className="brdBtnCon">
-          <button className="joinbtn brdCsBtn" onClick={FinalSubmit}>
+        <div className="brdBtnCon" id="brdBtnCon">
+          <button className="joinbtn brdCsBtn" id="joinbtn2" onClick={FinalSubmit}>
             Submit
           </button>
         </div>

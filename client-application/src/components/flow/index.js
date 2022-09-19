@@ -389,17 +389,17 @@ const Flow = ({
     window.location = "/";
     console.log("saved===>",res);
   };
-  return (<div className="rootCon">
+  return (<div className="rootCon" id="rootCon">
     <Sidebar role={process.env.REACT_APP_ManagerRole} setIsLogedin={setIsLogedin} page="flow" noOfRequestedChats={noOfRequestedChats}/>
 
-    <div className="dataCon">
+    <div className="dataCon" id="dataCon">
       <TopCon userName={userName} page="Flow"/>
 
       <div>
         <div>
           <h3>Templates:</h3>
           {/* card component */}
-          <div className="cards-container">
+          <div className="cards-container" id="cards-container">
             {
               templates.map((temp, index) => {
                 return <Card setTemplates={setTemplates} templates={templates} template={temp} select={selectTemplate}/>;
@@ -410,13 +410,13 @@ const Flow = ({
         <div>
           <div>
             <h3>Build Flow:</h3>
-            <div className="flow_title_container">
+            <div className="flow_title_container" id="flow_title_container">
               <input type="text" placeholder="Give flow a title" value={flowtitle} onChange={(e) => setFlowTitle(e.target.value)}/>
             </div>
-            <div className="flow_timeKey_container">
+            <div className="flow_timeKey_container" id="flow_timeKey_container">
               <span>Add Time Delay:</span>
 
-              <div className="mid_input_container">
+              <div className="mid_input_container" id="mid_input_container">
 
                 <input type="number" value={inputTime} onChange={(ele) => {
                     setinputTime(ele.target.value);
@@ -433,9 +433,9 @@ const Flow = ({
 
               </div>
 
-              <button type="button" className="joinbtn" onClick={handleSubmit}>Add</button>
+              <button type="button" className="joinbtn" id="joinbtn6" onClick={handleSubmit}>Add</button>
             </div>
-            <div className="flow_timeKey_container">
+            <div className="flow_timeKey_container" id="flow_timeKey_container">
               <span>
                 Add Enter Keyword:
               </span>
@@ -444,7 +444,7 @@ const Flow = ({
             </div>
 
             {/* Events section */}
-            <div className="flow_timeKey_container events_container">
+            <div className="flow_timeKey_container events_container" id="flow_timeKey_container_events_container">
               {
                 events.map((temp, index) => {
                   return (<DragCards template={temp} deleteTemplate={deleteTemplate} showDel={false}
@@ -456,8 +456,8 @@ const Flow = ({
           </div>
 
           {/* container for selected templates */}
-          <div className="selected-flow-area">
-            <div className="Selected-container ">
+          <div className="selected-flow-area" id="selected-flow-area2">
+            <div className="Selected-container " id="Selected-container2">
               {
                 selectedTemplates.map((temp, index) => {
                   return (<DragCards key={`selTemp${index}`} template={temp} deleteTemplate={deleteTemplate} showDel={true}
@@ -467,7 +467,7 @@ const Flow = ({
               }
             </div>
             {/* this is the board where selected templates are droped */}
-            <div className="Dnd-flow-canva">
+            <div className="Dnd-flow-canva" id="Dnd-flow-canva1">
               <DndFlowMap flow={true} nodes={nodes} setNodes={setNodes} edges={edges} setEdges={setEdges} onEdgesChange={onEdgesChange} templates={templates} setTemplates={setTemplates} selectedTemplates={selectedTemplates} setSelectedTemplates={setSelectedTemplates} events={events} setEvents={setEvents}/>
             </div>
 
@@ -490,11 +490,11 @@ const Flow = ({
           </div>
         </div>
 
-        <div className="InpNoCon">
-          <div className="optinNoCon">
+        <div className="InpNoCon" id="InpNoCon2">
+          <div className="optinNoCon" id="optinNoCon1">
             <h3>Otp In Numbers:
             </h3>
-            <div className="searchCon">
+            <div className="searchCon" id="searchCon1">
               <input type="number" placeholder="Search by Number" onChange={(e) => {
                   sortOptedinNumbers(e, "Number");
                 }}/>
@@ -502,7 +502,7 @@ const Flow = ({
                   sortOptedinNumbers(e, "Name");
                 }}/>
             </div>
-            <div className="numbersList">
+            <div className="numbersList" id="numbersList3">
               {
                 searchedOptedinUsers.map((user, index) => {
                   return (<div key={index}>
@@ -518,7 +518,7 @@ const Flow = ({
             </div>
           </div>
 
-          <div className="newNoCon">
+          <div className="newNoCon"id="newNoCon4">
             <h3>Input New Numbers:
             </h3>
             <span>Enter comma(,) seperated numbers</span>
@@ -536,16 +536,16 @@ const Flow = ({
             <br/>
           </div>
 
-          <div className="selectedNoCon">
+          <div className="selectedNoCon" id="selectedNoCon5">
             <h3>Selected Numbers:
             </h3>
-            <div className="selectedNumbersList">
+            <div className="selectedNumbersList" id="selectedNumbersList5">
               {
                 selectedNos.length > 0
                   ? (selectedNos.map((number, index) => {
                     return (<div key={index}>
                       <span>{number}</span>
-                      <button className="rmSelectedNoBtn" onClick={() => {
+                      <button className="rmSelectedNoBtn" id="rmSelectedNoBtn4" onClick={() => {
                           rmSelectedNo(number);
                         }}>
                         &#9587;
@@ -558,7 +558,7 @@ const Flow = ({
           </div>
         </div>
         <div className="brdBtnCon">
-          <button className="joinbtn brdCsBtn" onClick={FinalSubmit}>
+          <button className="joinbtn brdCsBtn" id="joinbtn9" onClick={FinalSubmit}>
             Submit
           </button>
         </div>

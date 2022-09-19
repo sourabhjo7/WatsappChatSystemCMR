@@ -14,7 +14,7 @@ function Chat({ socket, username, creatorUID, uID, currActiveChat, currJoinedCha
     if (currentMessage !== "") {
       const messageData = {
         room: currActiveChat.room,
-        author: username,
+        author: username, 
         phoneNo: currActiveChat.phoneNo,
         message: currentMessage,
         creatorUID,
@@ -73,9 +73,9 @@ function Chat({ socket, username, creatorUID, uID, currActiveChat, currJoinedCha
   }, [socket, currActiveChat.room]);
 
   return (
-    <div className="chat-window">
-      <div className="chat-body">
-        <ScrollToBottom className="message-container">
+    <div className="chat-window" id="chat-window">
+      <div className="chat-body" id="chat-body">
+        <ScrollToBottom className="message-container" id='message-container'>
           {currActiveChat.messageList.map((messageContent, index) => {
             return (
               <div
@@ -97,7 +97,7 @@ function Chat({ socket, username, creatorUID, uID, currActiveChat, currJoinedCha
           })}
         </ScrollToBottom>
       </div>
-      <div className="chat-footer">
+      <div className="chat-footer" id="chat-footer">
         <input
           type="text"
           value={currentMessage}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import "./App.css";
+import "./App.scss";
 
 //all the URLs of the backend systems
 
@@ -134,7 +134,7 @@ function App() {
     /* getting number of pending template on component mount */
     getNoOfPendingTemplates();
   }, [isLogedin]);
-
+  {console.log(process.env.REACT_APP_baseUserSystemURL)}
   /*Rendring dashboard based on the role of the user*/
   const Dashboard = ({role}) => {
     if(role === process.env.REACT_APP_AdminRole){

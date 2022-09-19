@@ -32,13 +32,13 @@ const AllFlows = ({setIsLogedin, userName, userId, noOfRequestedChats}) => {
     }
     const SelectedFlowCon = () => {
       return (
-        <div className="flow_main_conatiner_mid_con">
-          <div className="flow_mid_child_container contact">
+        <div className="flow_main_conatiner_mid_con" id='flow_main_conatiner_mid_con'>
+          <div className="flow_mid_child_container contact" id='flow_mid_child_container_contact'>
             {selectedFlow.contactList.map((contact, index) => {
               return <p key={"contact" + index}>{contact}</p>
             })}
           </div>
-          <div className="flow_mid_child_container message">
+          <div className="flow_mid_child_container message" id='flow_mid_child_container_message'>
               <DndAllFlowsMap nodes={selectedFlow.defaultData.nodes}  edges={selectedFlow.defaultData.edges} />
           </div>
         </div>
@@ -50,22 +50,22 @@ const AllFlows = ({setIsLogedin, userName, userId, noOfRequestedChats}) => {
     }, [])
 
     return (
-      <div className="rootCon">
+      <div className="rootCon" id='rootCon'>
         <Sidebar role={process.env.REACT_APP_ManagerRole} setIsLogedin={setIsLogedin} page="AllFlows" noOfRequestedChats={noOfRequestedChats}/>
 
-        <div className="dataCon">
+        <div className="dataCon" id='dataCon'>
           <TopCon userName={userName} page="All Flows"/>
 
-          <div className="main_container">
+          <div className="main_container" id='main_container'>
 
-            <div className="flow_populate_container">
+            <div className="flow_populate_container" id='flow_populate_container'>
               {flows.map((flow, index) => {
                 return <p key={"flow" + index} onClick={chnageSelectedFlow} style={flow.title === selectedFlow.title ? {background: '#97A4FC', color: '#fff'} : {background: '#CDF6E5'}}>{flow.title}</p>
               })}
             </div>
 
-            <div className="flow_main_conatiner">
-              <h4 className="flow_main_conatiner_top_con">{selectedFlow.title}</h4>
+            <div className="flow_main_conatiner" id='flow_main_conatiner'>
+              <h4 className="flow_main_conatiner_top_con" id='flow_main_conatiner_top_con'>{selectedFlow.title}</h4>
               {JSON.stringify(selectedFlow) !== '{}' ? (
                 <SelectedFlowCon/>
               ) : (

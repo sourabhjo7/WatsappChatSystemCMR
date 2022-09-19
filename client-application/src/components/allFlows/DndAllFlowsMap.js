@@ -12,9 +12,10 @@ function DndAllFlowsMap({nodes,edges}) {
 
   return (
     <>
-      <div style={{ height: "100%" }} className="dndflow">
+      <div style={{ height: "100%" }} id ="dndflow" className="dndflow">
         <div
           style={{ height: "100%" }}
+          id="reactflow-wrapper"
           className="reactflow-wrapper"
           ref={reactFlowWrapper}
         >

@@ -172,25 +172,25 @@ function ManagerChat({socket, userData, setIsLogedin, noOfRequestedChats}) {
     }, [currJoinedChats])
 
     return (
-        <div className="rootCon">
+        <div className="rootCon" id="rootCon">
 
           <Sidebar role={process.env.REACT_APP_ManagerRole} setIsLogedin={setIsLogedin} page="chat" noOfRequestedChats={noOfRequestedChats}/>
 
 
-          <div className="dataCon">
+          <div className="dataCon" id="dataCon">
             <TopCon userName={userData.name} page="Chat Requests"/>
 
-              <div className="activeChatsCon">
+              <div className="activeChatsCon" id="activeChatsCon">
                 <div>
                   <h3>Escalated Chats</h3>
 
-                  <div className="chatList">
+                  <div className="chatList" id="chatList">
                     {assignedChats.map((chat, index) => {
                       return (
                         <div key={index}>
                           <span>{chat.room}</span>
                           <span>{chat.assignedBy}</span>
-                          <button className="joinbtn" onClick={() => {
+                          <button className="joinbtn"id="joinbtn5" onClick={() => {
                             joinRoom(chat.room);
                           }}>Join</button>
                         </div>
@@ -203,22 +203,22 @@ function ManagerChat({socket, userData, setIsLogedin, noOfRequestedChats}) {
 
               </div>
 
-              <div className="Chats">
-                <div className="chatsListCon">
+              <div className="Chats" id="Chats">
+                <div className="chatsListCon" id="chatsListCon">
                   {currJoinedChats.map((chat, index) => {
                     return <div onClick={() => {
                       changeChat(chat.room);
-                    }} key={index} className="chatsList">{chat.room}</div>
+                    }} key={index} className="chatsList" id="chatsList">{chat.room}</div>
                   })}
                 </div>
 
-                <div className="chatsCon">
+                <div className="chatsCon" id="chatsCon">
                   {currActiveChat.room !== "" ? (
-                    <div className="chatCon">
-                      <div className="chatTopCon">
+                    <div className="chatCon" id="chatCon">
+                      <div className="chatTopCon" id="chatTopCon">
                         <span>{currActiveChat.room}</span>
 
-                        <button className="rmBtn disBtn" onClick={(e) => {
+                        <button className="rmBtn disBtn" id="rmBtn2" onClick={(e) => {
                           disconnect(currActiveChat.room);
                         }}>Disconnect</button>
                       </div>
