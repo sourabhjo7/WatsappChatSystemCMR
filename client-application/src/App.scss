@@ -1,20 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700&display=swap");
 @import "./saas/variables.scss";
+@import "./saas/functions.scss";
+
 body {
   color: $prim5;
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: "Source Sans Pro", sans-serif;
   background: $prim2;
 }
 
 .Chats {
-  margin: 10vh 0;
-  display: flex;
   width: 100%;
-  justify-content: space-around;
- width: 100%;
   height: 90vh;
-  display: flex;
-  justify-content: space-between;
+  @include FlexContent(space-between);
 }
 
 .rootCon {
@@ -27,9 +24,9 @@ body {
 }
 
 .topCon {
-  display: flex;
+  @include FlexContent(space-between);
+
   width: 100%;
-  justify-content: space-between;
   margin-bottom: 7vh;
 }
 
@@ -40,8 +37,7 @@ body {
 
 .activeChatsCon {
   width: 100%;
-  display: flex;
-  justify-content: space-between;
+  @include FlexContent(space-between);
   h3 {
     text-align: center;
     min-width: 30vw;
@@ -54,8 +50,6 @@ body {
   }
 }
 
-
-
 .chatList {
   /* border-bottom: 1px solid $prim1;
   border-left: 1px solid 1;
@@ -63,17 +57,14 @@ body {
   margin-top: 5px;
   border-radius: 0 0 8px 8px;
   padding: 10px 20px;
-  background: #fff;
+  background: $white;
   box-shadow: 0px 3px 8px 5px $prim3;
   div {
-    display: flex;
-    justify-content: space-between;
+    @include FlexContent(space-between);
     align-items: center;
     margin-top: 20px;
   }
 }
-
- 
 
 .joinbtn {
   background: $prim7;
@@ -91,22 +82,18 @@ body {
   }
 }
 
-
-
 .userCon {
-  display: flex;
-  flex-direction: column;
+  @include Flexdir(column);
 }
 
 .userCard {
   min-width: 25vw;
   padding: 10px 20px;
-  display: flex;
-  justify-content: space-between;
+  @include FlexContent(space-between);
   align-items: center;
   margin: 0 0 10px;
   min-height: 9vh;
-  background: #fff;
+  background: $white;
   /* border-radius: 10px; */
   box-shadow: 3px 3px 8px 5px $prim3;
   p {
@@ -116,16 +103,12 @@ body {
     width: 40vw;
     font-weight: bold;
   }
-  
-  
 }
-
-
 
 .rmBtn {
   width: 10%;
   background: $prim4;
-  color: #fff;
+  color: $white;
   font-weight: bolder;
   border: 0;
   border-radius: 5px;
@@ -133,13 +116,11 @@ body {
   cursor: pointer;
   transition-duration: 0.8s;
   &:hover {
-    background: #fff;
+    background: $white;
     border: 1px solid $prim4;
     color: $prim4;
   }
-  
 }
-
 
 .disBtn {
   width: auto;
@@ -150,21 +131,18 @@ body {
   background: $prim7;
   color: #666;
 
-&:hover {
-  background: #fff;
-  border: 2px solid $prim7;
-  color: #999;
+  &:hover {
+    background: $white;
+    border: 2px solid $prim7;
+    color: #999;
+  }
 }
-
-}
-
-
 
 .regForm {
   width: 33vw;
   margin: auto;
   color: $prim6;
-  background: #fff;
+  background: $white;
   padding: 20px 30px;
   border-radius: 5px;
   box-shadow: 3px 3px 8px 5px $prim3;
@@ -193,18 +171,16 @@ body {
   font-weight: bolder;
   color: #555;
 }
-.agentSelect{
+.agentSelect {
   padding: 5px 10px;
   border-radius: 5px;
 }
 
-
-
 .chatsListCon {
   height: 100%;
   width: 26%;
-  background: #fff;
-  box-shadow: 0px 2px 8px 5px #EFF0F2;
+  background: $white;
+  box-shadow: 0px 2px 8px 5px #eff0f2;
   overflow-y: scroll;
 }
 
@@ -222,7 +198,7 @@ body {
 .chatsCon {
   height: 100%;
   width: 71%;
-  background: #fff;
+  background: $white;
   display: flex;
   box-shadow: 0px 2px 8px 5px $prim2;
 }
@@ -236,19 +212,13 @@ body {
   height: 8%;
   border-bottom: 3px solid $prim2;
   margin-bottom: 20px;
-  display: flex;
+  @include FlexContent(space-between);
   align-items: center;
-  justify-content: space-between;
   padding: 0 20px;
-  box-shadow: 0 2px 6px 4px #EFF0F2;
-}
-
-.chatTopCon span {
-  font-size: 1.8rem;
-}
-
-.broadcastCon {
-  /* height: 85vh; */
+  box-shadow: 0 2px 6px 4px #eff0f2;
+  span {
+    font-size: 1.8rem;
+  }
 }
 
 .selTempCon {
@@ -265,21 +235,17 @@ body {
   }
 }
 
-
-
-
-
 .selectedTempCon {
   margin: 8vh 0 14vh;
-  display: flex;
+  @include FlexContent(space-between);
   /* align-items: center; */
   min-height: 20vh;
   padding: 20px 30px;
   border-radius: 10px;
-  background: #fff;
+  background: $white;
   box-shadow: 4px 4px 6px 6px $prim3;
-  justify-content: space-between;
-  .val{
+
+  .val {
     margin-left: 10vw;
     textarea {
       background: $prim7;
@@ -291,9 +257,7 @@ body {
     }
   }
   .det {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    @include Flex(column, space-between);
     min-width: 25vw;
   }
 }
@@ -304,8 +268,7 @@ body {
 }
 
 .InpNoCon {
-  display: flex;
-  justify-content: space-between;
+  @include FlexContent(space-between);
 }
 
 .optinNoCon {
@@ -313,41 +276,36 @@ body {
   /* margin-right: 10vw; */
 }
 
-
-
-.searchCon{ 
-  display: flex;
-  justify-content: space-between;
+.searchCon {
+  @include FlexContent(space-between);
   margin: 20px 0 10px;
   input {
-  width: 45%;
-}
-
+    width: 45%;
+  }
 }
 
 .numbersList {
   height: 70vh;
   overflow-y: scroll;
-  background: #fff;
+  background: $white;
   border-radius: 10px;
   box-shadow: 3px 3px 8px 5px $prim3;
-   div{
-    display: flex;
-  justify-content: space-between;
-  padding: 20px 30px;
-   }
+  div {
+    @include FlexContent(space-between);
+    padding: 20px 30px;
+  }
 }
 .selectedNumbersList {
   margin-top: 5vh;
   width: 100%;
-  background: #fff;
+  background: $white;
   padding: 5px 7px;
   border-radius: 5px;
   div {
-  display: flex;
-  justify-content: space-between;
-  padding: 20px 30px;
-}}
+    @include FlexContent(space-between);
+    padding: 20px 30px;
+  }
+}
 
 /* Create a custom checkbox */
 .checkmark {
@@ -365,7 +323,7 @@ body {
 }
 
 /* When the checkbox is checked, add a CDF6E5 background */
-.checkboxCon{
+.checkboxCon {
   display: block;
   position: relative;
   padding-left: 35px;
@@ -383,33 +341,32 @@ body {
     height: 0;
     width: 0;
   }
-  
-  input:checked~.checkmark {
+
+  input:checked ~ .checkmark {
     background-color: $prim7;
   }
-  input:checked~.checkmark:after {
+  input:checked ~ .checkmark:after {
     display: block;
   }
   .checkmark {
-  &::after{ left: 10px;
-    top: 7px;
-    width: 5px;
-    height: 10px;
-    border: solid rgb(255, 0, 0);
-    border-width: 0 3px 3px 0;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
+    &::after {
+      left: 10px;
+      top: 7px;
+      width: 5px;
+      height: 10px;
+      border: solid rgb(255, 0, 0);
+      border-width: 0 3px 3px 0;
+      -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      transform: rotate(45deg);
+    }
   }
-}
-  
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */
 
 /* Show the checkmark when checked */
 /* Style the checkmark/indicator */
-
 
 .newNoCon {
   width: 20vw;
@@ -426,29 +383,25 @@ body {
     opacity: 0.8;
     margin-top: 20px;
   }
-  
 }
 
 .selectedNoCon {
   width: 35vh;
 }
 
-
-
 .rmSelectedNoBtn {
-  background: #fff;
+  background: $white;
   border: 0;
   cursor: pointer;
   font-size: 0.8rem;
   border-radius: 5px;
   font-weight: bolder;
   transition-duration: 0.1s;
-}
-
-.rmSelectedNoBtn:hover {
-  color: #DE605F;
-  border: 2px solid #DE605F;
-  /* padding: 5px 8px 7px; */
+  &:hover {
+    color: $prim8;
+    border: 2px solid $prim8;
+    /* padding: 5px 8px 7px; */
+  }
 }
 
 .brdBtnCon span {
@@ -473,17 +426,16 @@ body {
   padding-right: 20px;
 }
 
-.changeNameCon, .changePasswordCon {
+.changeNameCon,
+.changePasswordCon {
   width: 40vw;
 }
 
 .tempCon {
   width: 40vw;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  @include Flex(column, space-between);
   height: 80vh;
-  background: #fff;
+  background: $white;
   padding: 20px 30px;
   border-radius: 5px;
   box-shadow: 4px 4px 6px 4px rgba(0, 0, 0, 0.2);
@@ -491,7 +443,7 @@ body {
 
 .subLabel {
   font-size: 0.8rem;
-  color: #999
+  color: #999;
 }
 
 .tempBtn {
@@ -499,26 +451,23 @@ body {
 }
 
 .allTempCon {
-  display: flex;
-  flex-direction: column;
+  @include Flexdir(column);
   margin: 5vh 0;
+  .headCon {
+    margin-bottom: 20px;
+  }
 }
-.allTempCon .headCon{
-  margin-bottom: 20px;
-}
+
 .populateTempCon {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  @include Flex(column, center);
   padding: 10px 15px;
-  background: #fff;
+  background: $white;
   margin-bottom: 10px;
-  box-shadow: 3px 3px 6px 6px #EFF0F2;
+  box-shadow: 3px 3px 6px 6px #eff0f2;
 }
 
 .tempConDet {
-  display: flex;
-  justify-content: space-between;
+  @include FlexContent(space-between);
   align-items: center;
 }
 
@@ -531,52 +480,42 @@ body {
   font-weight: bolder;
   font-size: 1.3rem;
 }
-
 .tempConDet span {
   width: 15px;
 }
-
 .tempText {
-  display: flex;
-  flex-direction: column;
+  @include Flexdir(column);
   margin-bottom: 20px;
   color: $prim1;
 }
-
 .tempRightCon {
   /* height: 100%; */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  @include Flex(column, space-between);
+}
+.PSA {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  box-shadow: 0px 0px 5px 5px $prim3;
 }
 
 .Pending {
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  background: #FF8400;
-  box-shadow: 0px 0px 5px 5px $prim3;
+  @extend .PSA;
+  background: #ff8400;
 }
 
 .Submitted {
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  background: #97A4FC;
-  box-shadow: 0px 0px 5px 5px $prim3;
+  @extend .PSA;
+  background: #97a4fc;
 }
 
 .Approved {
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  background: #4EFFB5;
-  box-shadow: 0px 0px 5px 5px $prim3;
+  @extend .PSA;
+  background: #4effb5;
 }
 
 .staBtnCon {
-  display: flex;
-  justify-content: flex-end;
+  @include FlexContent(flex-end);
   margin-top: 25px;
 }
 

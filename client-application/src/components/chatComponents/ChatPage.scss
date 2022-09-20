@@ -1,0 +1,173 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,700");
+@import "../../saas/variables.scss";
+
+.ChatCon {
+  width: 100vw;
+  height: 100vh;
+  background: $white;
+  color: #212121;
+  font-family: "Open Sans", sans-serif;
+  display: grid;
+  place-items: center;
+}
+
+.joinChatContainer {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  h3 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  input {
+    width: 210px;
+    height: 40px;
+    margin: 7px;
+    border: 2px solid $color1;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 16px;
+  }
+  button {
+    width: 225px;
+    height: 50px;
+    margin: 7px;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 16px;
+    background: $color1;
+    color: $white;
+    cursor: pointer;
+    &:hover {
+      background: #2e7d32;
+    }
+  }
+}
+
+.chat-window {
+  height: 90%;
+  p {
+    margin: 0;
+  }
+  .chat-header {
+    height: 45px;
+    border-radius: 6px;
+    background: #263238;
+    position: relative;
+    cursor: pointer;
+    p {
+      display: block;
+      padding: 0 1em 0 2em;
+      color: $white;
+      font-weight: 700;
+      line-height: 45px;
+    }
+  }
+  .chat-body {
+    /* height: calc(450px - (45px + 70px)); */
+    /* border: 1px solid #263238; */
+    background: $white;
+    height: 92%;
+    position: relative;
+    &.message {
+      height: auto;
+      padding: 10px;
+      display: flex;
+      .message-content {
+        width: auto;
+        height: auto;
+        min-height: 40px;
+        max-width: 400px;
+        background-color: $prim7;
+        border-radius: 5px;
+        color: #555;
+        display: flex;
+        align-items: center;
+        margin-right: 5px;
+        margin-left: 5px;
+        padding: 5px 10px;
+        overflow-wrap: break-word;
+        word-break: break-word;
+      }
+      .message-meta {
+        display: flex;
+        font-size: 12px;
+      }
+    }
+  }
+  .message-container {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  .chat-footer {
+    height: 40px;
+    border: 1px solid #263238;
+    display: flex;
+    box-shadow: 0px 0px 4px 4px #eff0f2;
+    input {
+      height: 100%;
+      flex: 85%;
+      border: 0;
+      padding: 0 0.7em;
+      font-size: 1em;
+      border-right: 1px dotted #607d8b;
+
+      outline: none;
+    }
+    button {
+      border: 0;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      flex: 15%;
+      height: 100%;
+      background: transparent;
+      outline: none;
+      font-size: 25px;
+      color: lightgray;
+      &:hover {
+        color: $prim7;
+      }
+    }
+  }
+}
+
+#you {
+  justify-content: flex-start;
+  .message-content {
+    justify-content: flex-start;
+  }
+  .message-meta {
+    justify-content: flex-start;
+    margin-left: 5px;
+  }
+}
+
+#other {
+  justify-content: flex-end;
+  .message-content {
+    justify-content: flex-end;
+    background-color: $prim9;
+    color: #f5f6f8;
+  }
+  .message-meta {
+    justify-content: flex-end;
+    margin-right: 5px;
+  }
+}
+
+.message-meta #author {
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+.hide {
+  opacity: 0 !important;
+}

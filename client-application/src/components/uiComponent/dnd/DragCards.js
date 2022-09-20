@@ -1,5 +1,5 @@
 import React from "react";
-import "./DragCards.css";
+import "./DragCards.scss";
 
 const DragCards = ({template,deleteTemplate, showDel,keyy}) => {
   const onDragStart = (event, {nodeType,id}) => {

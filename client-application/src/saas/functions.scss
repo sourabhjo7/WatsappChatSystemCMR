@@ -1,0 +1,14 @@
+@mixin Flex($direction,$content){
+    display: flex;
+    flex-direction: $direction;
+    justify-content: $content;
+}
+@mixin FlexContent($content){
+    display: flex;
+    justify-content: $content;
+}
+
+@mixin Flexdir($direction){
+    display: flex;
+    flex-direction: $direction;
+}

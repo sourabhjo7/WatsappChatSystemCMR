@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 
-import "./index.css"
+import "./index.scss"
 
 import Sidebar from "../uiComponent/sidebar/index";
 import TopCon from "../uiComponent/TopCon";

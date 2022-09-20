@@ -16,13 +16,13 @@
   text-align: center;
   padding: 20px 30px;
   border-radius: 5px;
-}
-.popUp div{
-  margin: 5vh;
-  display: flex;
-  flex-direction: column;
-  height: 5vh;
-  justify-content: space-between;
+  div{
+    margin: 5vh;
+    display: flex;
+    flex-direction: column;
+    height: 5vh;
+    justify-content: space-between;
+  }
 }
 .alertBtn{
   cursor: pointer;
@@ -34,9 +34,9 @@
   font-size: 1rem;
   margin: 0;
   margin-right: 15px;
-}
-.alertBtn:hover{
+&:hover{
   box-shadow: 1px 1px 4px 2px rgba(0, 0, 0, 0.2);
   text-decoration: none;
   color: #333;
+}
 }

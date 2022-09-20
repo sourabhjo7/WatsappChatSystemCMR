@@ -1,61 +1,62 @@
+@import "../../saas/variables.scss";
+@import "../../saas/functions.scss";
+
 .main_container {
   display: flex;
 }
 
 .flow_populate_container {
-  display: flex;
-  flex-direction: column;
+  @include Flexdir(column);
   min-height: 80vh;
   overflow-y: scroll;
   padding: 2px;
   width: 15vw;
   background: #fff;
-  box-shadow: 3px 3px 8px 5px #EBECEE;
-}
-
-.flow_populate_container p {
-  margin: 0;
-  margin-bottom: 4px;
-  padding: 10px 20px;
-  color: #666;
-  font-weight: bolder;
-  cursor: pointer;
+  box-shadow: 3px 3px 8px 5px $prim3;
+  p {
+    margin: 0;
+    margin-bottom: 4px;
+    padding: 10px 20px;
+    color: #666;
+    font-weight: bolder;
+    cursor: pointer;
+  }
 }
 
 .flow_main_conatiner {
   margin-left: 25px;
   flex: 1;
-  background: #fff;
-  box-shadow: 3px 3px 8px 5px #EBECEE;
+  background: $white;
+  box-shadow: 3px 3px 8px 5px $prim3;
 }
 
-.flow_main_conatiner_top_con{
+.flow_main_conatiner_top_con {
   width: 100%;
-  background: #97A4FC;
+  background: #97a4fc;
   padding: 10px 20px;
   font-size: 1.5rem;
   font-weight: bolder;
-  color: #fff;
+  color: $white;
   text-align: center;
   position: sticky;
   top: 0;
 }
 
-.flow_main_conatiner_mid_con{
+.flow_main_conatiner_mid_con {
   display: flex;
   justify-content: space-between;
   padding: 20px 30px;
 }
 
-.flow_mid_child_container{
+.flow_mid_child_container {
   padding: 10px 20px;
   /* border: 1px solid; */
   height: 60vh;
   /* width: 10vw; */
   overflow-y: scroll;
-  box-shadow: 2px 2px 4px 4px #EBECEE;
+  box-shadow: 2px 2px 4px 4px #ebecee;
 }
-.message{
+.message {
   flex: 1;
   margin-left: 20px;
 }

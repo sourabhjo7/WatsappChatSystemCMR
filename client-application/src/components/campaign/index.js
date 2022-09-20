@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import "../flow/index.css";
+import "../flow/index.scss";
 
 import Sidebar from "../uiComponent/sidebar/index";
 import TopCon from "../uiComponent/TopCon";

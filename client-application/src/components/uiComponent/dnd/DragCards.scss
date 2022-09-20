@@ -1,4 +1,4 @@
-
+@import "../../../saas/functions.scss";
 .drag-card {
   background-color: #97A4FC;
   margin-bottom: 5px;
@@ -12,9 +12,9 @@
 }
 
 .content2 {
-  display: flex;
+@include FlexContent(space-between);
   align-items: center;
-  justify-content: space-between;
+
   padding: 5px 2px 8px;
 }
 

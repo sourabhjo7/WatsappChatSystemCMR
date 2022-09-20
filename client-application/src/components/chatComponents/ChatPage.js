@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./ChatPage.css";
+import "./ChatPage.scss";
 
 import Chat from "./Chat";
 import Sidebar from "../uiComponent/sidebar/index";

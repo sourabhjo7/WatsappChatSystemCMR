@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 
 
-import "./DB.css";
+import "./DB.scss";
 
 //importing charts
 import DoughnutChart from "../charts/DoughnutChart"
