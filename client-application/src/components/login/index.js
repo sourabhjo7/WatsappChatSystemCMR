@@ -17,28 +17,28 @@ const Login = ({changeLogin}) => {
   }
 
   return (
-      <div className= "loginPage">
-        <div className="loginCon">
+      <div className= "loginPage" id='loginPage'>
+        <div className="loginCon" id='loginCon'>
 
-          <div className="loginHead">
+          <div className="loginHead" id='loginHead'>
             <h1>Login to Dashboard</h1>
             <p>Enter your email and password below</p>
           </div>
 
 
-          <div className="form-group">
+          <div className="form-group" id='form-group'>
             <label>Email</label>
-            <input type="email" className="form-control" placeholder="Enter email" onChange={(e) => {
+            <input type="email" className="form-control" id='form-control' placeholder="Enter email" onChange={(e) => {
               setEmail(e.target.value);
             }}/>
           </div>
-          <div className="form-group">
+          <div className="form-group" id='form-group'>
             <label>Password</label>
-            <input type="password" className="form-control" placeholder="Enter password" onChange={(e) => {
+            <input type="password" className="form-control" id='form-control' placeholder="Enter password" onChange={(e) => {
               setPassword(e.target.value);
             }}/>
           </div>
-          <button className="colorBtn" onClick={login}>Login</button>
+          <button className="colorBtn"id='colorBtn' onClick={login}>Login</button>
         </div>
       </div>
   );

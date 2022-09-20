@@ -119,29 +119,29 @@ const ManagerProfile = ({userData, setIsLogedin, noOfPendingTemplates}) => {
       }, [])
 
       return (
-        <div className="rootCon">
+        <div className="rootCon" id='rootCon'>
           <Sidebar role={process.env.REACT_APP_AdminRole} setIsLogedin={setIsLogedin} page="managers" noOfPendingTemplates={noOfPendingTemplates}/>
-          <div className="dataCon">
+          <div className="dataCon" id='dataCon'>
             <TopCon userName={userData.name} page={manager.firstName+"'s Profile"}/>
 
-            <div className="managerProfileCon">
-              <div className="perDetCon">
-                <img className="ProfilePic" src={PlaceHolderImg} alt="profile pic"/>
+            <div className="managerProfileCon" id='managerProfileCon'>
+              <div className="perDetCon" id='perDetCon'>
+                <img className="ProfilePic" id='ProfilePic' src={PlaceHolderImg} alt="profile pic"/>
                 <div>
-                  <p className="ProfileName">{manager.firstName+" "+manager.lastName}</p>
+                  <p className="ProfileName" id='ProfileName'>{manager.firstName+" "+manager.lastName}</p>
                   <p>{manager.email}</p>
                 </div>
               </div>
 
-              <div className="whaDelCon">
+              <div className="whaDelCon" id='whaDelCon'>
                 <p>{manager.assignedNumber}</p>
                 <p>{manager.appName}</p>
                 <p>{manager.apiKey}</p>
               </div>
 
-              <div className="sysDelCon">
+              <div className="sysDelCon" id='sysDelCon'>
 
-                <div className="selCon">
+                <div className="selCon" id='selCon'>
                   <select onChange={(e) => {
                     filterData(e.target.value)
                   }}>
@@ -151,10 +151,10 @@ const ManagerProfile = ({userData, setIsLogedin, noOfPendingTemplates}) => {
                   </select>
                 </div>
 
-                <div className="filterCon">
-                  <p className="manEsc">Escalations: {totalNoOfEscalations}</p>
-                  <p className="manTemp">Template Created: {totalNoOfTemplates}</p>
-                  <p className="manComChats">Completed Chats: {totalNoOfCompletedChats}</p>
+                <div className="filterCon" id='filterCon'>
+                  <p className="manEsc" id='manEsc'>Escalations: {totalNoOfEscalations}</p>
+                  <p className="manTemp" id='manTemp'>Template Created: {totalNoOfTemplates}</p>
+                  <p className="manComChats" id='manComChats'>Completed Chats: {totalNoOfCompletedChats}</p>
                 </div>
 
                 <select onChange={(e) => {
@@ -168,7 +168,7 @@ const ManagerProfile = ({userData, setIsLogedin, noOfPendingTemplates}) => {
                   <option value="bar">Bar</option>
                   <option value="line">Line</option>
                 </select>
-                <div  className="manProChartCon">
+                <div  className="manProChartCon" id='manProChartCon'>
                 {showBar ? (
                   <ManagerBar
                     totalEscalations={totalEscalations}
@@ -187,9 +187,9 @@ const ManagerProfile = ({userData, setIsLogedin, noOfPendingTemplates}) => {
 
               </div>
 
-              <div className="agentsCon">
+              <div className="agentsCon" id='agentsCon'>
                 <h3>Agents ({totalNoOfAgents})</h3>
-                <div className="agentPopulateCon">
+                <div className="agentPopulateCon" id='agentPopulateCon'>
                   {agents.map((agent, index) => {
                     return <div key={index}>
                       <p>{agent.firstName+" "+agent.lastName}</p>
@@ -201,16 +201,16 @@ const ManagerProfile = ({userData, setIsLogedin, noOfPendingTemplates}) => {
 
               </div>
 
-              <div className="tempProfileCon">
+              <div className="tempProfileCon" id='tempProfileCon'>
                 <h3>Templates ({totalNoOfTemplates})</h3>
 
-                <div className="tempProfilePopulateCon">
+                <div className="tempProfilePopulateCon" id='tempProfilePopulateCon'>
                   {templates.map((template, index) => {
                     return <div key={index}>
                       <p>{template.name}</p>
                       <p>{template.format}</p>
                       <p>{template.sample}</p>
-                      <span className={`tempStatus ${template.status}`}></span>
+                      <span className={`tempStatus ${template.status}`} id={`tempStatus ${template.status}`}></span>
                     </div>
                   })}
                 </div>

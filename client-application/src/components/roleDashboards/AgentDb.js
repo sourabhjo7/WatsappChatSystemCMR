@@ -124,33 +124,33 @@ const AgentDb = ({setIsLogedin, userData, socket}) => {
       }, [socket])
 
       return (
-          <div className="rootCon">
+          <div className="rootCon" id='rootCon'>
             <Sidebar role={process.env.REACT_APP_AgentRole} setIsLogedin={setIsLogedin} page="overview" />
-            <div className="dataCon">
+            <div className="dataCon" id='dataCon'>
               <TopCon userName={userData.name} page="Overview"/>
 
-              <div className="dashBoard">
+              <div className="dashBoard" id='dashBoard'>
 
-                <div className="firstCon">
+                <div className="firstCon" id='firstCon'>
 
-                  <div className="upCon agentUpCon">
+                  <div className="upCon agentUpCon" id='upCon_agentUpCon'>
 
-                  <div className="upConFirstCon">
+                  <div className="upConFirstCon" id='upConFirstCon'>
                     <a href="/chat">
-                      <div className="divInA">
+                      <div className="divInA" id='divInA'>
                         Pending Chats <span>{totalNoOfOpenChats}</span>
                       </div>
                     </a>
 
                     <a href="/chat">
-                      <div className="divInA">
+                      <div className="divInA" id='divInA'>
                          Assigned Chats <span>{noOfAssignedChats}</span>
                       </div>
                     </a>
                   </div>
 
 
-                    <p className="filterSelect agentSelect">
+                    <p className="filterSelect agentSelect" id='filterSelect_agentSelect'>
                         <select onChange={(e) => {
                           filterData(e.target.value)
                         }}>
@@ -160,15 +160,15 @@ const AgentDb = ({setIsLogedin, userData, socket}) => {
                         </select>
                     </p>
 
-                    <div className="upConFirstCon">
+                    <div className="upConFirstCon" id='upConFirstCon'>
                       <a href="/">
-                        <div className="divInA">
+                        <div className="divInA" id='divInA'>
                            Completed Chats <span>{totalNoOfCompletedChats}</span>
                         </div>
                       </a>
 
                       <a href="/">
-                        <div className="divInA">
+                        <div className="divInA" id='divInA'>
                           Contacts handled <span>{totalNoOfCustomerHandled}</span>
                         </div>
                       </a>
@@ -177,8 +177,8 @@ const AgentDb = ({setIsLogedin, userData, socket}) => {
                   </div>
 
 
-                <div className="chartsCon">
-                  <div className="doughnutChart">
+                <div className="chartsCon" id='chartsCon'>
+                  <div className="doughnutChart" id='doughnutChart'>
                     <AgentDNChart exData = {{
                       penChats: totalNoOfOpenChats,
                       assChats: noOfAssignedChats,
@@ -198,7 +198,7 @@ const AgentDb = ({setIsLogedin, userData, socket}) => {
                     <option value="line">Line</option>
                   </select>
 
-                  <div className="managerLineChart">
+                  <div className="managerLineChart" id='managerLineChart'>
                     {showBar ? (
                       <AdminBar totalCompletedChats={totalCompletedChats}/>
                     ): (

@@ -90,38 +90,38 @@ const AdminDb = ({
       }, [])
 
       return (
-          <div className="rootCon ">
+          <div className="rootCon " id='rootCon'>
             <Sidebar role = {process.env.REACT_APP_AdminRole} setIsLogedin={setIsLogedin} page="overview" noOfPendingTemplates={noOfPendingTemplates}/>
-            <div className="dataCon">
+            <div className="dataCon" id='dataCon'>
               <TopCon userName={userData.name} page="Overview"/>
 
-              <div className="dashBoard">
+              <div className="dashBoard" id='dashBoard'>
 
-                <div className="firstCon">
+                <div className="firstCon" id='firstCon'>
 
-                  <div className="upCon">
-                    <div className="upConFirstCon">
+                  <div className="upCon" id='upCon'>
+                    <div className="upConFirstCon" id='upConFirstCon'>
                       <a href="/managers">
-                        <div className="divInA">
+                        <div className="divInA" id='divInA'>
                           Managers <span>{totalNoOfManagers}</span>
                         </div>
                       </a>
 
                       <a href="/">
-                        <div className="divInA">
+                        <div className="divInA" id='divInA'>
                           Agents <span>{totalNoOfAgents}</span>
                         </div>
                       </a>
 
                       <a href="/template_requests">
-                        <div className="divInA">
+                        <div className="divInA" id='divInA'>
                           Templates <span>{totalNoOfTemplates}</span>
                         </div>
                       </a>
                     </div>
 
 
-                    <p className="filterSelect">
+                    <p className="filterSelect" id='filterSelect'>
                       <select onChange={(e) => {
                         filterData(e.target.value)
                       }}>
@@ -131,7 +131,7 @@ const AdminDb = ({
                       </select>
 
                       <a href="/managers">
-                        <div className="divInA">
+                        <div className="divInA" id='divInA'>
                           Completed Chats <span>{totalNoOfCompletedChats}</span>
                         </div>
                       </a>
@@ -139,9 +139,9 @@ const AdminDb = ({
 
                   </div>
 
-                  <div className="chartsCon">
+                  <div className="chartsCon" id='chartsCon'>
 
-                    <div className="barChart">
+                    <div className="barChart" id='barChart'>
                       <BarChart exData = {{
                         manager: totalNoOfManagers,
                         agent: totalNoOfAgents,
@@ -161,7 +161,7 @@ const AdminDb = ({
                       <option value="line">Line</option>
                     </select>
 
-                    <div className="managerLineChart">
+                    <div className="managerLineChart" id='managerLineChart'>
                       {showBar ? (
                         <AdminBar totalCompletedChats={totalCompletedChats}/>
                       ): (

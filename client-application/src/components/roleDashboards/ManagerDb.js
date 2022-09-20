@@ -154,36 +154,36 @@ const ManagerDb = ({
   }, [socket])
 
   return (
-      <div className="rootCon">
-        <Sidebar role="Manager" setIsLogedin={setIsLogedin} page="overview" noOfRequestedChats={noOfRequestedChats}/>
-        <div className="dataCon">
+      <div className="rootCon" id='rootCon'>
+        <Sidebar role="Manager"  setIsLogedin={setIsLogedin} page="overview" noOfRequestedChats={noOfRequestedChats}/>
+        <div className="dataCon" id='dataCon'>
           <TopCon userName={userData.name} page="Overview"/>
 
-          <div className="dashBoard">
+          <div className="dashBoard" id='dashBoard'>
 
-            <div className="firstCon">
+            <div className="firstCon" id='firstCon'>
 
-              <div className="upCon">
+              <div className="upCon" id='upCon'>
 
-              <div className="upConFirstCon">
+              <div className="upConFirstCon" id='upConFirstCon'>
                 <a href="/agents">
-                  <div className="divInA">
-                    <p className="upConHeading">Agents</p>
+                  <div className="divInA"id='divInA'>
+                    <p className="upConHeading" id='upConHeading'>Agents</p>
                     <span>{totalNoOfAgents}</span>
                   </div>
                 </a>
 
                 <a href="/asign_agent">
-                  <div className="divInA">
-                    <p className="upConHeading">Active Agents</p>
+                  <div className="divInA" id='divInA'>
+                    <p className="upConHeading" id='upConHeading'>Active Agents</p>
                     <span>{totalNoOfActiveAgents}</span>
                   </div>
                 </a>
 
 
                 <a href="/asign_agent">
-                  <div className="divInA">
-                    <p className="upConHeading">Unresponded Chats</p>
+                  <div className="divInA" id='divInA'>
+                    <p className="upConHeading" id='upConHeading'>Unresponded Chats</p>
                     <span>{totalNoOfOpenChats}</span>
                   </div>
                 </a>
@@ -191,7 +191,7 @@ const ManagerDb = ({
 
 
 
-                <p className="filterSelect">
+                <p className="filterSelect" id='filterSelect'>
                     <select onChange={(e) => {
                       filterData(e.target.value)
                     }}>
@@ -201,24 +201,24 @@ const ManagerDb = ({
                     </select>
                 </p>
 
-                <div className="upConFirstCon">
+                <div className="upConFirstCon" id='upConFirstCon'>
                   <a href="/chat_requests">
-                    <div className="divInA">
-                      <p className="upConHeading">Escalated Chats</p>
+                    <div className="divInA" id='divInA'>
+                      <p className="upConHeading" id='upConHeading'>Escalated Chats</p>
                       <span>{totalNoOfEscalations}</span>
                     </div>
                   </a>
 
                   <a href="/new_template_request">
-                    <div className="divInA">
-                      <p className="upConHeading">Template Created</p>
+                    <div className="divInA" id='divInA'>
+                      <p className="upConHeading" id='upConHeading'>Template Created</p>
                       <span>{totalNoOfTemplates}</span>
                     </div>
                   </a>
 
                   <a href="/">
-                    <div className="divInA">
-                      <p className="upConHeading">Completed Chats</p>
+                    <div className="divInA" id='divInA'>
+                      <p className="upConHeading" id='upConHeading'>Completed Chats</p>
                       <span>{totalNoOfCompletedChats}</span>
                     </div>
                   </a>
@@ -228,8 +228,8 @@ const ManagerDb = ({
 
               </div>
 
-              <div className="chartsCon">
-                <div className="doughnutChart">
+              <div className="chartsCon" id='chartsCon'>
+                <div className="doughnutChart " id='doughnutChart'>
                   <DoughnutChart exData = {{
                     agent: totalNoOfAgents,
                     activeAgent: totalNoOfActiveAgents
@@ -249,7 +249,7 @@ const ManagerDb = ({
                   <option value="line">Line</option>
                 </select>
 
-                <div className="managerLineChart">
+                <div className="managerLineChart" id='managerLineChart'>
                   {showBar ? (
                     <ManagerBar
                       totalEscalations={totalEscalations}
