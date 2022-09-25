@@ -44,11 +44,16 @@
     font-size: 2rem;
   }
 }
+
 .upConFirstCon{
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-around;
   align-items: flex-start;
+}
+.upConFirstConadmin{
+  @extend .upConFirstCon;
+  flex-wrap: wrap;
 }
 
 
@@ -109,13 +114,13 @@
   flex-direction: row;
   margin-top: 2%;
 
-.barChart {
-  margin-bottom: 30px;
-}
-
 .bar_lineCharts{
   display: flex;
   flex-direction: column;
+}
+.bar_lineChartsAdmin{
+  display: flex;
+  flex-direction: row;
 }
 .barChart, .doughnutChart, .managerLineChart {
   display: flex;
@@ -127,6 +132,13 @@
   border-radius: 5px;
   box-shadow: 0px 0px 6px 6px #EFF0F2;
 }
+.barChart {
+  margin-left: 1%;
+  margin-right: .1%;
+  height: auto;
+  margin-bottom: 3.8%
+}
+
 .managerLineChart{
   flex-direction: column;
   height: 90%;

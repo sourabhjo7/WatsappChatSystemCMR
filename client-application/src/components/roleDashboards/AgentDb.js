@@ -128,7 +128,6 @@ const AgentDb = ({setIsLogedin, userData, socket}) => {
             <Sidebar role={process.env.REACT_APP_AgentRole} setIsLogedin={setIsLogedin} page="overview" />
             <div className="dataCon" id='dataCon'>
               <TopCon userName={userData.name} page="Overview"/>
-
               <div className="dashBoard" id='dashBoard'>
 
                 <div className="firstCon" id='firstCon'>
@@ -175,17 +174,11 @@ const AgentDb = ({setIsLogedin, userData, socket}) => {
                     </div>
 
                   </div>
-
-
-                <div className="chartsCon" id='chartsCon'>
-                  <div className="doughnutChart" id='doughnutChart'>
-                    <AgentDNChart exData = {{
-                      penChats: totalNoOfOpenChats,
-                      assChats: noOfAssignedChats,
-                      comChats: totalNoOfCompletedChats,
-                    }}/>
-                  </div>
-
+              </div>
+              <div className="chartsCon" id='chartsCon'>
+                <div className='bar_lineCharts'>
+                  <div className="managerLineChart" id='managerLineChart'>
+                  <div className="filterSelectCharts" id='filterSelectCharts'>
                   <select onChange={(e) => {
                     console.log(e.target.value);
                     if(e.target.value === "bar"){
@@ -197,18 +190,25 @@ const AgentDb = ({setIsLogedin, userData, socket}) => {
                     <option value="bar">Bar</option>
                     <option value="line">Line</option>
                   </select>
-
-                  <div className="managerLineChart" id='managerLineChart'>
+                  </div>
                     {showBar ? (
                       <AdminBar totalCompletedChats={totalCompletedChats}/>
                     ): (
                       <AdminLine totalCompletedChats={totalCompletedChats}/>
                     )}
                   </div>
+                  <div className='bar_lineCharts'></div>
+                </div>
+                <div className="doughnutChart" id='doughnutChart'>
+                    <AgentDNChart exData = {{
+                      penChats: totalNoOfOpenChats,
+                      assChats: noOfAssignedChats,
+                      comChats: totalNoOfCompletedChats,
+                    }}/>
                 </div>
               </div>
-              </div>
             </div>
+          </div>
           </div>
       )
 }
