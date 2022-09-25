@@ -228,15 +228,14 @@ const ManagerDb = ({
 
               </div>
 
-              <div className="chartsCon" id='chartsCon'>
-                <div className="doughnutChart " id='doughnutChart'>
-                  <DoughnutChart exData = {{
-                    agent: totalNoOfAgents,
-                    activeAgent: totalNoOfActiveAgents
-                  }}/>
+            </div>
 
-                </div>
+            <div className="chartsCon" id='chartsCon'>
+            <div className='bar_lineCharts'>
+                
 
+                <div className="managerLineChart" id='managerLineChart'>
+                  <div className="filterSelectCharts" id='filterSelectCharts'>
                 <select onChange={(e) => {
                   console.log(e.target.value);
                   if(e.target.value === "bar"){
@@ -248,8 +247,7 @@ const ManagerDb = ({
                   <option value="bar">Bar</option>
                   <option value="line">Line</option>
                 </select>
-
-                <div className="managerLineChart" id='managerLineChart'>
+                </div>
                   {showBar ? (
                     <ManagerBar
                       totalEscalations={totalEscalations}
@@ -264,9 +262,16 @@ const ManagerDb = ({
                     />
                   )}
                 </div>
-              </div>
+                </div>
+                <div className="doughnutChart " id='doughnutChart'>
+                  <DoughnutChart exData = {{
+                    agent: totalNoOfAgents,
+                    activeAgent: totalNoOfActiveAgents
+                  }}/>
 
-            </div>
+                </div>
+                 
+              </div>
 
           </div>
         </div>
