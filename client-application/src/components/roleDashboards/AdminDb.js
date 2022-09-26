@@ -121,7 +121,7 @@ const AdminDb = ({ setIsLogedin, userData, noOfPendingTemplates }) => {
               </div>
                 <div className="upConFirstConadmin">
               <p className="filterSelect" id="filterSelect">
-                <select style={{marginLeft:"193%"}}
+                <select style={{marginLeft:"202%"}}
                   onChange={(e) => {
                     filterData(e.target.value);
                   }}
