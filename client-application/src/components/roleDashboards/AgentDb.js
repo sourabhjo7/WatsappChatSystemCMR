@@ -149,7 +149,7 @@ const AgentDb = ({setIsLogedin, userData, socket}) => {
                   </div>
 
 
-                    <p className="filterSelect agentSelect" id='filterSelect_agentSelect'>
+                    <p className="filterSelect agentSelect"style={{marginRight:"12.6%"}}  id='filterSelect_agentSelect'>
                         <select onChange={(e) => {
                           filterData(e.target.value)
                         }}>

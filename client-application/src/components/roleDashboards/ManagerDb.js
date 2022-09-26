@@ -191,7 +191,7 @@ const ManagerDb = ({
 
 
 
-                <p className="filterSelect" id='filterSelect'>
+                <p className="filterSelect" style={{marginRight:"5%"}}  id='filterSelect'>
                     <select onChange={(e) => {
                       filterData(e.target.value)
                     }}>
