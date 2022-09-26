@@ -121,7 +121,7 @@ const AdminDb = ({ setIsLogedin, userData, noOfPendingTemplates }) => {
               </div>
                 <div className="upConFirstConadmin">
               <p className="filterSelect" id="filterSelect">
-                <select
+                <select style={{marginLeft:"193%"}}
                   onChange={(e) => {
                     filterData(e.target.value);
                   }}
@@ -131,7 +131,7 @@ const AdminDb = ({ setIsLogedin, userData, noOfPendingTemplates }) => {
                   <option value="30">Past 30 Days</option>
                 </select>
 
-                <a href="/managers">
+                <a href="/managers" style={{marginLeft:"10%"}} >
                   <div className="divInA" id="divInA">
                     Completed Chats <span>{totalNoOfCompletedChats}</span>
                   </div>
