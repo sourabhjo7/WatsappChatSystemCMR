@@ -1,3 +1,4 @@
+@import "../../../saas/variables.scss";
 .Card-container {
   width: 15vw;
   /* margin: 0 20px; */
@@ -20,7 +21,7 @@
         width: 100%;
         height: 200px;
         position: relative;
-        background: #cdf6e5;
+        background: $color1;
         display: flex;
         justify-content: center;
         align-items: center;

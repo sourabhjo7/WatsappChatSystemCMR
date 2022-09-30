@@ -1,3 +1,4 @@
+@import "../../saas/variables.scss";
 .managerProfileCon {
   max-width: 80vw;
 }
@@ -31,7 +32,7 @@
   width: 20vh;
   height: 20vh;
   border-radius: 50%;
-  border: 2px solid #cdf6e5;
+  border: 2px solid $color1;
   box-shadow: 2px 2px 2px 2px #eff0f2;
 }
 

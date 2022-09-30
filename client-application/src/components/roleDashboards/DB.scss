@@ -1,3 +1,4 @@
+@import "../../saas/variables.scss";
 .dashBoard {
   margin-bottom: 20px;
 }
@@ -23,7 +24,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: #CDF6E5;
+    background: $color1;
     color: #777;
     padding: 20px 0;
     border-radius: 5px;
@@ -86,7 +87,7 @@
   select {
     padding: 5px 10px;
     border-radius: 5px;
-    background: #CDF6E5;
+    background: $color1;
     color: #555;
     cursor: pointer;
   }
@@ -98,7 +99,7 @@
   select {
     padding: 5px 20px;
     border-radius: 5px;
-    background: #CDF6E5;
+    background: $color1;
     color: #555;
     cursor: pointer;
   }

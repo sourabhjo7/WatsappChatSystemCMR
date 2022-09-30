@@ -1,3 +1,4 @@
+@import "../../../saas/variables.scss";
 .popUpCon{
   position: fixed;
   width: 98vw;
@@ -12,7 +13,7 @@
   opacity: 1;
   border: 2px solid;
   box-shadow: 0px 0px 6px 4px rgba(0, 0, 0, 0.2);
-  background: #CDF6E5;
+  background: $color1;
   text-align: center;
   padding: 20px 30px;
   border-radius: 5px;
