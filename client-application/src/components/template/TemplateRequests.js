@@ -52,7 +52,7 @@ const TemplateRequests = ({setIsLogedin, userName, noOfPendingTemplates, setNoOf
           <div className="rootCon">
             <Sidebar role={process.env.REACT_APP_AdminRole} setIsLogedin={setIsLogedin} page="templateRequests" noOfPendingTemplates={noOfPendingTemplates} />
 
-            <div className="dataCon">
+            <div className="dataCon" style={{width:"85.4%"}}>
               <TopCon userName={userName} page="Template Requests"/>
 
               <div className="allTempCon">

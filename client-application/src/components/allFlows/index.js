@@ -60,7 +60,7 @@ const AllFlows = ({setIsLogedin, userName, userId, noOfRequestedChats}) => {
 
             <div className="flow_populate_container" id='flow_populate_container'>
               {flows.map((flow, index) => {
-                return <p key={"flow" + index} onClick={chnageSelectedFlow} style={flow.title === selectedFlow.title ? {background: '#97A4FC', color: '#fff'} : {background: '#5DC254'}}>{flow.title}</p>
+                return <p key={"flow" + index} onClick={chnageSelectedFlow} style={flow.title === selectedFlow.title ? {background: '#97A4FC', color: '#fff'} : {background: '#CDFCE5'}}>{flow.title}</p>
               })}
             </div>
 

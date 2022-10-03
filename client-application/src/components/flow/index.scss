@@ -44,10 +44,16 @@ span {
   width: 50%;
   display: flex;
   input {
+    height: 35px !important;
     flex: 1
+  }
+  select{
+    margin-top: 19px;
+    margin-bottom:10px; 
   }
 }
 .mid_input{
+  height: 35px !important;
   width: 50%;
 }
 
