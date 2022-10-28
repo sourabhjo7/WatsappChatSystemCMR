@@ -447,7 +447,7 @@ const Flow = ({
             <div className="flow_timeKey_container events_container" id="flow_timeKey_container_events_container">
               {
                 events.map((temp, index) => {
-                  return (<DragCards template={temp} deleteTemplate={deleteTemplate} showDel={false}
+                  return (<DragCards template={temp} key={`events${index}`} deleteTemplate={deleteTemplate} showDel={false}
                     // moveCard={moveCard}
                   />);
                 })

@@ -441,7 +441,7 @@ const Campaign = ({
 
               </div>
 
-              <button type="button" className="joinbtn" id="joinbtn" onClick={handleSubmit}>Add</button>
+              <button type="button" className="joinbtn" id="joinbtn6" onClick={handleSubmit}>Add</button>
             </div>
             <div className="flow_timeKey_container">
               <span>
@@ -455,7 +455,7 @@ const Campaign = ({
             <div className="flow_timeKey_container events_container" id="flow_timeKey_container1">
               {
                 events.map((temp, index) => {
-                  return (<DragCards template={`events1${temp}`} key={`events${index}`} deleteTemplate={deleteTemplate} showDel={false}
+                  return (<DragCards template={temp} key={`events${index}`} deleteTemplate={deleteTemplate} showDel={false}
                     // moveCard={moveCard}
                   />);
                 })
@@ -467,8 +467,8 @@ const Campaign = ({
           <div className="selected-flow-area" id="selected-flow-area">
             <div className="Selected-container " id="Selected-container " >
               {
-                selectedFlows.map((temp) => {
-                  return (<DragCards key={temp.id} template={temp.title} deleteTemplate={deleteTemplate} showDel={true}
+                selectedFlows.map((temp,index) => {
+                  return (<DragCards  key={`selFlow${index}`}template={temp.title} deleteTemplate={deleteTemplate} showDel={true}
                     // moveCard={moveCard}
                   />);
                 })
@@ -476,7 +476,7 @@ const Campaign = ({
             </div>
             {/* this is the board where selected flows are droped */}
             <div className="Dnd-flow-canva" id="Dnd-flow-canva">
-              <DndFlowMap key={"flowMap"}  flow={false} nodes={nodes} setNodes={setNodes} edges={edges} setEdges={setEdges} onEdgesChange={onEdgesChange} templates={flows} setTemplates={setFlows} selectedTemplates={selectedFlows} setSelectedTemplates={setSelectedFlows} events={events} setEvents={setEvents}/>
+              <DndFlowMap key={"flowMap"}  flow={true} nodes={nodes} setNodes={setNodes} edges={edges} setEdges={setEdges} onEdgesChange={onEdgesChange} templates={flows} setTemplates={setFlows} selectedTemplates={selectedFlows} setSelectedTemplates={setSelectedFlows} events={events} setEvents={setEvents}/>
             </div>
 
           </div>
